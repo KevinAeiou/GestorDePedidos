@@ -1,4 +1,4 @@
-package com.example.toyapedidos.ui.slideshow;
+package com.example.toyapedidos.ui.pedidos;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -10,22 +10,22 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.example.toyapedidos.databinding.FragmentSlideshowBinding;
+import com.example.toyapedidos.databinding.FragmentoPedidosBinding;
 
-public class SlideshowFragment extends Fragment {
+public class FragmentoPedidos extends Fragment {
 
-    private FragmentSlideshowBinding binding;
+    private FragmentoPedidosBinding binding;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        SlideshowViewModel slideshowViewModel =
-                new ViewModelProvider(this).get(SlideshowViewModel.class);
+        PedidosViewModel homeViewModel =
+                new ViewModelProvider(this).get(PedidosViewModel.class);
 
-        binding = FragmentSlideshowBinding.inflate(inflater, container, false);
+        binding = FragmentoPedidosBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-        final TextView textView = binding.textSlideshow;
-        slideshowViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
+        final TextView textView = binding.textHome;
+        homeViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
         return root;
     }
 

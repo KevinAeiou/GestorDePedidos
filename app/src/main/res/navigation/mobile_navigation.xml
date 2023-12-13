@@ -3,23 +3,18 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@+id/nav_home">
+    app:startDestination="@+id/nav_pedidos">
 
     <fragment
-        android:id="@+id/nav_home"
-        android:name="com.example.toyapedidos.ui.home.HomeFragment"
-        android:label="@string/menu_home"
-        tools:layout="@layout/fragment_home" />
+        android:id="@+id/nav_pedidos"
+        android:name="com.example.toyapedidos.ui.pedidos.FragmentoPedidos"
+        android:label="@string/menu_pedidos"
+        tools:layout="@layout/fragmento_pedidos" />
 
     <fragment
-        android:id="@+id/nav_gallery"
-        android:name="com.example.toyapedidos.ui.gallery.GalleryFragment"
-        android:label="@string/menu_gallery"
-        tools:layout="@layout/fragment_gallery" />
+        android:id="@+id/nav_cardapio"
+        android:name="com.example.toyapedidos.ui.cardapio.FragmentoCardapio"
+        android:label="@string/menu_cardapio"
+        tools:layout="@layout/fragmento_cardapio" />
 
-    <fragment
-        android:id="@+id/nav_slideshow"
-        android:name="com.example.toyapedidos.ui.slideshow.SlideshowFragment"
-        android:label="@string/menu_slideshow"
-        tools:layout="@layout/fragment_slideshow" />
 </navigation>
