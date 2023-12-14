@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "122905999504",
+    "project_id": "toyapedidos",
+    "storage_bucket": "toyapedidos.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:122905999504:android:9486ac0c4f7f8ee208c015",
+        "android_client_info": {
+          "package_name": "com.example.toyapedidos"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA05xWI3TPTWNrHmOzuWgxPSwTo0l90ON0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
