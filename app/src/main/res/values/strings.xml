@@ -12,4 +12,5 @@
     <string name="nome">Nome</string>
     <string name="descricao">Descrição</string>
     <string name="valor">Valor</string>
+    <string name="salva">Salva</string>
 </resources>
