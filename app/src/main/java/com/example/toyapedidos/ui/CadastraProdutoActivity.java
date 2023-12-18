@@ -1,6 +1,10 @@
 package com.example.toyapedidos.ui;
 
+import android.icu.text.NumberFormat;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -10,6 +14,7 @@ import androidx.appcompat.content.res.AppCompatResources;
 
 import com.example.toyapedidos.R;
 import com.example.toyapedidos.databinding.ActivityCadastraProdutoBinding;
+import com.example.toyapedidos.editText.CurrencyEditText;
 import com.example.toyapedidos.modelo.Produto;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
@@ -20,7 +25,8 @@ public class CadastraProdutoActivity extends AppCompatActivity {
     private FirebaseDatabase database;
     private DatabaseReference minhaReferencia;
     private ActivityCadastraProdutoBinding binding;
-    private TextInputEditText inputEditNome, inputEditDescricao, inputEditValor;
+    private TextInputEditText inputEditNome, inputEditDescricao;
+    private CurrencyEditText inputEditValor;
     private TextInputLayout inputTextNome, inputTextDescricao,inputTextValor;
     private String nome, descricao, valor;
     private final String[] menssagemErro={"Campo requerido!","Inválido!"};
@@ -41,9 +47,6 @@ public class CadastraProdutoActivity extends AppCompatActivity {
         inputTextNome = binding.inputLayoutTextNomeProduto;
         inputTextDescricao = binding.inputLayoutTextDescricaoProduto;
         inputTextValor = binding.inputLayoutTextValorProduto;
-        nome = inputEditNome.getText().toString();
-        descricao = inputEditDescricao.getText().toString();
-        valor = inputEditValor.getText().toString();
         database = FirebaseDatabase.getInstance();
         minhaReferencia = database.getReference();
     }
@@ -58,6 +61,7 @@ public class CadastraProdutoActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == R.id.itemMenuSalva){
             if (verificaCamposNovoProduto()){
+                Log.d("cadastraProduto", "Cadastra novo produto!");
                 Produto produto = new Produto(
                         null,
                         nome,
@@ -71,18 +75,24 @@ public class CadastraProdutoActivity extends AppCompatActivity {
     }
 
     private boolean verificaCamposNovoProduto() {
-        return verificaInputEditProduto(nome, inputTextNome, 0)&
-                verificaInputEditProduto(descricao, inputTextDescricao, 1)&
-                verificaInputEditProduto(valor, inputTextValor, 1);
+        nome = inputEditNome.getText().toString();
+        descricao = inputEditDescricao.getText().toString();
+        valor = inputEditValor.getText().toString();
+        Log.d("cadastraProduto", "Valor do campo: " + nome);
+        return verificaInputEditProduto(nome, inputTextNome, 0);
     }
 
     private boolean verificaInputEditProduto(String edtTexto, TextInputLayout inputLayout, int posicaoErro) {
         if (edtTexto.isEmpty()){
+            inputLayout.setHelperTextEnabled(true);
             inputLayout.setHelperText(menssagemErro[posicaoErro]);
             inputLayout.setHelperTextColor(AppCompatResources.getColorStateList(getApplicationContext(),R.color.bordo));
+            Log.d("cadastraProduto", "Negativo!");
             return false;
+        }else {
+            inputLayout.setHelperTextEnabled(false);
+            Log.d("cadastraProduto", "Positivo!");
+            return true;
         }
-        inputLayout.setHelperTextEnabled(false);
-        return true;
     }
 }

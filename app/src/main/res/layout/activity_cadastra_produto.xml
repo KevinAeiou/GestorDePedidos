@@ -18,9 +18,9 @@
             android:id="@+id/inputEditTextNomeProduto"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="8dp"
             android:inputType="text"
             android:textSize="24sp"
+            android:padding="16dp"
             android:textColor="@color/black"
             android:hint="@string/nome"/>
     </com.google.android.material.textfield.TextInputLayout>
@@ -36,9 +36,9 @@
             android:id="@+id/inputEditTextDescricaoProduto"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="8dp"
             android:inputType="text"
             android:textSize="24sp"
+            android:padding="16dp"
             android:textColor="@color/black"
             android:hint="@string/descricao"/>
     </com.google.android.material.textfield.TextInputLayout>
@@ -50,15 +50,16 @@
         app:layout_constraintStart_toStartOf="@id/inputLayoutTextDescricaoProduto"
         app:layout_constraintEnd_toEndOf="@id/inputLayoutTextDescricaoProduto"
         app:layout_constraintTop_toBottomOf="@id/inputLayoutTextDescricaoProduto">
-        <com.google.android.material.textfield.TextInputEditText
+        <com.example.toyapedidos.editText.CurrencyEditText
             android:id="@+id/inputEditTextValorProduto"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="8dp"
-            android:inputType="number"
+            android:inputType="numberDecimal"
             android:textSize="24sp"
-            android:textColor="@color/black"
-            android:hint="@string/valor"/>
+            android:hint="Valor"
+            android:padding="16dp"
+            android:text="0,00"
+            android:textColor="@android:color/black"/>
     </com.google.android.material.textfield.TextInputLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
