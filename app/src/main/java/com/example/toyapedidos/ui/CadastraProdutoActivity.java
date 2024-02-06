@@ -1,5 +1,6 @@
 package com.example.toyapedidos.ui;
 
+import android.icu.text.DecimalFormat;
 import android.icu.text.NumberFormat;
 import android.os.Bundle;
 import android.text.Editable;
@@ -7,6 +8,7 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -21,6 +23,9 @@ import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.text.ParseException;
+import java.util.Locale;
+
 public class CadastraProdutoActivity extends AppCompatActivity {
     private FirebaseDatabase database;
     private DatabaseReference minhaReferencia;
@@ -34,13 +39,14 @@ public class CadastraProdutoActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_cadastra_produto);
-
+        binding = ActivityCadastraProdutoBinding.inflate(getLayoutInflater());
+        View view = binding.getRoot();
+        setContentView(view);
         inicializaComponentes();
+        inputEditValor.setText("000");
     }
 
     private void inicializaComponentes() {
-        binding = ActivityCadastraProdutoBinding.inflate(getLayoutInflater());
         inputEditNome = binding.inputEditTextNomeProduto;
         inputEditDescricao = binding.inputEditTextDescricaoProduto;
         inputEditValor = binding.inputEditTextValorProduto;
@@ -61,14 +67,19 @@ public class CadastraProdutoActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == R.id.itemMenuSalva){
             if (verificaCamposNovoProduto()){
-                Log.d("cadastraProduto", "Cadastra novo produto!");
-                Produto produto = new Produto(
-                        null,
-                        nome,
-                        descricao,
-                        Double.valueOf(valor)
-                );
-
+                double valorDouble;
+                NumberFormat nf = NumberFormat.getNumberInstance(new Locale("pt", "BR"));
+                try {
+                    valorDouble = nf.parse(valor).doubleValue();
+                    Produto produto = new Produto(
+                            null,
+                            nome,
+                            descricao,
+                            valorDouble
+                    );
+                } catch (ParseException e) {
+                    throw new RuntimeException(e);
+                }
             }
         }
         return super.onOptionsItemSelected(item);
@@ -78,8 +89,8 @@ public class CadastraProdutoActivity extends AppCompatActivity {
         nome = inputEditNome.getText().toString();
         descricao = inputEditDescricao.getText().toString();
         valor = inputEditValor.getText().toString();
-        Log.d("cadastraProduto", "Valor do campo: " + nome);
-        return verificaInputEditProduto(nome, inputTextNome, 0);
+        return verificaInputEditProduto(nome, inputTextNome, 0)&
+                verificaInputEditProduto(descricao, inputTextDescricao, 0);
     }
 
     private boolean verificaInputEditProduto(String edtTexto, TextInputLayout inputLayout, int posicaoErro) {

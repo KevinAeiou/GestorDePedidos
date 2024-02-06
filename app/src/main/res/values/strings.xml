@@ -9,8 +9,24 @@
 
     <string name="menu_pedidos">Pedidos</string>
     <string name="menu_cardapio">Cardápio</string>
-    <string name="nome">Nome</string>
+    <string name="stringNome">Nome</string>
     <string name="descricao">Descrição</string>
     <string name="valor">Valor</string>
     <string name="salva">Salva</string>
+    <string name="stringEntrar">Entrar</string>
+    <string name="stringCadastrar">Cadastrar</string>
+    <string name="stringRecuperaSenha">Esqueceu sua senha?</string>
+    <string name="stringSenha">Senha</string>
+    <string name="stringEmail">Email</string>
+    <string name="stringCampoNecessario">Campo necessário</string>
+
+    <string name="stringCasoLetraMaiuscula">(.*[A-Z].*)</string>
+    <string name="stringCasoLetraMinuscula">(.*[a-z].*)</string>
+    <string name="stringCasoNumerico">(.*[0-9].*)</string>
+    <string name="stringCasoEspecial">(.*[@,#,$,%].*$)</string>
+    <string name="stringSenhaCurta">Senha muito curta.</string>
+    <string name="stringSenhaNumerica">Senha deve conter ao menos um número.</string>
+    <string name="stringSenhaMinuscula">Senha deve conter ao menos uma letra minúscula.</string>
+    <string name="stringSenhaMaiuscula">Senha deve conter ao menos uma letra maiúscula.</string>
+    <string name="stringSenhaEspecial">Senha deve conter ao menos um caracter especial.</string>
 </resources>

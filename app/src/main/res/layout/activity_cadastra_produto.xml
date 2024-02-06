@@ -22,7 +22,7 @@
             android:textSize="24sp"
             android:padding="16dp"
             android:textColor="@color/black"
-            android:hint="@string/nome"/>
+            android:hint="@string/stringNome"/>
     </com.google.android.material.textfield.TextInputLayout>
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/inputLayoutTextDescricaoProduto"
@@ -56,9 +56,8 @@
             android:layout_height="wrap_content"
             android:inputType="numberDecimal"
             android:textSize="24sp"
-            android:hint="Valor"
+            android:hint="@string/valor"
             android:padding="16dp"
-            android:text="0,00"
             android:textColor="@android:color/black"/>
     </com.google.android.material.textfield.TextInputLayout>
 
