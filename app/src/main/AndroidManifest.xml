@@ -27,7 +27,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".EntrarActivity"
+            android:name=".EntraUsuarioActivity"
             android:theme="@style/Theme.ToyaPedidos.NoActionBar"
             android:exported="true">
         </activity>

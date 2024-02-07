@@ -3,23 +3,17 @@ package com.example.toyapedidos;
 import static com.example.toyapedidos.ui.Constantes.CHAVE_CARGO_COLABORADOR;
 import static com.example.toyapedidos.ui.Constantes.CHAVE_USUARIO;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 
 import com.example.toyapedidos.databinding.ActivityCadastraUsuarioBinding;
 import com.example.toyapedidos.modelo.Usuario;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
-import com.google.android.material.textview.MaterialTextView;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.database.DatabaseReference;
@@ -29,7 +23,6 @@ public class CadastraUsuarioActivity extends AppCompatActivity {
     private ActivityCadastraUsuarioBinding binding;
     private TextInputLayout txtNomeUsuario, txtEmailUsuario, txtSenhaUsuario;
     private TextInputEditText edtNomeUsuario, edtEmailUsuario, edtSenhaUsuario;
-    private MaterialTextView txtRecuperarSenha;
     private MaterialButton btnCadastrarUsuario;
 
     @Override
@@ -44,7 +37,6 @@ public class CadastraUsuarioActivity extends AppCompatActivity {
         edtNomeUsuario = binding.edtNomeCadastraUsuario;
         edtEmailUsuario = binding.edtEmailCadastraUsuario;
         edtSenhaUsuario = binding.edtSenhaCadastraUsuario;
-        txtRecuperarSenha = binding.txtRecuperaSenha;
         btnCadastrarUsuario = binding.btnCadastrarUsuario;
 
         btnCadastrarUsuario.setOnClickListener(v ->{
@@ -73,7 +65,7 @@ public class CadastraUsuarioActivity extends AppCompatActivity {
     }
 
     private void vaiParaEntrarActivity() {
-        Intent iniciaVaiParaEntrarActivity = new Intent(getApplicationContext(), EntrarActivity.class);
+        Intent iniciaVaiParaEntrarActivity = new Intent(getApplicationContext(), EntraUsuarioActivity.class);
         startActivity(iniciaVaiParaEntrarActivity);
         finish();
     }

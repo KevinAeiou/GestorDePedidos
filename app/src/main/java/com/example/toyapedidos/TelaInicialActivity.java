@@ -24,13 +24,14 @@ public class TelaInicialActivity extends AppCompatActivity {
 
         btnEntrarUsuario.setOnClickListener(v -> {
             Log.d("telaInicial", "Botão entrar.");
-            Snackbar.make(findViewById(R.id.layoutTelaInicial), "Vai para entra usuário.", Snackbar.LENGTH_LONG).show();
+            //Snackbar.make(findViewById(R.id.layoutTelaInicial), "Vai para entra usuário.", Snackbar.LENGTH_LONG).show();
+            Intent inicaVaiParaEntraUsuario = new Intent(getApplicationContext(), EntraUsuarioActivity.class);
+            startActivity(inicaVaiParaEntraUsuario);
         });
         btnCadastrarUsuario.setOnClickListener(v -> {
             Log.d("telaInicial", "Botão cadastrar.");
             Intent iniciaVaiParaCadastraUsuario = new Intent(getApplicationContext(),CadastraUsuarioActivity.class);
             startActivity(iniciaVaiParaCadastraUsuario);
-            finish();
         });
     }
 }
