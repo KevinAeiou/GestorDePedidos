@@ -19,6 +19,7 @@
     <string name="stringSenha">Senha</string>
     <string name="stringEmail">Email</string>
     <string name="stringCampoNecessario">Campo necessário</string>
+    <string name="stringSair">Sair</string>
 
     <string name="stringCasoLetraMaiuscula">(.*[A-Z].*)</string>
     <string name="stringCasoLetraMinuscula">(.*[a-z].*)</string>

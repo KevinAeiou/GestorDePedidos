@@ -9,6 +9,8 @@ import android.util.Log;
 import com.example.toyapedidos.databinding.ActivityTelaInicialBinding;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 public class TelaInicialActivity extends AppCompatActivity {
     private ActivityTelaInicialBinding binding;
@@ -33,5 +35,20 @@ public class TelaInicialActivity extends AppCompatActivity {
             Intent iniciaVaiParaCadastraUsuario = new Intent(getApplicationContext(),CadastraUsuarioActivity.class);
             startActivity(iniciaVaiParaCadastraUsuario);
         });
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        FirebaseUser usuarioAtual = FirebaseAuth.getInstance().getCurrentUser();
+        if (usuarioAtual != null){
+            vaiParaMainActivity();
+        }
+    }
+
+    private void vaiParaMainActivity() {
+        Intent iniciaVaiParaMainActivity = new Intent(getApplicationContext(), MainActivity.class);
+        startActivity(iniciaVaiParaMainActivity);
+        finish();
     }
 }
