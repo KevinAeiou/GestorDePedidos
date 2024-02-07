@@ -24,6 +24,8 @@
     <string name="stringCasoLetraMinuscula">(.*[a-z].*)</string>
     <string name="stringCasoNumerico">(.*[0-9].*)</string>
     <string name="stringCasoEspecial">(.*[@,#,$,%].*$)</string>
+    <string name="stringEmailPadrao">^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@+[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$</string>
+    <string name="stringEmailInvalido">Email inválido!</string>
     <string name="stringSenhaCurta">Senha muito curta.</string>
     <string name="stringSenhaNumerica">Senha deve conter ao menos um número.</string>
     <string name="stringSenhaMinuscula">Senha deve conter ao menos uma letra minúscula.</string>

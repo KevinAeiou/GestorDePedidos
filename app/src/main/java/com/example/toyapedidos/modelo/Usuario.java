@@ -3,10 +3,12 @@ package com.example.toyapedidos.modelo;
 public class Usuario {
     private String id;
     private String nome;
+    private String cargo;
 
-    public Usuario(String id, String nome) {
+    public Usuario(String id, String nome, String cargo) {
         this.id = id;
         this.nome = nome;
+        this.cargo = cargo;
     }
 
     public String getId() {
@@ -15,5 +17,9 @@ public class Usuario {
 
     public String getNome() {
         return nome;
+    }
+
+    public String getCargo() {
+        return cargo;
     }
 }
