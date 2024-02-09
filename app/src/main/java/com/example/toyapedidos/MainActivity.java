@@ -51,12 +51,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         Toolbar toolbar = binding.appBarMain.toolbar;
         setSupportActionBar(toolbar);
         toolbar.setNavigationOnClickListener(view -> drawer.openDrawer(GravityCompat.START));
-        //navigationView.bringChildToFront();
+        navigationView.bringChildToFront(getCurrentFocus());
         ActionBarDrawerToggle toogle = new ActionBarDrawerToggle(this, drawer, R.string.stringAbreNavegacao, R.string.stringFechaMenuNavegacao);
         drawer.addDrawerListener(toogle);
         toogle.syncState();
         navigationView.setNavigationItemSelectedListener(this);
         mostraFragmentoSelecionado(itemNavegacao);
+        navigationView.setCheckedItem(itemNavegacao);
     }
     private void mostraFragmentoSelecionado(int itemNavegacao) {
         Fragment fragmentoSelecionado = null;
