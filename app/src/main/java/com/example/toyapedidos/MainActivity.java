@@ -1,36 +1,40 @@
 package com.example.toyapedidos;
 
-import android.annotation.SuppressLint;
+import static com.example.toyapedidos.ui.Constantes.CHAVE_USUARIO;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.Menu;
-
-import com.example.toyapedidos.ui.CadastraProdutoActivity;
-import com.example.toyapedidos.ui.cardapio.FragmentoCardapio;
-import com.example.toyapedidos.ui.pedidos.FragmentoPedidos;
-import com.google.android.material.navigation.NavigationView;
+import android.widget.TextView;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
-import androidx.navigation.ui.AppBarConfiguration;
-import androidx.navigation.ui.NavigationUI;
-import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.toyapedidos.databinding.ActivityMainBinding;
+import com.example.toyapedidos.modelo.Usuario;
+import com.example.toyapedidos.ui.cardapio.FragmentoCardapio;
+import com.example.toyapedidos.ui.pedidos.FragmentoPedidos;
+import com.google.android.material.navigation.NavigationView;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -58,6 +62,28 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         navigationView.setNavigationItemSelectedListener(this);
         mostraFragmentoSelecionado(itemNavegacao);
         navigationView.setCheckedItem(itemNavegacao);
+        View cabecalhoView = navigationView.getHeaderView(0);
+        TextView txtNavNome = cabecalhoView.findViewById(R.id.txtNavCabecalhoNome);
+        TextView txtNavCargo = cabecalhoView.findViewById(R.id.txtNavCabecalhoCargo);
+        FirebaseDatabase meusDados = FirebaseDatabase.getInstance();
+        DatabaseReference minhaReferencia = meusDados.getReference(CHAVE_USUARIO);
+        String usuarioId = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid();
+        minhaReferencia.child(usuarioId).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                Usuario usuarioAtual = snapshot.getValue(Usuario.class);
+                if (usuarioAtual != null) {
+                    txtNavNome.setText(usuarioAtual.getNome());
+                    txtNavCargo.setText(usuarioAtual.getCargo());
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Snackbar.make(Objects.requireNonNull(getCurrentFocus()), "Erro: "+error, Snackbar.LENGTH_LONG).show();
+            }
+        });
+
     }
     private void mostraFragmentoSelecionado(int itemNavegacao) {
         Fragment fragmentoSelecionado = null;

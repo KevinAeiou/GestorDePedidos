@@ -4,6 +4,7 @@ public class Usuario {
     private String id;
     private String nome;
     private String cargo;
+    public Usuario(){}
 
     public Usuario(String id, String nome, String cargo) {
         this.id = id;
