@@ -13,4 +13,10 @@
             android:icon="@drawable/ic_menu_cardapio"
             android:title="@string/menu_cardapio" />
     </group>
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/navSair"
+            android:icon="@drawable/ic_menu_sair"
+            android:title="@string/stringSair" />
+    </group>
 </menu>

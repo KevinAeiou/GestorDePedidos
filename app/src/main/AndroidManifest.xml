@@ -13,15 +13,32 @@
         android:theme="@style/Theme.ToyaPedidos"
         tools:targetApi="31">
         <activity
-            android:name=".MainActivity"
-            android:exported="true"
-            android:label="@string/app_name"
-            android:theme="@style/Theme.ToyaPedidos.NoActionBar">
+            android:name=".CadastraUsuarioActivity"
+            android:theme="@style/Theme.ToyaPedidos.NoActionBar"
+            android:exported="false" />
+        <activity
+            android:name=".TelaInicialActivity"
+            android:theme="@style/Theme.ToyaPedidos.NoActionBar"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity
+            android:name=".EntraUsuarioActivity"
+            android:theme="@style/Theme.ToyaPedidos.NoActionBar"
+            android:exported="true">
+        </activity>
+        <activity
+            android:name=".ui.CadastraProdutoActivity"
+            android:exported="false" />
+        <activity
+            android:name=".MainActivity"
+            android:exported="true"
+            android:label="@string/app_name"
+            android:theme="@style/Theme.ToyaPedidos.NoActionBar">
         </activity>
     </application>
 

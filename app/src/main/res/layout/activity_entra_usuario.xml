@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".EntraUsuarioActivity">
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/txtNomeAplicativo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/app_name"
+        android:textSize="50sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/txtEmailEntraUsuario"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="32dp"
+        android:hint="@string/stringEmail"
+        style="@style/Widget.Material3.TextInputLayout.OutlinedBox.Dense"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/txtNomeAplicativo">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/edtEmailEntraUsuario"
+            android:inputType="textEmailAddress"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/txtSenhaEntraUsuario"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:hint="@string/stringSenha"
+        app:passwordToggleEnabled="true"
+        style="@style/Widget.Material3.TextInputLayout.OutlinedBox.Dense"
+        app:layout_constraintEnd_toEndOf="@id/txtEmailEntraUsuario"
+        app:layout_constraintStart_toStartOf="@id/txtEmailEntraUsuario"
+        app:layout_constraintTop_toBottomOf="@+id/txtEmailEntraUsuario">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/edtSenhaEntraUsuario"
+            android:inputType="textPassword"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/txtRecuperaSenhaUsuario"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:textSize="20sp"
+        android:text="@string/stringRecuperaSenha"
+        app:layout_constraintEnd_toEndOf="@+id/txtSenhaEntraUsuario"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintTop_toBottomOf="@+id/txtSenhaEntraUsuario" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnEntraUsuario"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:textSize="28sp"
+        android:textAllCaps="false"
+        android:text="@string/stringEntrar"
+        app:layout_constraintStart_toStartOf="@id/txtSenhaEntraUsuario"
+        app:layout_constraintEnd_toEndOf="@+id/txtSenhaEntraUsuario"
+        app:layout_constraintTop_toBottomOf="@+id/txtRecuperaSenhaUsuario"/>
+</androidx.constraintlayout.widget.ConstraintLayout>
