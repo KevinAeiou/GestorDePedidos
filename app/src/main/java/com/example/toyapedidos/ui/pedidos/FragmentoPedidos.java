@@ -1,5 +1,7 @@
 package com.example.toyapedidos.ui.pedidos;
 
+import static com.example.toyapedidos.ui.Constantes.CHAVE_TITULO_PEDIDOS;
+
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,6 +20,7 @@ public class FragmentoPedidos extends Fragment {
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
+        requireActivity().setTitle(CHAVE_TITULO_PEDIDOS);
         PedidosViewModel homeViewModel =
                 new ViewModelProvider(this).get(PedidosViewModel.class);
 

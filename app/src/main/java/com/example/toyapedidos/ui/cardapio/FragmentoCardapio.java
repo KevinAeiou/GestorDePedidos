@@ -1,5 +1,8 @@
 package com.example.toyapedidos.ui.cardapio;
 
+import static com.example.toyapedidos.ui.Constantes.CHAVE_TITULO_CARDAPIO;
+import static com.example.toyapedidos.ui.Constantes.CHAVE_TITULO_PEDIDOS;
+
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,6 +21,7 @@ public class FragmentoCardapio extends Fragment {
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
+        requireActivity().setTitle(CHAVE_TITULO_CARDAPIO);
         CardapioViewModel galleryViewModel =
                 new ViewModelProvider(this).get(CardapioViewModel.class);
 
