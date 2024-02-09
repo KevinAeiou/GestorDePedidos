@@ -32,4 +32,6 @@
     <string name="stringSenhaMinuscula">Senha deve conter ao menos uma letra minúscula.</string>
     <string name="stringSenhaMaiuscula">Senha deve conter ao menos uma letra maiúscula.</string>
     <string name="stringSenhaEspecial">Senha deve conter ao menos um caracter especial.</string>
+    <string name="stringFechaMenuNavegacao">Fecha menu navegação</string>
+    <string name="stringAbreNavegacao">Abre menu navegação</string>
 </resources>
