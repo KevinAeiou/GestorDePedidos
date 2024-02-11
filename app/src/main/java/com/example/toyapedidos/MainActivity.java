@@ -8,7 +8,9 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
+import android.window.OnBackInvokedDispatcher;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
@@ -49,10 +51,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         inicializaComponentes();
         setContentView(binding.getRoot());
 
-        int itemNavegacao = R.id.nav_pedidos;
+        int itemNavegacao = R.id.navPedidos;
         drawer = binding.drawerLayout;
-        NavigationView navigationView = binding.navView;
-        Toolbar toolbar = binding.appBarMain.toolbar;
+        NavigationView navigationView = binding.navegacaoView;
+        Toolbar toolbar = binding.toolbar;
         setSupportActionBar(toolbar);
         toolbar.setNavigationOnClickListener(view -> drawer.openDrawer(GravityCompat.START));
         navigationView.bringChildToFront(getCurrentFocus());
@@ -83,13 +85,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 Snackbar.make(Objects.requireNonNull(getCurrentFocus()), "Erro: "+error, Snackbar.LENGTH_LONG).show();
             }
         });
-
     }
     private void mostraFragmentoSelecionado(int itemNavegacao) {
         Fragment fragmentoSelecionado = null;
-        if (itemNavegacao == R.id.nav_pedidos){
+        if (itemNavegacao == R.id.navPedidos){
             fragmentoSelecionado = new FragmentoPedidos();
-        } else if (itemNavegacao == R.id.nav_cardapio){
+        } else if (itemNavegacao == R.id.navCardapio){
             fragmentoSelecionado = new FragmentoCardapio();
         }else if (itemNavegacao == R.id.navSair){
             FirebaseAuth.getInstance().signOut();
