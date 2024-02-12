@@ -6,13 +6,15 @@ public class Produto implements Serializable {
     private String id;
     private String nome;
     private String descricao;
+    private String categoria;
     private double valor;
 
     public Produto(){}
-    public Produto(String id, String nome, String descricao, double valor) {
+    public Produto(String id, String nome, String descricao, String categoria, double valor) {
         this.id = id;
         this.nome = nome;
         this.descricao = descricao;
+        this.categoria = categoria;
         this.valor = valor;
     }
     public String getId() {
@@ -26,5 +28,9 @@ public class Produto implements Serializable {
     }
     public double getValor() {
         return valor;
+    }
+
+    public String getCategoria() {
+        return categoria;
     }
 }

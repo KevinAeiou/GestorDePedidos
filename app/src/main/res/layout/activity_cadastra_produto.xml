@@ -43,13 +43,31 @@
             android:hint="@string/descricao"/>
     </com.google.android.material.textfield.TextInputLayout>
     <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/inputLayoutTextCategoriaProduto"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+        app:layout_constraintStart_toStartOf="@id/inputLayoutTextDescricaoProduto"
+        app:layout_constraintEnd_toEndOf="@id/inputLayoutTextDescricaoProduto"
+        app:layout_constraintTop_toBottomOf="@id/inputLayoutTextDescricaoProduto">
+        <com.google.android.material.textfield.MaterialAutoCompleteTextView
+            android:id="@+id/inputEditTextCategoriaProduto"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/stringCategoria"
+            android:inputType="none"
+            android:textSize="24sp"
+            android:padding="16dp" />
+    </com.google.android.material.textfield.TextInputLayout>
+    <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/inputLayoutTextValorProduto"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
-        app:layout_constraintStart_toStartOf="@id/inputLayoutTextDescricaoProduto"
-        app:layout_constraintEnd_toEndOf="@id/inputLayoutTextDescricaoProduto"
-        app:layout_constraintTop_toBottomOf="@id/inputLayoutTextDescricaoProduto">
+        app:layout_constraintStart_toStartOf="@id/inputLayoutTextCategoriaProduto"
+        app:layout_constraintEnd_toEndOf="@id/inputLayoutTextCategoriaProduto"
+        app:layout_constraintTop_toBottomOf="@id/inputLayoutTextCategoriaProduto">
         <com.example.toyapedidos.editText.CurrencyEditText
             android:id="@+id/inputEditTextValorProduto"
             android:layout_width="match_parent"

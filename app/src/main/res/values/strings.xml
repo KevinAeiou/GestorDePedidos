@@ -34,4 +34,11 @@
     <string name="stringSenhaEspecial">Senha deve conter ao menos um caracter especial.</string>
     <string name="stringFechaMenuNavegacao">Fecha menu navegação</string>
     <string name="stringAbreNavegacao">Abre menu navegação</string>
+    <string name="stringCategoria">Categoria</string>
+    <string-array name="categorias">
+        <item>Sanduiches</item>
+        <item>Pizzas</item>
+        <item>Taças e Milk shakes</item>
+        <item>Bebidas</item>
+    </string-array>
 </resources>

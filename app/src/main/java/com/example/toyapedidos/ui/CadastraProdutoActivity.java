@@ -1,14 +1,12 @@
 package com.example.toyapedidos.ui;
 
-import android.icu.text.DecimalFormat;
 import android.icu.text.NumberFormat;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -18,6 +16,7 @@ import com.example.toyapedidos.R;
 import com.example.toyapedidos.databinding.ActivityCadastraProdutoBinding;
 import com.example.toyapedidos.editText.CurrencyEditText;
 import com.example.toyapedidos.modelo.Produto;
+import com.google.android.material.textfield.MaterialAutoCompleteTextView;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.database.DatabaseReference;
@@ -32,8 +31,9 @@ public class CadastraProdutoActivity extends AppCompatActivity {
     private ActivityCadastraProdutoBinding binding;
     private TextInputEditText inputEditNome, inputEditDescricao;
     private CurrencyEditText inputEditValor;
-    private TextInputLayout inputTextNome, inputTextDescricao,inputTextValor;
-    private String nome, descricao, valor;
+    private TextInputLayout inputTextNome, inputTextDescricao,inputTextValor, inputTextCategoria;
+    private MaterialAutoCompleteTextView autoCompleteCategorias;
+    private String nome, descricao, categoria,valor;
     private final String[] menssagemErro={"Campo requerido!","Inválido!"};
 
     @Override
@@ -43,6 +43,12 @@ public class CadastraProdutoActivity extends AppCompatActivity {
         View view = binding.getRoot();
         setContentView(view);
         inicializaComponentes();
+        String[] categorias = getResources().getStringArray(R.array.categorias);
+        ArrayAdapter<String> categoriaAdapter = new ArrayAdapter<>(this,
+                R.layout.item_dropdown, categorias);
+        categoriaAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        autoCompleteCategorias.setText(categorias[0]);
+        autoCompleteCategorias.setAdapter(categoriaAdapter);
         inputEditValor.setText("000");
     }
 
@@ -50,9 +56,11 @@ public class CadastraProdutoActivity extends AppCompatActivity {
         inputEditNome = binding.inputEditTextNomeProduto;
         inputEditDescricao = binding.inputEditTextDescricaoProduto;
         inputEditValor = binding.inputEditTextValorProduto;
+        autoCompleteCategorias = binding.inputEditTextCategoriaProduto;
         inputTextNome = binding.inputLayoutTextNomeProduto;
         inputTextDescricao = binding.inputLayoutTextDescricaoProduto;
         inputTextValor = binding.inputLayoutTextValorProduto;
+        inputTextCategoria = binding.inputLayoutTextCategoriaProduto;
         database = FirebaseDatabase.getInstance();
         minhaReferencia = database.getReference();
     }
@@ -75,6 +83,7 @@ public class CadastraProdutoActivity extends AppCompatActivity {
                             null,
                             nome,
                             descricao,
+                            categoria,
                             valorDouble
                     );
                 } catch (ParseException e) {
@@ -88,6 +97,7 @@ public class CadastraProdutoActivity extends AppCompatActivity {
     private boolean verificaCamposNovoProduto() {
         nome = inputEditNome.getText().toString();
         descricao = inputEditDescricao.getText().toString();
+        categoria = autoCompleteCategorias.getText().toString();
         valor = inputEditValor.getText().toString();
         return verificaInputEditProduto(nome, inputTextNome, 0)&
                 verificaInputEditProduto(descricao, inputTextDescricao, 0);
