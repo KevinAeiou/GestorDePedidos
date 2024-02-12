@@ -6,4 +6,5 @@ public interface Constantes {
     String CHAVE_CARGO_COLABORADOR = "Colaborador";
     String CHAVE_TITULO_PEDIDOS = "Pedidos";
     String CHAVE_TITULO_CARDAPIO = "Cardápio";
+    String CHAVE_LISTA_PRODUTO = "Lista_produto";
 }

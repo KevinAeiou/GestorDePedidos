@@ -1,5 +1,8 @@
 package com.example.toyapedidos.ui;
 
+import static com.example.toyapedidos.ui.Constantes.CHAVE_LISTA_PRODUTO;
+
+import android.content.Intent;
 import android.icu.text.NumberFormat;
 import android.os.Bundle;
 import android.util.Log;
@@ -12,6 +15,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.content.res.AppCompatResources;
 
+import com.example.toyapedidos.MainActivity;
 import com.example.toyapedidos.R;
 import com.example.toyapedidos.databinding.ActivityCadastraProdutoBinding;
 import com.example.toyapedidos.editText.CurrencyEditText;
@@ -79,13 +83,8 @@ public class CadastraProdutoActivity extends AppCompatActivity {
                 NumberFormat nf = NumberFormat.getNumberInstance(new Locale("pt", "BR"));
                 try {
                     valorDouble = nf.parse(valor).doubleValue();
-                    Produto produto = new Produto(
-                            null,
-                            nome,
-                            descricao,
-                            categoria,
-                            valorDouble
-                    );
+                    cadastraNovoProduto(valorDouble);
+                    vaiParaMainActivity();
                 } catch (ParseException e) {
                     throw new RuntimeException(e);
                 }
@@ -94,6 +93,24 @@ public class CadastraProdutoActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    private void vaiParaMainActivity() {
+        Intent iniciaVaiParaMainActivity = new Intent(getApplicationContext(), MainActivity.class);
+        startActivity(iniciaVaiParaMainActivity);
+        finish();
+    }
+
+    private void cadastraNovoProduto(double valorDouble) {
+        minhaReferencia = database.getReference(CHAVE_LISTA_PRODUTO);
+        String novoId = Utilitario.geraIdAleatorio();
+        Produto produto = new Produto(
+                novoId,
+                nome,
+                descricao,
+                categoria,
+                valorDouble
+        );
+        minhaReferencia.child(novoId).setValue(produto);
+    }
     private boolean verificaCamposNovoProduto() {
         nome = inputEditNome.getText().toString();
         descricao = inputEditDescricao.getText().toString();
