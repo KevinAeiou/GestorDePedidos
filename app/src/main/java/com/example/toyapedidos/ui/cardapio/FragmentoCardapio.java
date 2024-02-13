@@ -1,42 +1,150 @@
 package com.example.toyapedidos.ui.cardapio;
 
+import static com.example.toyapedidos.ui.Constantes.CHAVE_LISTA_PRODUTO;
 import static com.example.toyapedidos.ui.Constantes.CHAVE_TITULO_CARDAPIO;
-import static com.example.toyapedidos.ui.Constantes.CHAVE_TITULO_PEDIDOS;
+import static com.google.firebase.auth.FirebaseAuth.getInstance;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.ItemTouchHelper;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.example.toyapedidos.databinding.FragmentoCardapioBinding;
+import com.example.toyapedidos.modelo.Produto;
 import com.example.toyapedidos.ui.CadastraProdutoActivity;
+import com.example.toyapedidos.ui.cardapio.recyclerView.CardapioAdapter;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.snackbar.Snackbar;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class FragmentoCardapio extends Fragment {
 
     private FragmentoCardapioBinding binding;
     private FloatingActionButton botaoFlutuante;
-
+    private CardapioAdapter cardapioAdapter;
+    private RecyclerView meuRecycler;
+    private List<Produto> cardapio;
+    private FirebaseDatabase meuBancoDados;
+    private DatabaseReference minhaReferencia;
+    private SwipeRefreshLayout refreshLayout;
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         requireActivity().setTitle(CHAVE_TITULO_CARDAPIO);
-        CardapioViewModel galleryViewModel =
-                new ViewModelProvider(this).get(CardapioViewModel.class);
+        //CardapioViewModel galleryViewModel = new ViewModelProvider(this).get(CardapioViewModel.class);
 
         binding = FragmentoCardapioBinding.inflate(inflater, container, false);
-        View root = binding.getRoot();
-        botaoFlutuante = binding.floatingActionButton;
+
+        //final TextView textView = binding.textGallery;
+        //galleryViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
+        return binding.getRoot();
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        inicializaComponentes();
+        atualizaCardapio();
+        configuraRefreshLayout();
+        configuraDeslizeItem();
         botaoFlutuante.setOnClickListener(v -> vaiParaCadastraProdutoActivity());
 
-        final TextView textView = binding.textGallery;
-        galleryViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
-        return root;
+    }
+
+    private void configuraDeslizeItem() {
+        ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.SimpleCallback(
+                0, ItemTouchHelper.RIGHT) {
+            @Override
+            public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+                return false;
+            }
+
+            @Override
+            public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+                int itemPosicao = viewHolder.getAdapterPosition();
+                CardapioAdapter cardapioAdapter = (CardapioAdapter) meuRecycler.getAdapter();
+                if (cardapioAdapter != null){
+                    
+                    removeProdutoCardapio(itemPosicao);
+                    cardapioAdapter.remove(itemPosicao);
+                }
+            }
+        };
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleCallback);
+        itemTouchHelper.attachToRecyclerView(meuRecycler);
+    }
+
+    private void removeProdutoCardapio(int itemPosicao) {
+        String produtoId = cardapio.get(itemPosicao).getId();
+        minhaReferencia.child(produtoId).removeValue();
+    }
+
+    private void configuraRefreshLayout() {
+        refreshLayout.setOnRefreshListener(() -> atualizaCardapio());
+    }
+
+    private void atualizaCardapio() {
+        List<Produto> cardapio = pegaTodosProdutos();
+        configuraRecyclerView(cardapio);
+    }
+
+    private void configuraRecyclerView(List<Produto> cardapio) {
+        meuRecycler.setHasFixedSize(true);
+        meuRecycler.setLayoutManager(new LinearLayoutManager(getContext()));
+        configuraAdapter(cardapio, meuRecycler);
+    }
+
+    private void configuraAdapter(List<Produto> cardapio, RecyclerView meuRecycler) {
+        cardapioAdapter = new CardapioAdapter(cardapio, getContext());
+        meuRecycler.setAdapter(cardapioAdapter);
+    }
+
+    private List<Produto> pegaTodosProdutos() {
+        cardapio = new ArrayList<>();
+        minhaReferencia.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                cardapio.clear();
+                for (DataSnapshot dn:snapshot.getChildren()){
+                    Produto produto = dn.getValue(Produto.class);
+                    if (produto != null){
+                        cardapio.add(produto);
+                    }
+                }
+                cardapioAdapter.notifyDataSetChanged();
+                refreshLayout.setRefreshing(false);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Snackbar.make(getView(), "Erro ao carregar cardápio: "+ error, Snackbar.LENGTH_LONG).show();
+            }
+        });
+        return cardapio;
+    }
+
+    private void inicializaComponentes() {
+        botaoFlutuante = binding.floatingActionButton;
+        meuRecycler = binding.recyclerViewFragmentoCardapio;
+        refreshLayout = binding.refreshLayoutFragmentoCardapio;
+        meuBancoDados = FirebaseDatabase.getInstance();
+        minhaReferencia = meuBancoDados.getReference(CHAVE_LISTA_PRODUTO);
+        String usuarioAtualId = getInstance().getCurrentUser().getUid();
     }
 
     private void vaiParaCadastraProdutoActivity() {

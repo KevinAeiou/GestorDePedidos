@@ -35,6 +35,7 @@
     <string name="stringFechaMenuNavegacao">Fecha menu navegação</string>
     <string name="stringAbreNavegacao">Abre menu navegação</string>
     <string name="stringCategoria">Categoria</string>
+    <string name="stringDescricaoBotaoFlutuanteCadastraProduto">Botão flutuante do fragmento cardápio</string>
     <string-array name="categorias">
         <item>Sanduiches</item>
         <item>Pizzas</item>
