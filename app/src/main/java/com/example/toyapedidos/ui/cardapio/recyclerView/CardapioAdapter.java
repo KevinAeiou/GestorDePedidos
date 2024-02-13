@@ -50,6 +50,15 @@ public class CardapioAdapter extends RecyclerView.Adapter<CardapioAdapter.Produt
         notifyItemRangeChanged(posicao, produtos.size());
         notifyDataSetChanged();
     }
+    public void adiciona(int posicao, Produto produto){
+        if (posicao < 0 || posicao >= produtos.size()){
+            return;
+        }
+        produtos.add(posicao,produto);
+        notifyItemInserted(posicao);
+        notifyItemRangeChanged(posicao, produtos.size());
+        notifyDataSetChanged();
+    }
     public class ProdutoViewHolder extends RecyclerView.ViewHolder {
         private final TextView nomeProduto;
         private final TextView descricaoProduto;

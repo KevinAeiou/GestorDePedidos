@@ -2,7 +2,6 @@ package com.example.toyapedidos.ui.cardapio;
 
 import static com.example.toyapedidos.ui.Constantes.CHAVE_LISTA_PRODUTO;
 import static com.example.toyapedidos.ui.Constantes.CHAVE_TITULO_CARDAPIO;
-import static com.google.firebase.auth.FirebaseAuth.getInstance;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -18,6 +17,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import com.example.toyapedidos.R;
 import com.example.toyapedidos.databinding.FragmentoCardapioBinding;
 import com.example.toyapedidos.modelo.Produto;
 import com.example.toyapedidos.ui.CadastraProdutoActivity;
@@ -40,18 +40,13 @@ public class FragmentoCardapio extends Fragment {
     private CardapioAdapter cardapioAdapter;
     private RecyclerView meuRecycler;
     private List<Produto> cardapio;
-    private FirebaseDatabase meuBancoDados;
     private DatabaseReference minhaReferencia;
     private SwipeRefreshLayout refreshLayout;
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         requireActivity().setTitle(CHAVE_TITULO_CARDAPIO);
-        //CardapioViewModel galleryViewModel = new ViewModelProvider(this).get(CardapioViewModel.class);
 
         binding = FragmentoCardapioBinding.inflate(inflater, container, false);
-
-        //final TextView textView = binding.textGallery;
-        //galleryViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
         return binding.getRoot();
     }
 
@@ -77,11 +72,20 @@ public class FragmentoCardapio extends Fragment {
             @Override
             public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
                 int itemPosicao = viewHolder.getAdapterPosition();
-                CardapioAdapter cardapioAdapter = (CardapioAdapter) meuRecycler.getAdapter();
                 if (cardapioAdapter != null){
-                    
-                    removeProdutoCardapio(itemPosicao);
+                    Produto produtoRemovido = cardapio.get(itemPosicao);
                     cardapioAdapter.remove(itemPosicao);
+                    Snackbar snackbarDesfazer = Snackbar.make(requireView(), produtoRemovido.getNome(), Snackbar.LENGTH_LONG);
+                    snackbarDesfazer.setAction(getString(R.string.stringDesfazer), v -> cardapioAdapter.adiciona(itemPosicao, produtoRemovido));
+                    snackbarDesfazer.show();
+                    snackbarDesfazer.addCallback(new Snackbar.Callback(){
+                        @Override
+                        public void onDismissed(Snackbar transientBottomBar, int event) {
+                            super.onDismissed(transientBottomBar, event);
+                            removeProdutoCardapio(produtoRemovido);
+                        }
+                    });
+
                 }
             }
         };
@@ -89,13 +93,12 @@ public class FragmentoCardapio extends Fragment {
         itemTouchHelper.attachToRecyclerView(meuRecycler);
     }
 
-    private void removeProdutoCardapio(int itemPosicao) {
-        String produtoId = cardapio.get(itemPosicao).getId();
-        minhaReferencia.child(produtoId).removeValue();
+    private void removeProdutoCardapio(Produto produtoRemovido) {
+        minhaReferencia.child(produtoRemovido.getId()).removeValue();
     }
 
     private void configuraRefreshLayout() {
-        refreshLayout.setOnRefreshListener(() -> atualizaCardapio());
+        refreshLayout.setOnRefreshListener(this::atualizaCardapio);
     }
 
     private void atualizaCardapio() {
@@ -132,7 +135,7 @@ public class FragmentoCardapio extends Fragment {
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                Snackbar.make(getView(), "Erro ao carregar cardápio: "+ error, Snackbar.LENGTH_LONG).show();
+                Snackbar.make(requireView(), "Erro ao carregar cardápio: "+ error, Snackbar.LENGTH_LONG).show();
             }
         });
         return cardapio;
@@ -142,9 +145,8 @@ public class FragmentoCardapio extends Fragment {
         botaoFlutuante = binding.floatingActionButton;
         meuRecycler = binding.recyclerViewFragmentoCardapio;
         refreshLayout = binding.refreshLayoutFragmentoCardapio;
-        meuBancoDados = FirebaseDatabase.getInstance();
+        FirebaseDatabase meuBancoDados = FirebaseDatabase.getInstance();
         minhaReferencia = meuBancoDados.getReference(CHAVE_LISTA_PRODUTO);
-        String usuarioAtualId = getInstance().getCurrentUser().getUid();
     }
 
     private void vaiParaCadastraProdutoActivity() {
