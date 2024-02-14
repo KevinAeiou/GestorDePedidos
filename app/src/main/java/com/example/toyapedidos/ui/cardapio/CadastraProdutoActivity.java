@@ -1,6 +1,8 @@
-package com.example.toyapedidos.ui;
+package com.example.toyapedidos.ui.cardapio;
 
+import static com.example.toyapedidos.ui.Constantes.CHAVE_CADASTRA_PRODUTO;
 import static com.example.toyapedidos.ui.Constantes.CHAVE_LISTA_PRODUTO;
+import static com.example.toyapedidos.ui.Constantes.CHAVE_PRODUTO;
 
 import android.content.Intent;
 import android.icu.text.NumberFormat;
@@ -20,6 +22,7 @@ import com.example.toyapedidos.R;
 import com.example.toyapedidos.databinding.ActivityCadastraProdutoBinding;
 import com.example.toyapedidos.editText.CurrencyEditText;
 import com.example.toyapedidos.modelo.Produto;
+import com.example.toyapedidos.ui.Utilitario;
 import com.google.android.material.textfield.MaterialAutoCompleteTextView;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
@@ -84,7 +87,7 @@ public class CadastraProdutoActivity extends AppCompatActivity {
                 try {
                     valorDouble = nf.parse(valor).doubleValue();
                     cadastraNovoProduto(valorDouble);
-                    vaiParaMainActivity();
+                    finish();
                 } catch (ParseException e) {
                     throw new RuntimeException(e);
                 }
@@ -92,13 +95,6 @@ public class CadastraProdutoActivity extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
-
-    private void vaiParaMainActivity() {
-        Intent iniciaVaiParaMainActivity = new Intent(getApplicationContext(), MainActivity.class);
-        startActivity(iniciaVaiParaMainActivity);
-        finish();
-    }
-
     private void cadastraNovoProduto(double valorDouble) {
         minhaReferencia = database.getReference(CHAVE_LISTA_PRODUTO);
         String novoId = Utilitario.geraIdAleatorio();

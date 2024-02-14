@@ -1,7 +1,7 @@
 package com.example.toyapedidos.ui;
 
 public class Utilitario {
-    static String geraIdAleatorio() {
+    public static String geraIdAleatorio() {
         // chose a Character random from this String
         String AlphaNumericString = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
                 + "0123456789"

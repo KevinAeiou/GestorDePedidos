@@ -20,7 +20,6 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.example.toyapedidos.R;
 import com.example.toyapedidos.databinding.FragmentoCardapioBinding;
 import com.example.toyapedidos.modelo.Produto;
-import com.example.toyapedidos.ui.CadastraProdutoActivity;
 import com.example.toyapedidos.ui.cardapio.recyclerView.CardapioAdapter;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
@@ -82,7 +81,9 @@ public class FragmentoCardapio extends Fragment {
                         @Override
                         public void onDismissed(Snackbar transientBottomBar, int event) {
                             super.onDismissed(transientBottomBar, event);
-                            removeProdutoCardapio(produtoRemovido);
+                            if (event != DISMISS_EVENT_ACTION){
+                                removeProdutoCardapio(produtoRemovido);
+                            }
                         }
                     });
 

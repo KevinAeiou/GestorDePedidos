@@ -36,11 +36,13 @@
     <string name="stringAbreNavegacao">Abre menu navegação</string>
     <string name="stringCategoria">Categoria</string>
     <string name="stringDescricaoBotaoFlutuanteCadastraProduto">Botão flutuante do fragmento cardápio</string>
+    <string name="stringDescricaoBotaoFlutuanteCadastraPedido">Botão flutuante do fragmento pedidos</string>
     <string name="stringDesfazer">Desfazer</string>
     <string-array name="categorias">
-        <item>Sanduiches</item>
+        <item>Sanduíches</item>
         <item>Pizzas</item>
-        <item>Taças e Milk shakes</item>
+        <item>Taças e Milk-shakes</item>
         <item>Bebidas</item>
+        <item>Diversos</item>
     </string-array>
 </resources>

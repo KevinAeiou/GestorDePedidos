@@ -1,5 +1,8 @@
 package com.example.toyapedidos;
 
+import static com.example.toyapedidos.ui.Constantes.CHAVE_CADASTRA_PRODUTO;
+import static com.example.toyapedidos.ui.Constantes.CHAVE_MODIFICA_PRODUTO;
+import static com.example.toyapedidos.ui.Constantes.CHAVE_PRODUTO;
 import static com.example.toyapedidos.ui.Constantes.CHAVE_USUARIO;
 
 import android.content.Intent;
@@ -43,6 +46,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private ActivityResultLauncher<Intent> activityResultLauncher;
     private ActivityMainBinding binding;
     private DrawerLayout drawer;
+    private String TAG;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +56,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         setContentView(binding.getRoot());
 
         int itemNavegacao = R.id.navPedidos;
+        itemNavegacao = recebeDadosIntent(itemNavegacao);
         drawer = binding.drawerLayout;
         NavigationView navigationView = binding.navegacaoView;
         Toolbar toolbar = binding.toolbar;
@@ -86,12 +91,28 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             }
         });
     }
+
+    private int recebeDadosIntent(int itemNavegacao) {
+        Intent dadosRecebidos = getIntent();
+        if (dadosRecebidos.hasExtra(CHAVE_PRODUTO)){
+            int chaveProduto = (int) dadosRecebidos.getSerializableExtra(CHAVE_PRODUTO);
+            if (chaveProduto == CHAVE_CADASTRA_PRODUTO){
+                itemNavegacao = R.id.navCardapio;
+            } else if (chaveProduto == CHAVE_MODIFICA_PRODUTO) {
+
+            }
+        }
+        return itemNavegacao;
+    }
+
     private void mostraFragmentoSelecionado(int itemNavegacao) {
         Fragment fragmentoSelecionado = null;
         if (itemNavegacao == R.id.navPedidos){
             fragmentoSelecionado = new FragmentoPedidos();
+            TAG = "navPedidos";
         } else if (itemNavegacao == R.id.navCardapio){
             fragmentoSelecionado = new FragmentoCardapio();
+            TAG = "navCardapio";
         }else if (itemNavegacao == R.id.navSair){
             FirebaseAuth.getInstance().signOut();
             vaiParaEntraUsuarioActivity();
@@ -110,9 +131,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     private void reposicionaFragmento(Fragment fragmentoSelecionado) {
         FragmentManager gerenciadorDeFragmento = getSupportFragmentManager();
-        FragmentTransaction transicaoDeFragemento = gerenciadorDeFragmento.beginTransaction();
-        transicaoDeFragemento.replace(R.id.frameLayout, fragmentoSelecionado);
-        transicaoDeFragemento.commit();
+        FragmentTransaction transicaoDeFragmento = gerenciadorDeFragmento.beginTransaction();
+        transicaoDeFragmento.replace(R.id.frameLayout, fragmentoSelecionado);
+        transicaoDeFragmento.addToBackStack(TAG);
+        transicaoDeFragmento.commit();
     }
 
     private void inicializaComponentes() {
