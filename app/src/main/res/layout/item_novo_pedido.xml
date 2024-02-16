@@ -5,8 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="8dp"
-    style="@style/Widget.Material3.CardView.Outlined"
-    android:id="@+id/cadrViewNovoPedido">
+    style="@style/Widget.Material3.CardView.Outlined">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -34,13 +33,14 @@
             android:gravity="start"
             android:padding="8dp"
             android:textSize="20sp"
-            app:layout_constraintBottom_toTopOf="@id/itemValorNovoProduto"
+            app:layout_constraintBottom_toTopOf="@id/itemValorNovoPedido"
+            app:layout_constraintEnd_toStartOf="@+id/imageButton2"
             app:layout_constraintStart_toStartOf="@id/itemNomeNovoPedido"
             app:layout_constraintTop_toBottomOf="@id/itemNomeNovoPedido"
             tools:text="Descrição" />
 
         <TextView
-            android:id="@+id/itemValorNovoProduto"
+            android:id="@+id/itemValorNovoPedido"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
@@ -55,13 +55,14 @@
             android:id="@+id/imageButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/ic_adiciona" />
 
         <TextView
-            android:id="@+id/textView"
+            android:id="@+id/itemQuantidadeNovoPedido"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="0"
@@ -75,9 +76,9 @@
             android:id="@+id/imageButton2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintBottom_toBottomOf="@+id/textView"
-            app:layout_constraintEnd_toStartOf="@+id/textView"
-            app:layout_constraintTop_toTopOf="@+id/textView"
+            app:layout_constraintBottom_toBottomOf="@+id/itemQuantidadeNovoPedido"
+            app:layout_constraintEnd_toStartOf="@+id/itemQuantidadeNovoPedido"
+            app:layout_constraintTop_toTopOf="@+id/itemQuantidadeNovoPedido"
             app:srcCompat="@drawable/ic_adiciona" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </com.google.android.material.card.MaterialCardView>

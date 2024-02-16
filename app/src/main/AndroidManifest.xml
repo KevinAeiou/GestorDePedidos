@@ -38,8 +38,9 @@
             android:exported="true"
             android:theme="@style/Theme.ToyaPedidos.NoActionBar"></activity>
         <activity
-            android:name=".ui.pedidos.AdicionaNovoPedidoActivity"
-            android:exported="true"/>
+            android:name=".ui.novoPedido.AdicionaNovoPedidoActivity"
+            android:exported="true"
+            android:theme="@style/Theme.ToyaPedidos.NoActionBar"/>
     </application>
 
 </manifest>
