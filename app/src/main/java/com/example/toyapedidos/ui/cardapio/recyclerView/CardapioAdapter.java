@@ -68,7 +68,7 @@ public class CardapioAdapter extends RecyclerView.Adapter<CardapioAdapter.Produt
         public ProdutoViewHolder(@NonNull View itemView) {
             super(itemView);
             nomeProduto = itemView.findViewById(R.id.itemNomeProduto);
-            descricaoProduto = itemView.findViewById(R.id.itemDescricaoProduto);
+            descricaoProduto = itemView.findViewById(R.id.itemDescricaoNovoPedido);
             valorProduto = itemView.findViewById(R.id.itemValorProduto);
         }
 
