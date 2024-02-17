@@ -1,22 +1,17 @@
-package com.example.toyapedidos;
+package com.example.toyapedidos.ui.activity;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 
-import com.example.toyapedidos.databinding.ActivityCadastraUsuarioBinding;
+import com.example.toyapedidos.R;
 import com.example.toyapedidos.databinding.ActivityEntraUsuarioBinding;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
+import com.example.toyapedidos.ui.activity.MainActivity;
 import com.google.android.material.button.MaterialButton;
-import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.android.material.textview.MaterialTextView;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
 public class EntraUsuarioActivity extends AppCompatActivity {

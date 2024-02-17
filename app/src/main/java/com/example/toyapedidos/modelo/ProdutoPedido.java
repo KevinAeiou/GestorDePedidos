@@ -3,13 +3,16 @@ package com.example.toyapedidos.modelo;
 import java.io.Serializable;
 
 public class ProdutoPedido extends Produto implements Serializable {
-    private int quatidade;
+    private int quantidade;
     public ProdutoPedido(){}
-    public ProdutoPedido(String id, String nome,String descricao, String categoria, double valor,int quatidade){
+    public ProdutoPedido(String id, String nome,String descricao, String categoria, double valor,int quantidade){
         super(id,nome,descricao,categoria,valor);
-        this.quatidade = quatidade;
+        this.quantidade = quantidade;
     }
-    public int getQuatidade() {
-        return quatidade;
+    public int getQuantidade() {
+        return quantidade;
     }
+    public void setQuantidade(int quantidade){
+        this.quantidade = quantidade;
+    };
 }

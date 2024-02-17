@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.novoPedido.AdicionaNovoPedidoActivity">
+    android:id="@+id/constraintLayoutAdicionaNovoPedido"
+    tools:context=".ui.activity.AdicionaNovoPedidoActivity">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewNovoPedido"
@@ -16,15 +17,15 @@
         tools:listitem="@layout/item_novo_pedido"
         app:layout_constraintBottom_toTopOf="@id/txtTotalPedido"/>
 
-    <TextView
+    <com.google.android.material.textview.MaterialTextView
         android:id="@+id/txtTotalPedido"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
+        android:paddingTop="8dp"
         android:gravity="center"
-        android:padding="8dp"
         android:textSize="18sp"
-        tools:text="Total"
+        style="@style/Widget.MaterialComponents.TextView"
         app:layout_constraintBottom_toTopOf="@+id/btnRevisaPedido"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -36,8 +37,8 @@
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
         android:padding="8dp"
-        android:text="Revisar pedido"
-        android:textSize="20sp"
+        android:text="@string/string_revisa_pedido"
+        android:textSize="22sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />

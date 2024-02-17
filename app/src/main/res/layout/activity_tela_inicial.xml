@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/layoutTelaInicial"
-    tools:context=".TelaInicialActivity">
+    tools:context=".ui.activity.TelaInicialActivity">
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/txtNomeAplicativo"

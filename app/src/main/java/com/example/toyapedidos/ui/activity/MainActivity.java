@@ -1,4 +1,4 @@
-package com.example.toyapedidos;
+package com.example.toyapedidos.ui.activity;
 
 import static com.example.toyapedidos.ui.Constantes.CHAVE_CADASTRA_PRODUTO;
 import static com.example.toyapedidos.ui.Constantes.CHAVE_MODIFICA_PRODUTO;
@@ -11,9 +11,7 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
-import android.window.OnBackInvokedDispatcher;
 
-import androidx.activity.OnBackPressedCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
@@ -26,10 +24,11 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.example.toyapedidos.R;
 import com.example.toyapedidos.databinding.ActivityMainBinding;
 import com.example.toyapedidos.modelo.Usuario;
-import com.example.toyapedidos.ui.cardapio.FragmentoCardapio;
-import com.example.toyapedidos.ui.pedidos.FragmentoPedidos;
+import com.example.toyapedidos.ui.fragment.FragmentoCardapio;
+import com.example.toyapedidos.ui.fragment.FragmentoPedidos;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;

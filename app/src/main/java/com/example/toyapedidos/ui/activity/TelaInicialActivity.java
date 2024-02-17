@@ -1,4 +1,4 @@
-package com.example.toyapedidos;
+package com.example.toyapedidos.ui.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -8,7 +8,6 @@ import android.util.Log;
 
 import com.example.toyapedidos.databinding.ActivityTelaInicialBinding;
 import com.google.android.material.button.MaterialButton;
-import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
@@ -32,7 +31,7 @@ public class TelaInicialActivity extends AppCompatActivity {
         });
         btnCadastrarUsuario.setOnClickListener(v -> {
             Log.d("telaInicial", "Botão cadastrar.");
-            Intent iniciaVaiParaCadastraUsuario = new Intent(getApplicationContext(),CadastraUsuarioActivity.class);
+            Intent iniciaVaiParaCadastraUsuario = new Intent(getApplicationContext(), CadastraUsuarioActivity.class);
             startActivity(iniciaVaiParaCadastraUsuario);
         });
     }

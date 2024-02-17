@@ -13,11 +13,11 @@
         android:theme="@style/Theme.ToyaPedidos"
         tools:targetApi="31">
         <activity
-            android:name=".CadastraUsuarioActivity"
+            android:name=".ui.activity.CadastraUsuarioActivity"
             android:exported="false"
             android:theme="@style/Theme.ToyaPedidos.NoActionBar" />
         <activity
-            android:name=".TelaInicialActivity"
+            android:name=".ui.activity.TelaInicialActivity"
             android:exported="true"
             android:theme="@style/Theme.ToyaPedidos.NoActionBar">
             <intent-filter>
@@ -27,20 +27,19 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".EntraUsuarioActivity"
+            android:name=".ui.activity.EntraUsuarioActivity"
             android:exported="true"
             android:theme="@style/Theme.ToyaPedidos.NoActionBar"></activity>
         <activity
-            android:name=".ui.cardapio.CadastraProdutoActivity"
+            android:name=".ui.activity.CadastraProdutoActivity"
             android:exported="false" />
         <activity
-            android:name=".MainActivity"
+            android:name=".ui.activity.MainActivity"
             android:exported="true"
             android:theme="@style/Theme.ToyaPedidos.NoActionBar"></activity>
         <activity
-            android:name=".ui.novoPedido.AdicionaNovoPedidoActivity"
-            android:exported="true"
-            android:theme="@style/Theme.ToyaPedidos.NoActionBar"/>
+            android:name=".ui.activity.AdicionaNovoPedidoActivity"
+            android:exported="true"/>
     </application>
 
 </manifest>

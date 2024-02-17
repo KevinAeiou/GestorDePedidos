@@ -1,4 +1,4 @@
-package com.example.toyapedidos.ui.cardapio;
+package com.example.toyapedidos.ui.fragment;
 
 import static com.example.toyapedidos.ui.Constantes.CHAVE_LISTA_PRODUTO;
 import static com.example.toyapedidos.ui.Constantes.CHAVE_TITULO_CARDAPIO;
@@ -20,7 +20,8 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.example.toyapedidos.R;
 import com.example.toyapedidos.databinding.FragmentoCardapioBinding;
 import com.example.toyapedidos.modelo.Produto;
-import com.example.toyapedidos.ui.cardapio.recyclerView.CardapioAdapter;
+import com.example.toyapedidos.ui.activity.CadastraProdutoActivity;
+import com.example.toyapedidos.ui.recyclerview.adapter.CardapioAdapter;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.database.DataSnapshot;

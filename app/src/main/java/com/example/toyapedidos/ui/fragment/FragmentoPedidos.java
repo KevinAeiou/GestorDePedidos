@@ -1,4 +1,4 @@
-package com.example.toyapedidos.ui.pedidos;
+package com.example.toyapedidos.ui.fragment;
 
 import static com.example.toyapedidos.ui.Constantes.CHAVE_TITULO_PEDIDOS;
 
@@ -13,7 +13,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.example.toyapedidos.databinding.FragmentoPedidosBinding;
-import com.example.toyapedidos.ui.novoPedido.AdicionaNovoPedidoActivity;
+import com.example.toyapedidos.ui.activity.AdicionaNovoPedidoActivity;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 public class FragmentoPedidos extends Fragment {

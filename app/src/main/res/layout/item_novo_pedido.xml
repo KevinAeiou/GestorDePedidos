@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="8dp"
-    style="@style/Widget.Material3.CardView.Outlined">
+    android:layout_margin="8dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -13,16 +13,18 @@
 
         <TextView
             android:id="@+id/itemNomeNovoPedido"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
             android:gravity="start"
             android:maxLines="1"
             android:padding="8dp"
             android:textSize="22sp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/itemBtnSubtraiQuantidade"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="Nome" />
 
@@ -32,9 +34,8 @@
             android:layout_height="wrap_content"
             android:gravity="start"
             android:padding="8dp"
-            android:textSize="20sp"
-            app:layout_constraintBottom_toTopOf="@id/itemValorNovoPedido"
-            app:layout_constraintEnd_toStartOf="@+id/imageButton2"
+            android:textSize="18sp"
+            app:layout_constraintEnd_toEndOf="@+id/itemNomeNovoPedido"
             app:layout_constraintStart_toStartOf="@id/itemNomeNovoPedido"
             app:layout_constraintTop_toBottomOf="@id/itemNomeNovoPedido"
             tools:text="Descrição" />
@@ -43,16 +44,17 @@
             android:id="@+id/itemValorNovoPedido"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
+            android:layout_marginBottom="8dp"
             android:padding="8dp"
             android:textSize="20sp"
             app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/itemDescricaoNovoPedido"
             app:layout_constraintStart_toStartOf="@+id/itemDescricaoNovoPedido"
             app:layout_constraintTop_toBottomOf="@id/itemDescricaoNovoPedido"
             tools:text="Valor" />
 
         <ImageButton
-            android:id="@+id/imageButton"
+            android:id="@+id/itemBtnSomaQuantidade"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="16dp"
@@ -68,17 +70,17 @@
             android:text="0"
             android:textSize="20sp"
             android:padding="8dp"
-            app:layout_constraintBottom_toBottomOf="@+id/imageButton"
-            app:layout_constraintEnd_toStartOf="@+id/imageButton"
-            app:layout_constraintTop_toTopOf="@+id/imageButton" />
+            app:layout_constraintBottom_toBottomOf="@+id/itemBtnSomaQuantidade"
+            app:layout_constraintEnd_toStartOf="@+id/itemBtnSomaQuantidade"
+            app:layout_constraintTop_toTopOf="@+id/itemBtnSomaQuantidade" />
 
         <ImageButton
-            android:id="@+id/imageButton2"
+            android:id="@+id/itemBtnSubtraiQuantidade"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_constraintBottom_toBottomOf="@+id/itemQuantidadeNovoPedido"
             app:layout_constraintEnd_toStartOf="@+id/itemQuantidadeNovoPedido"
             app:layout_constraintTop_toTopOf="@+id/itemQuantidadeNovoPedido"
-            app:srcCompat="@drawable/ic_adiciona" />
+            app:srcCompat="@drawable/ic_subtrai" />
     </androidx.constraintlayout.widget.ConstraintLayout>
-</com.google.android.material.card.MaterialCardView>
+</androidx.cardview.widget.CardView>

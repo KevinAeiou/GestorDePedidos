@@ -1,13 +1,14 @@
-package com.example.toyapedidos;
+package com.example.toyapedidos.ui.activity;
 
 import static com.example.toyapedidos.ui.Constantes.CHAVE_CARGO_COLABORADOR;
 import static com.example.toyapedidos.ui.Constantes.CHAVE_USUARIO;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.appcompat.app.AppCompatActivity;
+
+import com.example.toyapedidos.R;
 import com.example.toyapedidos.databinding.ActivityCadastraUsuarioBinding;
 import com.example.toyapedidos.modelo.Usuario;
 import com.google.android.material.button.MaterialButton;

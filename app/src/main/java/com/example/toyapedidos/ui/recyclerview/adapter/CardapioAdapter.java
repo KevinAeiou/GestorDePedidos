@@ -1,4 +1,4 @@
-package com.example.toyapedidos.ui.cardapio.recyclerView;
+package com.example.toyapedidos.ui.recyclerview.adapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;

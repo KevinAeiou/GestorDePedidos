@@ -1,10 +1,7 @@
-package com.example.toyapedidos.ui.cardapio;
+package com.example.toyapedidos.ui.activity;
 
-import static com.example.toyapedidos.ui.Constantes.CHAVE_CADASTRA_PRODUTO;
 import static com.example.toyapedidos.ui.Constantes.CHAVE_LISTA_PRODUTO;
-import static com.example.toyapedidos.ui.Constantes.CHAVE_PRODUTO;
 
-import android.content.Intent;
 import android.icu.text.NumberFormat;
 import android.os.Bundle;
 import android.util.Log;
@@ -17,7 +14,6 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.content.res.AppCompatResources;
 
-import com.example.toyapedidos.MainActivity;
 import com.example.toyapedidos.R;
 import com.example.toyapedidos.databinding.ActivityCadastraProdutoBinding;
 import com.example.toyapedidos.editText.CurrencyEditText;

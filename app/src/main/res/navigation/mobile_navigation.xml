@@ -7,13 +7,13 @@
 
     <fragment
         android:id="@+id/navPedidos"
-        android:name="com.example.toyapedidos.ui.pedidos.FragmentoPedidos"
+        android:name="com.example.toyapedidos.ui.fragment.FragmentoPedidos"
         android:label="@string/menu_pedidos"
         tools:layout="@layout/fragmento_pedidos" />
 
     <fragment
         android:id="@+id/navCardapio"
-        android:name="com.example.toyapedidos.ui.cardapio.FragmentoCardapio"
+        android:name="com.example.toyapedidos.ui.fragment.FragmentoCardapio"
         android:label="@string/menu_cardapio"
         tools:layout="@layout/fragmento_cardapio" />
 

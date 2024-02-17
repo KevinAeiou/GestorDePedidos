@@ -38,6 +38,7 @@
     <string name="stringDescricaoBotaoFlutuanteCadastraProduto">Botão flutuante do fragmento cardápio</string>
     <string name="stringDescricaoBotaoFlutuanteCadastraPedido">Botão flutuante do fragmento pedidos</string>
     <string name="stringDesfazer">Desfazer</string>
+    <string name="string_revisa_pedido">Revisar pedido</string>
     <string-array name="categorias">
         <item>Sanduíches</item>
         <item>Pizzas</item>
