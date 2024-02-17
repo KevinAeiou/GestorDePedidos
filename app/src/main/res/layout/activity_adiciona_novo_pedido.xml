@@ -26,18 +26,18 @@
         android:gravity="center"
         android:textSize="18sp"
         style="@style/Widget.MaterialComponents.TextView"
-        app:layout_constraintBottom_toTopOf="@+id/btnRevisaPedido"
+        app:layout_constraintBottom_toTopOf="@+id/btn_resumo_pedido"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/recyclerViewNovoPedido" />
 
-    <Button
-        android:id="@+id/btnRevisaPedido"
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_resumo_pedido"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
         android:padding="8dp"
-        android:text="@string/string_revisa_pedido"
+        android:text="@string/string_resumo_pedido"
         android:textSize="22sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

@@ -1,6 +1,7 @@
 package com.example.toyapedidos.ui.activity;
 
 import static com.example.toyapedidos.ui.Constantes.CHAVE_LISTA_PRODUTO;
+import static com.example.toyapedidos.ui.Constantes.CHAVE_NOVO_PEDIDO;
 import static com.example.toyapedidos.ui.Constantes.CHAVE_TITULO_NOVO_PEDIDO;
 
 import androidx.annotation.NonNull;
@@ -8,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 
@@ -15,6 +17,8 @@ import com.example.toyapedidos.R;
 import com.example.toyapedidos.databinding.ActivityAdicionaNovoPedidoBinding;
 import com.example.toyapedidos.modelo.ProdutoPedido;
 import com.example.toyapedidos.ui.recyclerview.adapter.NovoPedidoAdapter;
+import com.google.android.material.button.MaterialButton;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textview.MaterialTextView;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -30,6 +34,7 @@ public class AdicionaNovoPedidoActivity extends AppCompatActivity {
     private NovoPedidoAdapter novoPedidoAdapter;
     private List<ProdutoPedido> cardapioNovoPedido;
     private MaterialTextView txtSomaTotal;
+    private MaterialButton btnResumoPedido;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +44,31 @@ public class AdicionaNovoPedidoActivity extends AppCompatActivity {
         setTitle(CHAVE_TITULO_NOVO_PEDIDO);
         txtSomaTotal = binding.txtTotalPedido;
         atualizaCardapioNovoPedido();
+        configuraBotaoResumoPedido();
+    }
+
+    private void configuraBotaoResumoPedido() {
+        btnResumoPedido = binding.btnResumoPedido;
+        btnResumoPedido.setOnClickListener(v ->{
+            ArrayList<ProdutoPedido> novoPedido = new ArrayList<>();
+            for (ProdutoPedido itemPedido: cardapioNovoPedido){
+                if (itemPedido.getQuantidade() > 0){
+                    novoPedido.add(itemPedido);
+                }
+            }
+            if (novoPedido.isEmpty()){
+                Snackbar.make(binding.getRoot(), "Nem um item selecionado!", Snackbar.LENGTH_LONG).show();
+            }else {
+                vaiParaResumoPedidoActivity(novoPedido);
+            }
+        });
+    }
+
+    private void vaiParaResumoPedidoActivity(ArrayList<ProdutoPedido> novoPedido) {
+        Intent iniciaVaiParaResumoPedido = new Intent(getApplicationContext(), ResumoPedidoActivity.class);
+        iniciaVaiParaResumoPedido.putExtra(CHAVE_NOVO_PEDIDO, novoPedido);
+        startActivity(iniciaVaiParaResumoPedido);
+        finish();
     }
 
     private void atualizaCardapioNovoPedido() {

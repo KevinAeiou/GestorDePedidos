@@ -13,6 +13,9 @@
         android:theme="@style/Theme.ToyaPedidos"
         tools:targetApi="31">
         <activity
+            android:name=".ui.activity.ResumoPedidoActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.activity.CadastraUsuarioActivity"
             android:exported="false"
             android:theme="@style/Theme.ToyaPedidos.NoActionBar" />
@@ -29,17 +32,17 @@
         <activity
             android:name=".ui.activity.EntraUsuarioActivity"
             android:exported="true"
-            android:theme="@style/Theme.ToyaPedidos.NoActionBar"></activity>
+            android:theme="@style/Theme.ToyaPedidos.NoActionBar" />
         <activity
             android:name=".ui.activity.CadastraProdutoActivity"
             android:exported="false" />
         <activity
             android:name=".ui.activity.MainActivity"
             android:exported="true"
-            android:theme="@style/Theme.ToyaPedidos.NoActionBar"></activity>
+            android:theme="@style/Theme.ToyaPedidos.NoActionBar" />
         <activity
             android:name=".ui.activity.AdicionaNovoPedidoActivity"
-            android:exported="true"/>
+            android:exported="true" />
     </application>
 
 </manifest>
