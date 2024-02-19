@@ -1,5 +1,8 @@
 package com.example.toyapedidos.ui;
 
+import android.content.Context;
+import android.net.ConnectivityManager;
+
 public class Utilitario {
     public static String geraIdAleatorio() {
         // chose a Character random from this String

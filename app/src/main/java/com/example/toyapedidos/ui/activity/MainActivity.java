@@ -5,7 +5,10 @@ import static com.example.toyapedidos.ui.Constantes.CHAVE_MODIFICA_PRODUTO;
 import static com.example.toyapedidos.ui.Constantes.CHAVE_PRODUTO;
 import static com.example.toyapedidos.ui.Constantes.CHAVE_USUARIO;
 
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
@@ -153,5 +156,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         item.setChecked(true);
         mostraFragmentoSelecionado(item.getItemId());
         return true;
+    }
+    public boolean estaConectado(){
+        ConnectivityManager gerenciadorDeConexao = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo informacaoDeConexao = gerenciadorDeConexao.getActiveNetworkInfo();
+        if (informacaoDeConexao == null)
+            return false;
+        if (informacaoDeConexao.getType() == ConnectivityManager.TYPE_WIFI)
+            Snackbar.make(binding.getRoot(), "Conexão wifi", Snackbar.LENGTH_LONG).show();
+        if (informacaoDeConexao.getType() == ConnectivityManager.TYPE_MOBILE)
+            Snackbar.make(binding.getRoot(), "Conexão mobile", Snackbar.LENGTH_LONG).show();
+        return informacaoDeConexao.isConnectedOrConnecting();
     }
 }

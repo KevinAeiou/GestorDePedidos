@@ -9,13 +9,18 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.util.Log;
 
 import com.example.toyapedidos.R;
 import com.example.toyapedidos.databinding.ActivityAdicionaNovoPedidoBinding;
 import com.example.toyapedidos.modelo.ProdutoPedido;
+import com.example.toyapedidos.ui.ConexaoInternet;
 import com.example.toyapedidos.ui.recyclerview.adapter.NovoPedidoAdapter;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.snackbar.Snackbar;
@@ -35,6 +40,7 @@ public class AdicionaNovoPedidoActivity extends AppCompatActivity {
     private List<ProdutoPedido> cardapioNovoPedido;
     private MaterialTextView txtSomaTotal;
     private MaterialButton btnResumoPedido;
+    private ConexaoInternet conexaoInternet;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +51,11 @@ public class AdicionaNovoPedidoActivity extends AppCompatActivity {
         txtSomaTotal = binding.txtTotalPedido;
         atualizaCardapioNovoPedido();
         configuraBotaoResumoPedido();
+
+        IntentFilter intentFilter = new IntentFilter("android.net.conn.CONNECTIVITY_CHANGE");
+        intentFilter.addAction("android.net.wifi.WIFI_STATE_CHANGED");
+        conexaoInternet = new ConexaoInternet();
+        registerReceiver(conexaoInternet,intentFilter);
     }
 
     private void configuraBotaoResumoPedido() {
@@ -142,5 +153,22 @@ public class AdicionaNovoPedidoActivity extends AppCompatActivity {
                 atualizaTxtSomaTotal();
             }
         }
+    }
+    public boolean estaConectado(){
+        ConnectivityManager gerenciadorDeConexao = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo informacaoDeConexao = gerenciadorDeConexao.getActiveNetworkInfo();
+        if (informacaoDeConexao == null)
+            return false;
+        if (informacaoDeConexao.getType() == ConnectivityManager.TYPE_WIFI)
+            Snackbar.make(binding.getRoot(), "Conexão wifi", Snackbar.LENGTH_LONG).show();
+        if (informacaoDeConexao.getType() == ConnectivityManager.TYPE_MOBILE)
+            Snackbar.make(binding.getRoot(), "Conexão mobile", Snackbar.LENGTH_LONG).show();
+        return informacaoDeConexao.isConnectedOrConnecting();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        unregisterReceiver(conexaoInternet);
     }
 }

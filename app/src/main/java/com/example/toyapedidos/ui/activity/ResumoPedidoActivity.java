@@ -1,9 +1,11 @@
 package com.example.toyapedidos.ui.activity;
 
+import static com.example.toyapedidos.ui.Constantes.CHAVE_LISTA_PEDIDO;
 import static com.example.toyapedidos.ui.Constantes.CHAVE_NOVO_PEDIDO;
 import static com.example.toyapedidos.ui.Constantes.CHAVE_TITULO_RESUMO_PEDIDO;
 
 import android.content.Intent;
+import android.icu.text.NumberFormat;
 import android.os.Bundle;
 import android.util.Log;
 
@@ -13,18 +15,30 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.toyapedidos.R;
 import com.example.toyapedidos.databinding.ActivityResumoPedidoBinding;
+import com.example.toyapedidos.modelo.Pedido;
 import com.example.toyapedidos.modelo.ProdutoPedido;
+import com.example.toyapedidos.ui.Utilitario;
 import com.example.toyapedidos.ui.recyclerview.adapter.NovoPedidoAdapter;
+import com.google.android.material.button.MaterialButton;
+import com.google.android.material.snackbar.Snackbar;
+import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
 import com.google.android.material.textview.MaterialTextView;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.Locale;
 
 public class ResumoPedidoActivity extends AppCompatActivity {
     private ActivityResumoPedidoBinding binding;
     private ArrayList<ProdutoPedido> resumoPedido;
     private MaterialTextView txtSomaTotal;
     private NovoPedidoAdapter meuAdapter;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,6 +49,65 @@ public class ResumoPedidoActivity extends AppCompatActivity {
         txtSomaTotal = binding.txtTotalResumoPedido;
         atualizaTxtSomaTotal();
         configuraRecyclerView();
+        configuraBotaoConfirmaPedido();
+    }
+
+    private void configuraBotaoConfirmaPedido() {
+        MaterialButton btnConfirmaPedido = binding.btnConfirmaResumoPedido;
+        TextInputLayout txtNumeroMesa = binding.txtLayoutNumeroMesaResumoPedido;
+        TextInputEditText edtNumeroMesa = binding.edtNumeroMesaResumoPedido;
+        MaterialTextView txtTotalPedido = binding.txtTotalResumoPedido;
+        String numeroMesa = edtNumeroMesa.getText().toString();
+        btnConfirmaPedido.setOnClickListener(v ->{
+            if (numeroMesa.isEmpty()){
+                edtNumeroMesa.setText("0");
+                txtNumeroMesa.setHelperText("Campo requerido!");
+            }else {
+                txtNumeroMesa.setHelperTextEnabled(false);
+                String id = Utilitario.geraIdAleatorio();
+                String total = txtTotalPedido.getText().toString();
+                DateFormat formatoData = new SimpleDateFormat("dd/MM/yyyy");
+                DateFormat formatoHora = new SimpleDateFormat("HH:mm:ss");
+                Date date = new Date();
+                String hora = formatoHora.format(date);
+                String data = formatoData.format(date);
+                TextInputEditText edtDescricao =  binding.edtObservacaoResumoPedido;
+                String observacao = edtDescricao.getText().toString();
+                if (observacao.isEmpty()){
+                    observacao = "";
+                }
+                double valorDouble;
+                NumberFormat nf = NumberFormat.getNumberInstance(new Locale("pt", "BR"));
+                try {
+                    valorDouble = nf.parse(total).doubleValue();
+                    Pedido novoPedido = new Pedido(id, resumoPedido, data, hora, observacao, valorDouble, Integer.parseInt(numeroMesa), 0);
+                    Log.d("resumoPedido", "Pedido: "+novoPedido.getId());
+                    Log.d("resumoPedido", "Pedido: "+novoPedido.getHora());
+                    Log.d("resumoPedido", "Pedido: "+novoPedido.getData());
+                    Log.d("resumoPedido", "Pedido: "+novoPedido.getEstado());
+                    Log.d("resumoPedido", "Pedido: "+novoPedido.getDescricao());
+                    Log.d("resumoPedido", "Pedido: "+novoPedido.getNumeroMesa());
+                    Log.d("resumoPedido", "Pedido: "+novoPedido.getValor());
+                    Log.d("resumoPedido", "Pedido: "+novoPedido.getProdutos());
+                    cadastraNovoPedido(novoPedido);
+                    vaiParaMainActivity();
+                } catch (ParseException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        });
+    }
+
+    private void vaiParaMainActivity() {
+        Intent iniciaVaiParaMainActivity = new Intent(getApplicationContext(), MainActivity.class);
+        startActivity(iniciaVaiParaMainActivity);
+        finish();
+    }
+
+    private void cadastraNovoPedido(Pedido novoPedido) {
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference minhaReferencia = database.getReference(CHAVE_LISTA_PEDIDO);
+        minhaReferencia.child(novoPedido.getId()).setValue(novoPedido);
     }
 
     private void configuraRecyclerView() {
@@ -76,7 +149,7 @@ public class ResumoPedidoActivity extends AppCompatActivity {
             double valorItem = produtoPedido.getValor() * produtoPedido.getQuantidade();
             somaTotal += valorItem;
         }
-        txtSomaTotal.setText(String.format("TOTAL R$ %s", somaTotal));
+        txtSomaTotal.setText(String.valueOf(somaTotal));
     }
 
     private void recebeDadosIntent() {

@@ -20,22 +20,43 @@
         android:id="@+id/txtLayoutObservacaoResumoPedido"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_margin="8dp"
+        android:layout_marginBottom="8dp"
         android:padding="8dp"
         android:paddingBottom="0dp"
         android:hint="@string/string_observacao"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@id/txtLayoutNumeroMesaResumoPedido"
+        app:layout_constraintEnd_toEndOf="@id/txtTotalResumoPedido"
         app:layout_constraintTop_toBottomOf="@id/recyclerViewResumoPedido"
-        app:layout_constraintBottom_toTopOf="@id/txtTotalResumoPedido">
+        app:layout_constraintBottom_toTopOf="@id/txtLayoutNumeroMesaResumoPedido">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/edtObservacaoResumoPedido"
             android:layout_width="match_parent"
-            android:inputType="text"
+            android:inputType="textMultiLine"
             android:layout_height="wrap_content"/>
 
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/txtLayoutNumeroMesaResumoPedido"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:minWidth="75dp"
+        android:layout_marginBottom="8dp"
+        android:padding="8dp"
+        android:paddingBottom="0dp"
+        android:hint="@string/string_mesa"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+        app:layout_constraintStart_toStartOf="@id/btnConfirmaResumoPedido"
+        app:layout_constraintBottom_toTopOf="@id/btnConfirmaResumoPedido">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/edtNumeroMesaResumoPedido"
+            android:layout_width="match_parent"
+            android:inputType="numberSigned"
+            android:layout_height="wrap_content"
+            android:text="0"/>
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textview.MaterialTextView
@@ -46,12 +67,12 @@
         android:paddingStart="8dp"
         android:paddingEnd="8dp"
         android:paddingTop="8dp"
-        android:gravity="center"
+        android:gravity="end"
         android:textSize="20sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/btnConfirmaResumoPedido"
-        tools:text="Total R$ 0.00"/>
+        app:layout_constraintStart_toEndOf="@id/txtLayoutNumeroMesaResumoPedido"
+        app:layout_constraintEnd_toEndOf="@id/btnConfirmaResumoPedido"
+        app:layout_constraintTop_toTopOf="@id/txtLayoutNumeroMesaResumoPedido"
+        app:layout_constraintBottom_toBottomOf="@id/txtLayoutNumeroMesaResumoPedido"/>
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btnConfirmaResumoPedido"
@@ -59,7 +80,7 @@
         android:layout_height="wrap_content"
         android:textSize="22sp"
         android:text="@string/string_confirma_pedido"
-        android:layout_margin="8dp"
+        android:layout_margin="16dp"
         android:padding="8dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
