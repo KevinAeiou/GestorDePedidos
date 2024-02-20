@@ -30,7 +30,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/itemBtnSubtraiQuantidade"
             app:layout_constraintTop_toTopOf="parent"
-            tools:text="Nome" />
+            tools:text="ID pedido" />
 
         <TextView
             android:id="@+id/itemNumeroMesaPedido"
@@ -39,23 +39,12 @@
             android:gravity="start"
             android:padding="8dp"
             android:textSize="18sp"
+            android:layout_marginBottom="16dp"
             app:layout_constraintEnd_toEndOf="@+id/itemIdPedido"
             app:layout_constraintStart_toStartOf="@id/itemIdPedido"
             app:layout_constraintTop_toBottomOf="@id/itemIdPedido"
-            tools:text="Descrição" />
-
-        <TextView
-            android:id="@+id/itemValorNovoPedido"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            android:padding="8dp"
-            android:textSize="20sp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="@+id/itemNumeroMesaPedido"
-            app:layout_constraintStart_toStartOf="@+id/itemNumeroMesaPedido"
-            app:layout_constraintTop_toBottomOf="@id/itemNumeroMesaPedido"
-            tools:text="Valor" />
+            tools:text="Número" />
 
         <androidx.appcompat.widget.AppCompatImageButton
             android:id="@+id/itemBtnSomaQuantidade"
@@ -65,26 +54,28 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/ic_adiciona" />
+            app:srcCompat="@drawable/ic_baixo" />
 
-        <TextView
-            android:id="@+id/itemQuantidadeNovoPedido"
-            android:layout_width="wrap_content"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constraintLayoutExpansivelItemPedido"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="0"
-            android:textSize="20sp"
-            android:padding="8dp"
-            app:layout_constraintBottom_toBottomOf="@+id/itemBtnSomaQuantidade"
-            app:layout_constraintEnd_toStartOf="@+id/itemBtnSomaQuantidade"
-            app:layout_constraintTop_toTopOf="@+id/itemBtnSomaQuantidade" />
+            android:visibility="gone"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/itemNumeroMesaPedido"
+            app:layout_constraintBottom_toBottomOf="parent">
 
-        <androidx.appcompat.widget.AppCompatImageButton
-            android:id="@+id/itemBtnSubtraiQuantidade"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintBottom_toBottomOf="@+id/itemQuantidadeNovoPedido"
-            app:layout_constraintEnd_toStartOf="@+id/itemQuantidadeNovoPedido"
-            app:layout_constraintTop_toTopOf="@+id/itemQuantidadeNovoPedido"
-            app:srcCompat="@drawable/ic_subtrai" />
+            <TextView
+                android:id="@+id/txtObservacaoPedido"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                tools:text="Observação"/>
+        </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </com.google.android.material.card.MaterialCardView>

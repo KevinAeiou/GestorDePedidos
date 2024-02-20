@@ -28,7 +28,7 @@
             tools:text="Nome"/>
 
         <TextView
-            android:id="@+id/itemDescricaoNovoPedido"
+            android:id="@+id/itemNumeroMesaPedido"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:gravity="start"

@@ -62,7 +62,7 @@ public class ResumoPedidoActivity extends AppCompatActivity {
             if (numeroMesa.isEmpty()){
                 edtNumeroMesa.setText("0");
                 txtNumeroMesa.setHelperText("Campo requerido!");
-            }else {
+            } else {
                 txtNumeroMesa.setHelperTextEnabled(false);
                 String id = Utilitario.geraIdAleatorio();
                 String total = txtTotalPedido.getText().toString();
@@ -81,14 +81,6 @@ public class ResumoPedidoActivity extends AppCompatActivity {
                 try {
                     valorDouble = nf.parse(total).doubleValue();
                     Pedido novoPedido = new Pedido(id, resumoPedido, data, hora, observacao, valorDouble, Integer.parseInt(numeroMesa), 0);
-                    Log.d("resumoPedido", "Pedido: "+novoPedido.getId());
-                    Log.d("resumoPedido", "Pedido: "+novoPedido.getHora());
-                    Log.d("resumoPedido", "Pedido: "+novoPedido.getData());
-                    Log.d("resumoPedido", "Pedido: "+novoPedido.getEstado());
-                    Log.d("resumoPedido", "Pedido: "+novoPedido.getDescricao());
-                    Log.d("resumoPedido", "Pedido: "+novoPedido.getNumeroMesa());
-                    Log.d("resumoPedido", "Pedido: "+novoPedido.getValor());
-                    Log.d("resumoPedido", "Pedido: "+novoPedido.getProdutos());
                     cadastraNovoPedido(novoPedido);
                     vaiParaMainActivity();
                 } catch (ParseException e) {

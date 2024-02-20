@@ -62,8 +62,8 @@ public class NovoPedidoAdapter extends RecyclerView.Adapter<NovoPedidoAdapter.No
 
         public NovoPedidoViewHolder(@NonNull View itemView) {
             super(itemView);
-            nomeProdutoPedido = itemView.findViewById(R.id.itemNomeNovoPedido);
-            descricaoProdutoPedido = itemView.findViewById(R.id.itemDescricaoNovoPedido);
+            nomeProdutoPedido = itemView.findViewById(R.id.itemIdPedido);
+            descricaoProdutoPedido = itemView.findViewById(R.id.itemNumeroMesaPedido);
             valorProdutoPedido = itemView.findViewById(R.id.itemValorNovoPedido);
             quantidadeProdutoPedido = itemView.findViewById(R.id.itemQuantidadeNovoPedido);
             botaoAdiciona = itemView.findViewById(R.id.itemBtnSomaQuantidade);
