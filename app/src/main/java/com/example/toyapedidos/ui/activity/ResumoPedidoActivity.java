@@ -20,7 +20,6 @@ import com.example.toyapedidos.modelo.ProdutoPedido;
 import com.example.toyapedidos.ui.Utilitario;
 import com.example.toyapedidos.ui.recyclerview.adapter.NovoPedidoAdapter;
 import com.google.android.material.button.MaterialButton;
-import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.android.material.textview.MaterialTextView;
@@ -116,7 +115,7 @@ public class ResumoPedidoActivity extends AppCompatActivity {
     }
 
     private void alteraQuantidadeProdutoPedido(ProdutoPedido produtoPedido, int posicao, int botaoId) {
-        if (botaoId == R.id.itemBtnSomaQuantidade){
+        if (botaoId == R.id.itemBtnExpandeConteudo){
             Log.d("adicionaNovoPedido", "Clicou em adiciona: "+produtoPedido.getNome());
             int novaQuantidade = produtoPedido.getQuantidade() + 1;
             produtoPedido.setQuantidade(novaQuantidade);

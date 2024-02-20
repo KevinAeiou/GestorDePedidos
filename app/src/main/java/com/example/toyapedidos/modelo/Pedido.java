@@ -1,7 +1,6 @@
 package com.example.toyapedidos.modelo;
 
 import java.io.Serializable;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 public class Pedido implements Serializable {
@@ -9,20 +8,22 @@ public class Pedido implements Serializable {
     private ArrayList<ProdutoPedido> produtos;
     private String data;
     private String hora;
-    private String descricao;
+    private String observacao;
     private double valor;
     private int numeroMesa;
     private int estado;
+    private boolean isExpandable;
     public Pedido(){}
     public Pedido(String id, ArrayList<ProdutoPedido> produtos, String data, String hora, String descricao, double valor, int numeroMesa, int estado) {
         this.id = id;
         this.produtos = produtos;
         this.data = data;
         this.hora = hora;
-        this.descricao = descricao;
+        this.observacao = descricao;
         this.valor = valor;
         this.numeroMesa = numeroMesa;
         this.estado = estado;
+        isExpandable = false;
     }
 
     public int getNumeroMesa() {
@@ -33,8 +34,8 @@ public class Pedido implements Serializable {
         return produtos;
     }
 
-    public String getDescricao() {
-        return descricao;
+    public String getObservacao() {
+        return observacao;
     }
 
     public String getId() {
@@ -55,5 +56,13 @@ public class Pedido implements Serializable {
 
     public String getHora() {
         return hora;
+    }
+
+    public boolean isExpandable() {
+        return isExpandable;
+    }
+
+    public void setExpandable(boolean expandable) {
+        isExpandable = expandable;
     }
 }

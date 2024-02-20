@@ -136,7 +136,7 @@ public class AdicionaNovoPedidoActivity extends AppCompatActivity {
     }
 
     private void alteraQuantidadeProdutoPedido(ProdutoPedido produtoPedido, int posicao, int botaoId) {
-        if (botaoId == R.id.itemBtnSomaQuantidade){
+        if (botaoId == R.id.itemBtnExpandeConteudo){
             Log.d("adicionaNovoPedido", "Clicou em adiciona: "+produtoPedido.getNome());
             int novaQuantidade = produtoPedido.getQuantidade() + 1;
             produtoPedido.setQuantidade(novaQuantidade);

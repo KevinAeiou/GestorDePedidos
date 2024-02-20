@@ -58,7 +58,7 @@
             tools:text="Valor" />
 
         <androidx.appcompat.widget.AppCompatImageButton
-            android:id="@+id/itemBtnSomaQuantidade"
+            android:id="@+id/itemBtnExpandeConteudo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="16dp"
@@ -74,9 +74,9 @@
             android:text="0"
             android:textSize="20sp"
             android:padding="8dp"
-            app:layout_constraintBottom_toBottomOf="@+id/itemBtnSomaQuantidade"
-            app:layout_constraintEnd_toStartOf="@+id/itemBtnSomaQuantidade"
-            app:layout_constraintTop_toTopOf="@+id/itemBtnSomaQuantidade" />
+            app:layout_constraintBottom_toBottomOf="@+id/itemBtnExpandeConteudo"
+            app:layout_constraintEnd_toStartOf="@+id/itemBtnExpandeConteudo"
+            app:layout_constraintTop_toTopOf="@+id/itemBtnExpandeConteudo" />
 
         <androidx.appcompat.widget.AppCompatImageButton
             android:id="@+id/itemBtnSubtraiQuantidade"

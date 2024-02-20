@@ -44,6 +44,7 @@ public class NovoPedidoAdapter extends RecyclerView.Adapter<NovoPedidoAdapter.No
 
     @Override
     public int getItemCount() {
+        if (novoPedido == null) return 0;
         return novoPedido.size();
     }
     public void altera(ProdutoPedido produtoPedido, int posicao){
@@ -66,9 +67,9 @@ public class NovoPedidoAdapter extends RecyclerView.Adapter<NovoPedidoAdapter.No
             descricaoProdutoPedido = itemView.findViewById(R.id.itemNumeroMesaPedido);
             valorProdutoPedido = itemView.findViewById(R.id.itemValorNovoPedido);
             quantidadeProdutoPedido = itemView.findViewById(R.id.itemQuantidadeNovoPedido);
-            botaoAdiciona = itemView.findViewById(R.id.itemBtnSomaQuantidade);
+            botaoAdiciona = itemView.findViewById(R.id.itemBtnExpandeConteudo);
             botaoSubtrai = itemView.findViewById(R.id.itemBtnSubtraiQuantidade);
-            botaoAdiciona.setOnClickListener(v -> onItemClickListener.onItemClick(produtoPedido, getAdapterPosition(), R.id.itemBtnSomaQuantidade));
+            botaoAdiciona.setOnClickListener(v -> onItemClickListener.onItemClick(produtoPedido, getAdapterPosition(), R.id.itemBtnExpandeConteudo));
             botaoSubtrai.setOnClickListener(v -> onItemClickListener.onItemClick(produtoPedido, getAdapterPosition(), R.id.itemBtnSubtraiQuantidade));
         }
         public void vincula(ProdutoPedido produtoPedido){
