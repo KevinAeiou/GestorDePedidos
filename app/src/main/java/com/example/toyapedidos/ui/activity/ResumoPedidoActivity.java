@@ -16,9 +16,11 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.toyapedidos.R;
 import com.example.toyapedidos.databinding.ActivityResumoPedidoBinding;
 import com.example.toyapedidos.modelo.Pedido;
+import com.example.toyapedidos.modelo.Produto;
 import com.example.toyapedidos.modelo.ProdutoPedido;
 import com.example.toyapedidos.ui.Utilitario;
 import com.example.toyapedidos.ui.recyclerview.adapter.NovoPedidoAdapter;
+import com.example.toyapedidos.ui.recyclerview.adapter.listener.OnItemClickListener;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
@@ -79,7 +81,7 @@ public class ResumoPedidoActivity extends AppCompatActivity {
                 NumberFormat nf = NumberFormat.getNumberInstance(new Locale("pt", "BR"));
                 try {
                     valorDouble = nf.parse(total).doubleValue();
-                    Pedido novoPedido = new Pedido(id, resumoPedido, data, hora, observacao, valorDouble, Integer.parseInt(numeroMesa), 0);
+                    Pedido novoPedido = new Pedido(id, resumoPedido, data, hora, observacao, valorDouble, Integer.parseInt(edtNumeroMesa.getText().toString()), 0);
                     cadastraNovoPedido(novoPedido);
                     vaiParaMainActivity();
                 } catch (ParseException e) {
@@ -111,7 +113,17 @@ public class ResumoPedidoActivity extends AppCompatActivity {
     private void configuraAdapter(RecyclerView meuRecycler) {
         meuAdapter = new NovoPedidoAdapter(resumoPedido, getApplicationContext());
         meuRecycler.setAdapter(meuAdapter);
-        meuAdapter.setOnItemClickListener(((produtoPedido, posicao, botaoId) -> alteraQuantidadeProdutoPedido(produtoPedido,posicao, botaoId)));
+        meuAdapter.setOnItemClickListener(new OnItemClickListener() {
+            @Override
+            public void onItemClick(ProdutoPedido produtoPedido, int posicao, int botaoId) {
+                alteraQuantidadeProdutoPedido(produtoPedido,posicao, botaoId);
+            }
+
+            @Override
+            public void onItemClick(Produto produto, int posicao) {
+
+            }
+        });
     }
 
     private void alteraQuantidadeProdutoPedido(ProdutoPedido produtoPedido, int posicao, int botaoId) {
