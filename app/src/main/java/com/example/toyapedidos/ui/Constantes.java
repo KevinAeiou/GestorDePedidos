@@ -12,6 +12,7 @@ public interface Constantes {
     String CHAVE_LISTA_PEDIDO = "Lista_pedido";
     String CHAVE_NOVO_PEDIDO = "Novo pedido";
     String CHAVE_PRODUTO = "Produto";
+    String CHAVE_REQUISICAO = "requisicao";
     int CHAVE_CADASTRA_PRODUTO = 1;
     int CHAVE_MODIFICA_PRODUTO = 2;
 }

@@ -1,7 +1,10 @@
 package com.example.toyapedidos.ui.fragment;
 
+import static com.example.toyapedidos.ui.Constantes.CHAVE_CADASTRA_PRODUTO;
 import static com.example.toyapedidos.ui.Constantes.CHAVE_LISTA_PRODUTO;
+import static com.example.toyapedidos.ui.Constantes.CHAVE_MODIFICA_PRODUTO;
 import static com.example.toyapedidos.ui.Constantes.CHAVE_PRODUTO;
+import static com.example.toyapedidos.ui.Constantes.CHAVE_REQUISICAO;
 import static com.example.toyapedidos.ui.Constantes.CHAVE_TITULO_CARDAPIO;
 
 import android.content.Intent;
@@ -60,7 +63,7 @@ public class FragmentoCardapio extends Fragment {
         atualizaCardapio();
         configuraRefreshLayout();
         configuraDeslizeItem();
-        botaoFlutuante.setOnClickListener(v -> vaiParaCadastraProdutoActivity(new Produto()));
+        botaoFlutuante.setOnClickListener(v -> vaiParaCadastraProdutoActivity(new Produto(), CHAVE_CADASTRA_PRODUTO));
 
     }
 
@@ -128,7 +131,7 @@ public class FragmentoCardapio extends Fragment {
 
             @Override
             public void onItemClick(Produto produto, int posicao) {
-                vaiParaCadastraProdutoActivity(produto);
+                vaiParaCadastraProdutoActivity(produto, CHAVE_MODIFICA_PRODUTO);
             }
         });
     }
@@ -165,8 +168,9 @@ public class FragmentoCardapio extends Fragment {
         minhaReferencia = meuBancoDados.getReference(CHAVE_LISTA_PRODUTO);
     }
 
-    private void vaiParaCadastraProdutoActivity(Produto produto) {
+    private void vaiParaCadastraProdutoActivity(Produto produto, int chaveRequisicao) {
         Intent iniciaVaiParaCadastraProdutoActivity = new Intent(getActivity(), CadastraProdutoActivity.class);
+        iniciaVaiParaCadastraProdutoActivity.putExtra(CHAVE_REQUISICAO,chaveRequisicao);
         iniciaVaiParaCadastraProdutoActivity.putExtra(CHAVE_PRODUTO,produto);
         startActivity(iniciaVaiParaCadastraProdutoActivity);
     }

@@ -1,7 +1,10 @@
 package com.example.toyapedidos.ui.activity;
 
+import static com.example.toyapedidos.ui.Constantes.CHAVE_CADASTRA_PRODUTO;
 import static com.example.toyapedidos.ui.Constantes.CHAVE_LISTA_PRODUTO;
+import static com.example.toyapedidos.ui.Constantes.CHAVE_MODIFICA_PRODUTO;
 import static com.example.toyapedidos.ui.Constantes.CHAVE_PRODUTO;
+import static com.example.toyapedidos.ui.Constantes.CHAVE_REQUISICAO;
 
 import android.content.Intent;
 import android.icu.text.NumberFormat;
@@ -39,6 +42,9 @@ public class CadastraProdutoActivity extends AppCompatActivity {
     private TextInputLayout inputTextNome, inputTextDescricao,inputTextValor, inputTextCategoria;
     private MaterialAutoCompleteTextView autoCompleteCategorias;
     private String nome, descricao, categoria,valor;
+    private String[] categorias;
+    private Produto produtoRecebido;
+    private int codigoRequisicao;
     private final String[] menssagemErro={"Campo requerido!","Inválido!"};
 
     @Override
@@ -48,21 +54,24 @@ public class CadastraProdutoActivity extends AppCompatActivity {
         View view = binding.getRoot();
         setContentView(view);
         inicializaComponentes();
-        recebeDados();
-        String[] categorias = getResources().getStringArray(R.array.categorias);
         ArrayAdapter<String> categoriaAdapter = new ArrayAdapter<>(this,
                 R.layout.item_dropdown, categorias);
         categoriaAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        autoCompleteCategorias.setText(categorias[0]);
+        recebeDados();
         autoCompleteCategorias.setAdapter(categoriaAdapter);
-        inputEditValor.setText("000");
     }
 
     private void recebeDados() {
         Intent dadosRecebidos = getIntent();
         if (dadosRecebidos.hasExtra(CHAVE_PRODUTO)){
-            Produto produtoRecebido = (Produto) dadosRecebidos.getSerializableExtra(CHAVE_PRODUTO);
-            if (!produtoRecebido.getId().isEmpty()){
+            codigoRequisicao = (int) dadosRecebidos.getSerializableExtra(CHAVE_REQUISICAO);
+            if (codigoRequisicao == CHAVE_CADASTRA_PRODUTO) {
+                Log.d("cadastraProduto", "Novo produto.");
+                autoCompleteCategorias.setText(categorias[0]);
+                inputEditValor.setText("000");
+            } else if (codigoRequisicao ==CHAVE_MODIFICA_PRODUTO) {
+                produtoRecebido = (Produto) dadosRecebidos.getSerializableExtra(CHAVE_PRODUTO);
+                Log.d("cadastraProduto", "Altera produto.");
                 preencheCampos(produtoRecebido);
             }
         }
@@ -70,7 +79,9 @@ public class CadastraProdutoActivity extends AppCompatActivity {
     private void preencheCampos(Produto produtoRecebido) {
         inputEditNome.setText(produtoRecebido.getNome());
         inputEditDescricao.setText(produtoRecebido.getDescricao());
-        inputEditValor.setText(String.valueOf(produtoRecebido.getValor()));
+        Log.d("cadastraProduto", "Valor: "+produtoRecebido.getValor()+"0");
+        inputEditValor.setText(String.valueOf(produtoRecebido.getValor())+0);
+        autoCompleteCategorias.setText(produtoRecebido.getCategoria());
     }
 
     private void inicializaComponentes() {
@@ -84,6 +95,7 @@ public class CadastraProdutoActivity extends AppCompatActivity {
         inputTextCategoria = binding.inputLayoutTextCategoriaProduto;
         database = FirebaseDatabase.getInstance();
         minhaReferencia = database.getReference();
+        categorias = getResources().getStringArray(R.array.categorias);
     }
 
     @Override
@@ -99,8 +111,12 @@ public class CadastraProdutoActivity extends AppCompatActivity {
                 double valorDouble;
                 NumberFormat nf = NumberFormat.getNumberInstance(new Locale("pt", "BR"));
                 try {
+                    if (codigoRequisicao == CHAVE_CADASTRA_PRODUTO){
                     valorDouble = nf.parse(valor).doubleValue();
-                    cadastraNovoProduto(valorDouble);
+                        cadastraNovoProduto(valorDouble);
+                    } else if (codigoRequisicao == CHAVE_MODIFICA_PRODUTO) {
+                        modificaProduto();
+                    }
                     finish();
                 } catch (ParseException e) {
                     throw new RuntimeException(e);
@@ -109,6 +125,37 @@ public class CadastraProdutoActivity extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
+
+    private void modificaProduto() {
+        if (produtoRecebidoEhModificado()){
+            Log.d("cadastraProduto", "Produto modificado");
+        } else {
+            Log.d("cadastraProduto", "Produto não modificado");
+        }
+    }
+
+    private boolean produtoRecebidoEhModificado() {
+        boolean confirmacao = false;
+        String valorRecebidoFormatado = (produtoRecebido.getValor()+"0");
+        String valorFormatado = valor.replaceAll(",",".");
+        if (!produtoRecebido.getNome().equals(nome)){
+            Log.d("cadastraProduto", "Nome mofificado");
+            confirmacao = true;
+        } else if (!produtoRecebido.getDescricao().equals(descricao)) {
+            Log.d("cadastraProduto", "Descrição mofificado");
+            confirmacao = true;
+        } else if (!produtoRecebido.getCategoria().equals(categoria)) {
+            Log.d("cadastraProduto", "Categoria mofificado");
+            confirmacao = true;
+        } else if (!valorRecebidoFormatado.equals(valorFormatado)) {
+            Log.d("cadastraProduto", "Valor mofificado");
+            Log.d("cadastraProduto", "Valor recebido: "+valorRecebidoFormatado);
+            Log.d("cadastraProduto", "Valor mofificado: "+valorFormatado);
+            confirmacao = true;
+        }
+        return confirmacao;
+    }
+
     private void cadastraNovoProduto(double valorDouble) {
         minhaReferencia = database.getReference(CHAVE_LISTA_PRODUTO);
         String novoId = Utilitario.geraIdAleatorio();
