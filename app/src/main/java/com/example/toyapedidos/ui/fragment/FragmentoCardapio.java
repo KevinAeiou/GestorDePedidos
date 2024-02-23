@@ -1,6 +1,7 @@
 package com.example.toyapedidos.ui.fragment;
 
 import static com.example.toyapedidos.ui.Constantes.CHAVE_LISTA_PRODUTO;
+import static com.example.toyapedidos.ui.Constantes.CHAVE_PRODUTO;
 import static com.example.toyapedidos.ui.Constantes.CHAVE_TITULO_CARDAPIO;
 
 import android.content.Intent;
@@ -20,8 +21,10 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.example.toyapedidos.R;
 import com.example.toyapedidos.databinding.FragmentoCardapioBinding;
 import com.example.toyapedidos.modelo.Produto;
+import com.example.toyapedidos.modelo.ProdutoPedido;
 import com.example.toyapedidos.ui.activity.CadastraProdutoActivity;
 import com.example.toyapedidos.ui.recyclerview.adapter.CardapioAdapter;
+import com.example.toyapedidos.ui.recyclerview.adapter.listener.OnItemClickListener;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.database.DataSnapshot;
@@ -57,7 +60,7 @@ public class FragmentoCardapio extends Fragment {
         atualizaCardapio();
         configuraRefreshLayout();
         configuraDeslizeItem();
-        botaoFlutuante.setOnClickListener(v -> vaiParaCadastraProdutoActivity());
+        botaoFlutuante.setOnClickListener(v -> vaiParaCadastraProdutoActivity(new Produto()));
 
     }
 
@@ -117,6 +120,17 @@ public class FragmentoCardapio extends Fragment {
     private void configuraAdapter(List<Produto> cardapio, RecyclerView meuRecycler) {
         cardapioAdapter = new CardapioAdapter(cardapio, getContext());
         meuRecycler.setAdapter(cardapioAdapter);
+        cardapioAdapter.setOnItemClickListener(new OnItemClickListener() {
+            @Override
+            public void onItemClick(ProdutoPedido produtoPedido, int posicao, int botaoId) {
+
+            }
+
+            @Override
+            public void onItemClick(Produto produto, int posicao) {
+                vaiParaCadastraProdutoActivity(produto);
+            }
+        });
     }
 
     private List<Produto> pegaTodosProdutos() {
@@ -151,8 +165,9 @@ public class FragmentoCardapio extends Fragment {
         minhaReferencia = meuBancoDados.getReference(CHAVE_LISTA_PRODUTO);
     }
 
-    private void vaiParaCadastraProdutoActivity() {
+    private void vaiParaCadastraProdutoActivity(Produto produto) {
         Intent iniciaVaiParaCadastraProdutoActivity = new Intent(getActivity(), CadastraProdutoActivity.class);
+        iniciaVaiParaCadastraProdutoActivity.putExtra(CHAVE_PRODUTO,produto);
         startActivity(iniciaVaiParaCadastraProdutoActivity);
     }
 

@@ -42,6 +42,11 @@
     <string name="string_confirma_pedido">Confirma pedido</string>
     <string name="string_observacao">Observações</string>
     <string name="string_mesa">Mesa</string>
+    <string name="string_bebidas">Bebidas</string>
+    <string name="string_pizzas">Pizzas</string>
+    <string name="string_sanduiches">Sanduíches</string>
+    <string name="string_tacas">Taças e Milk-shakes</string>
+    <string name="string_diversos">Diversos</string>
     <string-array name="categorias">
         <item>Sanduíches</item>
         <item>Pizzas</item>

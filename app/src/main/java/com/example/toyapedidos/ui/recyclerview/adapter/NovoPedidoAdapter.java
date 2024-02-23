@@ -11,13 +11,14 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.toyapedidos.R;
+import com.example.toyapedidos.modelo.Pedido;
 import com.example.toyapedidos.modelo.ProdutoPedido;
 import com.example.toyapedidos.ui.recyclerview.adapter.listener.OnItemClickListener;
 
 import java.util.List;
 
 public class NovoPedidoAdapter extends RecyclerView.Adapter<NovoPedidoAdapter.NovoPedidoViewHolder> {
-    private final List<ProdutoPedido> novoPedido;
+    private List<ProdutoPedido> novoPedido;
     private OnItemClickListener onItemClickListener;
     private final Context context;
 
@@ -27,6 +28,10 @@ public class NovoPedidoAdapter extends RecyclerView.Adapter<NovoPedidoAdapter.No
     }
     public void setOnItemClickListener(OnItemClickListener onItemClickListener){
         this.onItemClickListener = onItemClickListener;
+    }
+    public void setListaFiltrada(List<ProdutoPedido> listaFiltrada){
+        this.novoPedido = listaFiltrada;
+        notifyDataSetChanged();
     }
     @NonNull
     @Override

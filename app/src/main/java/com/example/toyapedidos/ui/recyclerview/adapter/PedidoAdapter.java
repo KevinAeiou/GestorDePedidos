@@ -20,6 +20,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.toyapedidos.R;
 import com.example.toyapedidos.modelo.Pedido;
+import com.example.toyapedidos.modelo.Produto;
 import com.example.toyapedidos.modelo.ProdutoPedido;
 
 import java.util.List;
@@ -32,6 +33,10 @@ public class PedidoAdapter extends RecyclerView.Adapter<PedidoAdapter.PedidoView
     public PedidoAdapter(List<Pedido> pedidos, Context context) {
         this.pedidos = pedidos;
         this.context = context;
+    }
+    public void setListaFiltrada(List<Pedido> listaFiltrada){
+        this.pedidos = listaFiltrada;
+        notifyDataSetChanged();
     }
 
     @NonNull
@@ -53,11 +58,10 @@ public class PedidoAdapter extends RecyclerView.Adapter<PedidoAdapter.PedidoView
         }else {
             holder.iconeSeta.setImageResource(ic_baixo);
         }
-        NovoPedidoAdapter novoPedidoAdapter = new NovoPedidoAdapter(produtosPedido, context);
+        ProdutoPedidoAdapter produtoPedidoAdapter = new ProdutoPedidoAdapter(produtosPedido, context);
         holder.recyclerExpasivelItemPedido.setLayoutManager(new LinearLayoutManager(holder.itemView.getContext()));
         holder.recyclerExpasivelItemPedido.setHasFixedSize(true);
-        holder.recyclerExpasivelItemPedido.setAdapter(novoPedidoAdapter);
-
+        holder.recyclerExpasivelItemPedido.setAdapter(produtoPedidoAdapter);
 
         holder.linearLayoutItemPedido.setOnClickListener(view -> {
             pedido.setExpandable(!pedido.isExpandable());
@@ -70,11 +74,31 @@ public class PedidoAdapter extends RecyclerView.Adapter<PedidoAdapter.PedidoView
     public int getItemCount() {
         return pedidos.size();
     }
-
+    public void remove(int posicao){
+        if (posicao<0 || posicao>=pedidos.size()){
+            return;
+        }
+        pedidos.remove(posicao);
+        notifyItemRemoved(posicao);
+        notifyItemRangeChanged(posicao,pedidos.size());
+        notifyDataSetChanged();
+    }
+    public void adiciona(int posicao, Pedido pedido){
+        if (posicao < 0 || posicao >= pedidos.size()){
+            return;
+        }
+        pedidos.add(posicao,pedido);
+        notifyItemInserted(posicao);
+        notifyItemRangeChanged(posicao, pedidos.size());
+        notifyDataSetChanged();
+    }
+    public void limpaLista(){
+        pedidos.clear();
+        notifyDataSetChanged();
+    }
     public class PedidoViewHolder extends RecyclerView.ViewHolder{
         private final LinearLayout linearLayoutItemPedido;
         private final ConstraintLayout layoutExpansivelItemPedido;
-        private final TextView idPedido;
         private final TextView numeroMesaPedido;
         private final TextView observacaoPedido;
         //private final TextView valorPedido;
@@ -87,7 +111,6 @@ public class PedidoAdapter extends RecyclerView.Adapter<PedidoAdapter.PedidoView
             super(itemView);
             linearLayoutItemPedido = itemView.findViewById(R.id.linearLayoutItemPedido);
             layoutExpansivelItemPedido = itemView.findViewById(R.id.layoutExpansivelItemPedido);
-            idPedido = itemView.findViewById(R.id.itemIdPedido);
             numeroMesaPedido = itemView.findViewById(R.id.itemNumeroMesaPedido);
             observacaoPedido = itemView.findViewById(R.id.txtObservacaoItemPedido);
             recyclerExpasivelItemPedido = itemView.findViewById(R.id.recyclerViewItemPedido);
@@ -100,9 +123,13 @@ public class PedidoAdapter extends RecyclerView.Adapter<PedidoAdapter.PedidoView
         }
 
         private void preencheCampos(Pedido pedido) {
-            idPedido.setText(pedido.getId());
-            observacaoPedido.setText(pedido.getObservacao());
-            numeroMesaPedido.setText(String.valueOf(pedido.getNumeroMesa()));
+            if (pedido.getObservacao() == null){
+                observacaoPedido.setVisibility(View.GONE);
+            } else {
+                observacaoPedido.setVisibility(View.VISIBLE);
+                observacaoPedido.setText(pedido.getObservacao());
+            }
+            numeroMesaPedido.setText("Mesa "+pedido.getNumeroMesa());
         }
     }
 }

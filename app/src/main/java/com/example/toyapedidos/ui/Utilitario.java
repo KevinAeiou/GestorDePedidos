@@ -3,6 +3,8 @@ package com.example.toyapedidos.ui;
 import android.content.Context;
 import android.net.ConnectivityManager;
 
+import java.text.Normalizer;
+
 public class Utilitario {
     public static String geraIdAleatorio() {
         // chose a Character random from this String
@@ -27,5 +29,8 @@ public class Utilitario {
         }
 
         return sb.toString();
+    }
+    public static String removeAcentos(String str){
+        return Normalizer.normalize(str, Normalizer.Form.NFD).replaceAll("[^\\p{ASCII}]", "");
     }
 }

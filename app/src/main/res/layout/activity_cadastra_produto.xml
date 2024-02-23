@@ -36,7 +36,7 @@
             android:id="@+id/inputEditTextDescricaoProduto"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="text"
+            android:inputType="textMultiLine"
             android:textSize="24sp"
             android:padding="16dp"
             android:textColor="@color/black"
@@ -51,6 +51,7 @@
         app:layout_constraintStart_toStartOf="@id/inputLayoutTextDescricaoProduto"
         app:layout_constraintEnd_toEndOf="@id/inputLayoutTextDescricaoProduto"
         app:layout_constraintTop_toBottomOf="@id/inputLayoutTextDescricaoProduto">
+
         <com.google.android.material.textfield.MaterialAutoCompleteTextView
             android:id="@+id/inputEditTextCategoriaProduto"
             android:layout_width="match_parent"
@@ -58,6 +59,7 @@
             android:hint="@string/stringCategoria"
             android:inputType="none"
             android:textSize="24sp"
+            android:contentDescription="Menu categoria de produto"
             android:padding="16dp" />
     </com.google.android.material.textfield.TextInputLayout>
     <com.google.android.material.textfield.TextInputLayout

@@ -11,16 +11,22 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.toyapedidos.R;
 import com.example.toyapedidos.modelo.Produto;
+import com.example.toyapedidos.ui.recyclerview.adapter.listener.OnItemClickListener;
 
 import java.util.List;
 
 public class CardapioAdapter extends RecyclerView.Adapter<CardapioAdapter.ProdutoViewHolder> {
     private List<Produto> produtos;
     private Context context;
+    private OnItemClickListener onItemClickListener;
 
     public CardapioAdapter(List<Produto> produtos, Context context) {
         this.produtos = produtos;
         this.context = context;
+    }
+    public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
+        this.onItemClickListener = onItemClickListener;
+
     }
 
     @NonNull
@@ -70,6 +76,7 @@ public class CardapioAdapter extends RecyclerView.Adapter<CardapioAdapter.Produt
             nomeProduto = itemView.findViewById(R.id.itemNomeProduto);
             descricaoProduto = itemView.findViewById(R.id.itemNumeroMesaPedido);
             valorProduto = itemView.findViewById(R.id.itemValorProduto);
+            itemView.setOnClickListener(v -> onItemClickListener.onItemClick(produto, getAdapterPosition()));
         }
 
         public void vincula(Produto produto) {

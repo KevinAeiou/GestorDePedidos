@@ -1,7 +1,9 @@
 package com.example.toyapedidos.ui.activity;
 
 import static com.example.toyapedidos.ui.Constantes.CHAVE_LISTA_PRODUTO;
+import static com.example.toyapedidos.ui.Constantes.CHAVE_PRODUTO;
 
+import android.content.Intent;
 import android.icu.text.NumberFormat;
 import android.os.Bundle;
 import android.util.Log;
@@ -46,6 +48,7 @@ public class CadastraProdutoActivity extends AppCompatActivity {
         View view = binding.getRoot();
         setContentView(view);
         inicializaComponentes();
+        recebeDados();
         String[] categorias = getResources().getStringArray(R.array.categorias);
         ArrayAdapter<String> categoriaAdapter = new ArrayAdapter<>(this,
                 R.layout.item_dropdown, categorias);
@@ -53,6 +56,21 @@ public class CadastraProdutoActivity extends AppCompatActivity {
         autoCompleteCategorias.setText(categorias[0]);
         autoCompleteCategorias.setAdapter(categoriaAdapter);
         inputEditValor.setText("000");
+    }
+
+    private void recebeDados() {
+        Intent dadosRecebidos = getIntent();
+        if (dadosRecebidos.hasExtra(CHAVE_PRODUTO)){
+            Produto produtoRecebido = (Produto) dadosRecebidos.getSerializableExtra(CHAVE_PRODUTO);
+            if (!produtoRecebido.getId().isEmpty()){
+                preencheCampos(produtoRecebido);
+            }
+        }
+    }
+    private void preencheCampos(Produto produtoRecebido) {
+        inputEditNome.setText(produtoRecebido.getNome());
+        inputEditDescricao.setText(produtoRecebido.getDescricao());
+        inputEditValor.setText(String.valueOf(produtoRecebido.getValor()));
     }
 
     private void inicializaComponentes() {
