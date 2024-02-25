@@ -26,7 +26,7 @@
 
             <com.google.android.material.chip.Chip
                 android:id="@+id/chipCategoriaSanduiches"
-                android:text="Sanduíches"
+                android:text="@string/stringSanduiches"
                 android:layout_marginStart="8dp"
                 style="@style/Widget.MaterialComponents.Chip.Filter"
                 android:layout_width="wrap_content"
@@ -34,28 +34,28 @@
 
             <com.google.android.material.chip.Chip
                 android:id="@+id/chipCategoriaPizzas"
-                android:text="Pizzas"
+                android:text="@string/stringPizzas"
                 style="@style/Widget.MaterialComponents.Chip.Filter"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
 
             <com.google.android.material.chip.Chip
                 android:id="@+id/chipCategoriaTacasMilkshakes"
-                android:text="Taças e Milk-shakes"
+                android:text="@string/stringTacas"
                 style="@style/Widget.MaterialComponents.Chip.Filter"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
 
             <com.google.android.material.chip.Chip
                 android:id="@+id/chipCategoriaBebidas"
-                android:text="Bebidas"
+                android:text="@string/stringBebidas"
                 style="@style/Widget.MaterialComponents.Chip.Filter"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
 
             <com.google.android.material.chip.Chip
                 android:id="@+id/chipCategoriaDiversos"
-                android:text="Diversos"
+                android:text="@string/stringDiversos"
                 android:layout_marginEnd="8dp"
                 style="@style/Widget.MaterialComponents.Chip.Filter"
                 android:layout_width="wrap_content"

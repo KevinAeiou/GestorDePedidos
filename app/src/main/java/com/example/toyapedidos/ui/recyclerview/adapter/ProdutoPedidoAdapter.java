@@ -16,8 +16,8 @@ import com.google.android.material.checkbox.MaterialCheckBox;
 import java.util.List;
 
 public class ProdutoPedidoAdapter extends RecyclerView.Adapter<ProdutoPedidoAdapter.ProdutoPedidoViewHolder> {
-    private List<ProdutoPedido> produtosPedido;
-    private Context context;
+    private final List<ProdutoPedido> produtosPedido;
+    private final Context context;
 
     public ProdutoPedidoAdapter(List<ProdutoPedido> produtoPedidos, Context context) {
         this.produtosPedido = produtoPedidos;
@@ -40,14 +40,16 @@ public class ProdutoPedidoAdapter extends RecyclerView.Adapter<ProdutoPedidoAdap
 
     @Override
     public int getItemCount() {
+        if (produtosPedido == null)
+            return 0;
         return produtosPedido.size();
     }
 
-    public class ProdutoPedidoViewHolder extends RecyclerView.ViewHolder {
+    public static class ProdutoPedidoViewHolder extends RecyclerView.ViewHolder {
         private final MaterialCheckBox checkBoxProdutoPedido;
         private final TextView txtQuantidadeProdudoPedido;
         private final TextView txtNomeProdutoPedido;
-        private ProdutoPedido produtoPedido;
+
         public ProdutoPedidoViewHolder(@NonNull View itemView) {
             super(itemView);
             checkBoxProdutoPedido = itemView.findViewById(R.id.checkBoxItemProdutoPedido);
@@ -55,7 +57,6 @@ public class ProdutoPedidoAdapter extends RecyclerView.Adapter<ProdutoPedidoAdap
             txtNomeProdutoPedido = itemView.findViewById(R.id.txtNomeItemProdutoPedido);
         }
         public void vincula(ProdutoPedido produtoPedido){
-            this.produtoPedido = produtoPedido;
             preencheCampos(produtoPedido);
         }
 

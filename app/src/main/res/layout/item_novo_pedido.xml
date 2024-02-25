@@ -16,7 +16,7 @@
         android:layout_height="wrap_content">
 
         <TextView
-            android:id="@+id/itemIdPedido"
+            android:id="@+id/itemNomeNovoPedido"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
@@ -28,20 +28,20 @@
             android:textSize="22sp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/itemBtnSubtraiQuantidade"
+            app:layout_constraintEnd_toStartOf="@+id/itemBtnDecrementaQuantidadeNovoPedido"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="Nome" />
 
         <TextView
-            android:id="@+id/itemNumeroMesaPedido"
+            android:id="@+id/itemDescricaoNovoPedido"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:gravity="start"
             android:padding="8dp"
             android:textSize="18sp"
-            app:layout_constraintEnd_toEndOf="@+id/itemIdPedido"
-            app:layout_constraintStart_toStartOf="@id/itemIdPedido"
-            app:layout_constraintTop_toBottomOf="@id/itemIdPedido"
+            app:layout_constraintEnd_toEndOf="@+id/itemNomeNovoPedido"
+            app:layout_constraintStart_toStartOf="@id/itemNomeNovoPedido"
+            app:layout_constraintTop_toBottomOf="@id/itemNomeNovoPedido"
             tools:text="Descrição" />
 
         <TextView
@@ -52,13 +52,13 @@
             android:padding="8dp"
             android:textSize="20sp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="@+id/itemNumeroMesaPedido"
-            app:layout_constraintStart_toStartOf="@+id/itemNumeroMesaPedido"
-            app:layout_constraintTop_toBottomOf="@id/itemNumeroMesaPedido"
+            app:layout_constraintEnd_toEndOf="@+id/itemDescricaoNovoPedido"
+            app:layout_constraintStart_toStartOf="@+id/itemDescricaoNovoPedido"
+            app:layout_constraintTop_toBottomOf="@id/itemDescricaoNovoPedido"
             tools:text="Valor" />
 
         <androidx.appcompat.widget.AppCompatImageButton
-            android:id="@+id/itemBtnExpandeConteudo"
+            android:id="@+id/itemBtnIncrementaQuantidadeNovoPedido"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="16dp"
@@ -74,12 +74,12 @@
             android:text="0"
             android:textSize="20sp"
             android:padding="8dp"
-            app:layout_constraintBottom_toBottomOf="@+id/itemBtnExpandeConteudo"
-            app:layout_constraintEnd_toStartOf="@+id/itemBtnExpandeConteudo"
-            app:layout_constraintTop_toTopOf="@+id/itemBtnExpandeConteudo" />
+            app:layout_constraintBottom_toBottomOf="@+id/itemBtnIncrementaQuantidadeNovoPedido"
+            app:layout_constraintEnd_toStartOf="@+id/itemBtnIncrementaQuantidadeNovoPedido"
+            app:layout_constraintTop_toTopOf="@+id/itemBtnIncrementaQuantidadeNovoPedido" />
 
         <androidx.appcompat.widget.AppCompatImageButton
-            android:id="@+id/itemBtnSubtraiQuantidade"
+            android:id="@+id/itemBtnDecrementaQuantidadeNovoPedido"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_constraintBottom_toBottomOf="@+id/itemQuantidadeNovoPedido"

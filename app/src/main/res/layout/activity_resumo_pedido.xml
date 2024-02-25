@@ -46,7 +46,7 @@
         android:layout_marginBottom="8dp"
         android:padding="8dp"
         android:paddingBottom="0dp"
-        android:hint="@string/string_mesa"
+        android:hint="@string/stringMesa"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
         app:layout_constraintStart_toStartOf="@id/btnConfirmaResumoPedido"
         app:layout_constraintBottom_toTopOf="@id/btnConfirmaResumoPedido">

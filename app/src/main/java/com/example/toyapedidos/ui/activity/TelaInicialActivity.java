@@ -12,16 +12,14 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 public class TelaInicialActivity extends AppCompatActivity {
-    private ActivityTelaInicialBinding binding;
-    private MaterialButton btnEntrarUsuario, btnCadastrarUsuario;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = ActivityTelaInicialBinding.inflate(getLayoutInflater());
+        com.example.toyapedidos.databinding.ActivityTelaInicialBinding binding = ActivityTelaInicialBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-        btnEntrarUsuario = binding.btnEntrar;
-        btnCadastrarUsuario = binding.btnCadastrar;
+        MaterialButton btnEntrarUsuario = binding.btnEntrar;
+        MaterialButton btnCadastrarUsuario = binding.btnCadastrar;
 
         btnEntrarUsuario.setOnClickListener(v -> {
             Log.d("telaInicial", "Botão entrar.");

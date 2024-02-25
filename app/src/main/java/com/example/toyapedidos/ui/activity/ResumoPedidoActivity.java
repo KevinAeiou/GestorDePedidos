@@ -28,12 +28,11 @@ import com.google.android.material.textview.MaterialTextView;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-import java.text.DateFormat;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
+import java.util.Objects;
 
 public class ResumoPedidoActivity extends AppCompatActivity {
     private ActivityResumoPedidoBinding binding;
@@ -58,7 +57,7 @@ public class ResumoPedidoActivity extends AppCompatActivity {
         TextInputLayout txtNumeroMesa = binding.txtLayoutNumeroMesaResumoPedido;
         TextInputEditText edtNumeroMesa = binding.edtNumeroMesaResumoPedido;
         MaterialTextView txtTotalPedido = binding.txtTotalResumoPedido;
-        String numeroMesa = edtNumeroMesa.getText().toString();
+        String numeroMesa = Objects.requireNonNull(edtNumeroMesa.getText()).toString();
         btnConfirmaPedido.setOnClickListener(v ->{
             if (numeroMesa.isEmpty()){
                 edtNumeroMesa.setText("0");
@@ -67,13 +66,10 @@ public class ResumoPedidoActivity extends AppCompatActivity {
                 txtNumeroMesa.setHelperTextEnabled(false);
                 String id = Utilitario.geraIdAleatorio();
                 String total = txtTotalPedido.getText().toString();
-                DateFormat formatoData = new SimpleDateFormat("dd/MM/yyyy");
-                DateFormat formatoHora = new SimpleDateFormat("HH:mm:ss");
-                Date date = new Date();
-                String hora = formatoHora.format(date);
-                String data = formatoData.format(date);
+
+                Date dataHora = new Date();
                 TextInputEditText edtDescricao =  binding.edtObservacaoResumoPedido;
-                String observacao = edtDescricao.getText().toString();
+                String observacao = Objects.requireNonNull(edtDescricao.getText()).toString();
                 if (observacao.isEmpty()){
                     observacao = "";
                 }
@@ -81,7 +77,7 @@ public class ResumoPedidoActivity extends AppCompatActivity {
                 NumberFormat nf = NumberFormat.getNumberInstance(new Locale("pt", "BR"));
                 try {
                     valorDouble = nf.parse(total).doubleValue();
-                    Pedido novoPedido = new Pedido(id, resumoPedido, data, hora, observacao, valorDouble, Integer.parseInt(edtNumeroMesa.getText().toString()), 0);
+                    Pedido novoPedido = new Pedido(id, resumoPedido, dataHora, observacao, valorDouble, Integer.parseInt(edtNumeroMesa.getText().toString()), 0);
                     cadastraNovoPedido(novoPedido);
                     vaiParaMainActivity();
                 } catch (ParseException e) {
@@ -127,14 +123,14 @@ public class ResumoPedidoActivity extends AppCompatActivity {
     }
 
     private void alteraQuantidadeProdutoPedido(ProdutoPedido produtoPedido, int posicao, int botaoId) {
-        if (botaoId == R.id.itemBtnExpandeConteudo){
+        if (botaoId == R.id.itemBtnIncrementaQuantidadeNovoPedido){
             Log.d("adicionaNovoPedido", "Clicou em adiciona: "+produtoPedido.getNome());
             int novaQuantidade = produtoPedido.getQuantidade() + 1;
             produtoPedido.setQuantidade(novaQuantidade);
             Log.d("adicionaNovoPedido", "Nova quantidade: "+produtoPedido.getQuantidade());
             meuAdapter.altera(produtoPedido, posicao);
             atualizaTxtSomaTotal();
-        } else if (botaoId == R.id.itemBtnSubtraiQuantidade) {
+        } else if (botaoId == R.id.itemBtnDecrementaQuantidadeNovoPedido) {
             Log.d("adicionaNovoPedido", "Clicou em subtrai: "+produtoPedido.getNome());
             if (produtoPedido.getQuantidade() > 0){
                 int novaQuantidade = produtoPedido.getQuantidade() - 1;

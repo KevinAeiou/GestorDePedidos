@@ -3,6 +3,22 @@ package com.example.toyapedidos.modelo;
 import java.io.Serializable;
 
 public class Produto implements Serializable {
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+
+    public void setDescricao(String descricao) {
+        this.descricao = descricao;
+    }
+
+    public void setCategoria(String categoria) {
+        this.categoria = categoria;
+    }
+
+    public void setValor(double valor) {
+        this.valor = valor;
+    }
+
     private String id;
     private String nome;
     private String descricao;

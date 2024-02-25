@@ -16,7 +16,7 @@ public class ProdutoPedido extends Produto implements Serializable {
     }
     public void setQuantidade(int quantidade){
         this.quantidade = quantidade;
-    };
+    }
 
     public boolean isCheck() {
         return check;

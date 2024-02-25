@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -48,6 +49,7 @@ public class FragmentoCardapio extends Fragment {
     private List<Produto> cardapio;
     private DatabaseReference minhaReferencia;
     private SwipeRefreshLayout refreshLayout;
+    private ProgressBar progresso;
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         requireActivity().setTitle(CHAVE_TITULO_CARDAPIO);
@@ -150,6 +152,7 @@ public class FragmentoCardapio extends Fragment {
                 }
                 cardapioAdapter.notifyDataSetChanged();
                 refreshLayout.setRefreshing(false);
+                progresso.setVisibility(View.GONE);
             }
 
             @Override
@@ -164,6 +167,7 @@ public class FragmentoCardapio extends Fragment {
         botaoFlutuante = binding.floatingActionButton;
         meuRecycler = binding.recyclerViewFragmentoCardapio;
         refreshLayout = binding.refreshLayoutFragmentoCardapio;
+        progresso = binding.progressoCircularCardapio;
         FirebaseDatabase meuBancoDados = FirebaseDatabase.getInstance();
         minhaReferencia = meuBancoDados.getReference(CHAVE_LISTA_PRODUTO);
     }

@@ -1,6 +1,7 @@
 package com.example.toyapedidos.ui.recyclerview.adapter;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,7 +12,6 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.toyapedidos.R;
-import com.example.toyapedidos.modelo.Pedido;
 import com.example.toyapedidos.modelo.ProdutoPedido;
 import com.example.toyapedidos.ui.recyclerview.adapter.listener.OnItemClickListener;
 
@@ -63,19 +63,17 @@ public class NovoPedidoAdapter extends RecyclerView.Adapter<NovoPedidoAdapter.No
         private final TextView valorProdutoPedido;
         private final TextView quantidadeProdutoPedido;
         private ProdutoPedido produtoPedido;
-        private ImageButton botaoAdiciona;
-        private ImageButton botaoSubtrai;
 
         public NovoPedidoViewHolder(@NonNull View itemView) {
             super(itemView);
-            nomeProdutoPedido = itemView.findViewById(R.id.itemIdPedido);
-            descricaoProdutoPedido = itemView.findViewById(R.id.itemNumeroMesaPedido);
+            nomeProdutoPedido = itemView.findViewById(R.id.itemNomeNovoPedido);
+            descricaoProdutoPedido = itemView.findViewById(R.id.itemDescricaoNovoPedido);
             valorProdutoPedido = itemView.findViewById(R.id.itemValorNovoPedido);
             quantidadeProdutoPedido = itemView.findViewById(R.id.itemQuantidadeNovoPedido);
-            botaoAdiciona = itemView.findViewById(R.id.itemBtnExpandeConteudo);
-            botaoSubtrai = itemView.findViewById(R.id.itemBtnSubtraiQuantidade);
-            botaoAdiciona.setOnClickListener(v -> onItemClickListener.onItemClick(produtoPedido, getAdapterPosition(), R.id.itemBtnExpandeConteudo));
-            botaoSubtrai.setOnClickListener(v -> onItemClickListener.onItemClick(produtoPedido, getAdapterPosition(), R.id.itemBtnSubtraiQuantidade));
+            ImageButton botaoAdiciona = itemView.findViewById(R.id.itemBtnIncrementaQuantidadeNovoPedido);
+            ImageButton botaoSubtrai = itemView.findViewById(R.id.itemBtnDecrementaQuantidadeNovoPedido);
+            botaoAdiciona.setOnClickListener(v -> onItemClickListener.onItemClick(produtoPedido, getAdapterPosition(), R.id.itemBtnIncrementaQuantidadeNovoPedido));
+            botaoSubtrai.setOnClickListener(v -> onItemClickListener.onItemClick(produtoPedido, getAdapterPosition(), R.id.itemBtnDecrementaQuantidadeNovoPedido));
         }
         public void vincula(ProdutoPedido produtoPedido){
             this.produtoPedido = produtoPedido;

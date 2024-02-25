@@ -16,8 +16,8 @@ import com.example.toyapedidos.ui.recyclerview.adapter.listener.OnItemClickListe
 import java.util.List;
 
 public class CardapioAdapter extends RecyclerView.Adapter<CardapioAdapter.ProdutoViewHolder> {
-    private List<Produto> produtos;
-    private Context context;
+    private final List<Produto> produtos;
+    private final Context context;
     private OnItemClickListener onItemClickListener;
 
     public CardapioAdapter(List<Produto> produtos, Context context) {
@@ -74,7 +74,7 @@ public class CardapioAdapter extends RecyclerView.Adapter<CardapioAdapter.Produt
         public ProdutoViewHolder(@NonNull View itemView) {
             super(itemView);
             nomeProduto = itemView.findViewById(R.id.itemNomeProduto);
-            descricaoProduto = itemView.findViewById(R.id.itemNumeroMesaPedido);
+            descricaoProduto = itemView.findViewById(R.id.itemDescricaoNovoPedido);
             valorProduto = itemView.findViewById(R.id.itemValorProduto);
             itemView.setOnClickListener(v -> onItemClickListener.onItemClick(produto, getAdapterPosition()));
         }

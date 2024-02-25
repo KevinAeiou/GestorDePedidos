@@ -5,6 +5,8 @@
     android:layout_marginTop="8dp"
     android:layout_marginStart="8dp"
     android:layout_marginEnd="8dp"
+    style="@style/Widget.Material3.CardView.Outlined"
+    android:theme="@style/Theme.Material3.DayNight"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
@@ -32,7 +34,7 @@
             app:layout_constraintStart_toEndOf="@id/checkBoxItemProdutoPedido"
             app:layout_constraintTop_toTopOf="@id/checkBoxItemProdutoPedido"
             app:layout_constraintBottom_toBottomOf="@id/checkBoxItemProdutoPedido"
-            tools:text="Numero mesa"/>
+            tools:text="Quantidade"/>
 
         <TextView
             android:id="@+id/txtNomeItemProdutoPedido"
@@ -40,6 +42,7 @@
             android:layout_height="wrap_content"
             android:padding="8dp"
             android:paddingStart="0dp"
+            android:paddingEnd="8dp"
             android:layout_marginEnd="8dp"
             android:textSize="22sp"
             app:layout_constraintStart_toEndOf="@id/txtQuantidadeItemProdutoPedido"

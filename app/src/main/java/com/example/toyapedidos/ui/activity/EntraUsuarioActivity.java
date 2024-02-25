@@ -1,38 +1,34 @@
 package com.example.toyapedidos.ui.activity;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.example.toyapedidos.R;
 import com.example.toyapedidos.databinding.ActivityEntraUsuarioBinding;
-import com.example.toyapedidos.ui.activity.MainActivity;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
-import com.google.android.material.textview.MaterialTextView;
 import com.google.firebase.auth.FirebaseAuth;
 
+import java.util.Objects;
+
 public class EntraUsuarioActivity extends AppCompatActivity {
-    private ActivityEntraUsuarioBinding binding;
     private TextInputLayout txtEmailUsuario, txtSenhaUsuario;
     private TextInputEditText edtEmailUsuario, edtSenhaUsuario;
-    private MaterialTextView txtRecuperaSenhaUsuario;
-    private MaterialButton btnEntraUsuario;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = ActivityEntraUsuarioBinding.inflate(getLayoutInflater());
+        com.example.toyapedidos.databinding.ActivityEntraUsuarioBinding binding = ActivityEntraUsuarioBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
         txtEmailUsuario = binding.txtEmailEntraUsuario;
         txtSenhaUsuario = binding.txtSenhaEntraUsuario;
         edtEmailUsuario = binding.edtEmailEntraUsuario;
         edtSenhaUsuario = binding.edtSenhaEntraUsuario;
-        txtRecuperaSenhaUsuario = binding.txtRecuperaSenhaUsuario;
-        btnEntraUsuario = binding.btnEntraUsuario;
+        MaterialButton btnEntraUsuario = binding.btnEntraUsuario;
 
         btnEntraUsuario.setOnClickListener(v -> {
             if (verificaCampos()){
@@ -43,13 +39,13 @@ public class EntraUsuarioActivity extends AppCompatActivity {
 
     private void autenticaUsuario() {
         FirebaseAuth.getInstance()
-                .signInWithEmailAndPassword(edtEmailUsuario.getText().toString(),edtSenhaUsuario.getText().toString())
+                .signInWithEmailAndPassword(Objects.requireNonNull(edtEmailUsuario.getText()).toString(), Objects.requireNonNull(edtSenhaUsuario.getText()).toString())
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()){
                         vaiParaMainActivity();
                     } else {
                         try {
-                            throw task.getException();
+                            throw Objects.requireNonNull(task.getException());
                         } catch (Exception exception){
                             txtEmailUsuario.setHelperText("Email ou senha inválidos!");
                             txtSenhaUsuario.setHelperText("Email ou senha inválidos!");
@@ -71,7 +67,7 @@ public class EntraUsuarioActivity extends AppCompatActivity {
 
     private boolean campoEmailValido() {
         boolean confirmacao;
-        if (edtEmailUsuario.getText().toString().isEmpty()){
+        if (Objects.requireNonNull(edtEmailUsuario.getText()).toString().isEmpty()){
             txtEmailUsuario.setHelperText(getString(R.string.stringCampoNecessario));
             confirmacao = false;
         } else {
@@ -83,7 +79,7 @@ public class EntraUsuarioActivity extends AppCompatActivity {
 
     private boolean campoSenhaValida() {
         boolean confirmacao;
-        if (edtSenhaUsuario.getText().toString().isEmpty()){
+        if (Objects.requireNonNull(edtSenhaUsuario.getText()).toString().isEmpty()){
             txtSenhaUsuario.setHelperText(getString(R.string.stringCampoNecessario));
             confirmacao = false;
         } else {

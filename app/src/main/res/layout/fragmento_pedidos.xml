@@ -21,7 +21,7 @@
 
         <com.google.android.material.chip.Chip
             android:id="@+id/chipEstadoParaFazerPedidos"
-            android:text="Para fazer"
+            android:text="@string/stringEstatoParaFazer"
             android:checked="true"
             android:layout_marginStart="8dp"
             style="@style/Widget.MaterialComponents.Chip.Choice"
@@ -30,21 +30,21 @@
 
         <com.google.android.material.chip.Chip
             android:id="@+id/chipEstadoFazendoPedidos"
-            android:text="Fazendo"
+            android:text="@string/stringEstadoFazendo"
             style="@style/Widget.MaterialComponents.Chip.Choice"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
 
         <com.google.android.material.chip.Chip
             android:id="@+id/chipEstadoProntoPedidos"
-            android:text="Pronto"
+            android:text="@string/stringEstadoPronto"
             style="@style/Widget.MaterialComponents.Chip.Choice"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
 
         <com.google.android.material.chip.Chip
             android:id="@+id/chipEstadoEntreguePedidos"
-            android:text="Entregue"
+            android:text="@string/stringEstadoEntregue"
             style="@style/Widget.MaterialComponents.Chip.Choice"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
@@ -73,6 +73,7 @@
         android:clickable="true"
         android:contentDescription="@string/stringDescricaoBotaoFlutuanteCadastraPedido"
         android:src="@drawable/ic_adiciona"
+        android:theme="@style/Theme.Material3.DayNight"
         style="@style/Widget.Material3.FloatingActionButton.Primary"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

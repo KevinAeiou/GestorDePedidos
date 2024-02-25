@@ -20,11 +20,12 @@ import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.util.Objects;
+
 public class CadastraUsuarioActivity extends AppCompatActivity {
     private ActivityCadastraUsuarioBinding binding;
     private TextInputLayout txtNomeUsuario, txtEmailUsuario, txtSenhaUsuario;
     private TextInputEditText edtNomeUsuario, edtEmailUsuario, edtSenhaUsuario;
-    private MaterialButton btnCadastrarUsuario;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,13 +39,13 @@ public class CadastraUsuarioActivity extends AppCompatActivity {
         edtNomeUsuario = binding.edtNomeCadastraUsuario;
         edtEmailUsuario = binding.edtEmailCadastraUsuario;
         edtSenhaUsuario = binding.edtSenhaCadastraUsuario;
-        btnCadastrarUsuario = binding.btnCadastrarUsuario;
+        MaterialButton btnCadastrarUsuario = binding.btnCadastrarUsuario;
 
         btnCadastrarUsuario.setOnClickListener(v ->{
             if (verificaCampos()){
                 Snackbar.make(binding.getRoot(), "Todos os campos satisfeitos.", Snackbar.LENGTH_LONG).show();
                 FirebaseAuth.getInstance()
-                        .createUserWithEmailAndPassword(edtEmailUsuario.getText().toString(), edtSenhaUsuario.getText().toString())
+                        .createUserWithEmailAndPassword(Objects.requireNonNull(edtEmailUsuario.getText()).toString(), Objects.requireNonNull(edtSenhaUsuario.getText()).toString())
                         .addOnCompleteListener(task -> {
                             if (task.isSuccessful()){
                                 salvaDadosUsuario();
@@ -52,7 +53,7 @@ public class CadastraUsuarioActivity extends AppCompatActivity {
                             } else {
                                 String erro;
                                 try {
-                                    throw task.getException();
+                                    throw Objects.requireNonNull(task.getException());
                                 } catch (FirebaseAuthUserCollisionException exception){
                                     erro = "Email já cadastrado!";
                                 } catch (Exception exception){
@@ -72,8 +73,8 @@ public class CadastraUsuarioActivity extends AppCompatActivity {
     }
 
     private void salvaDadosUsuario() {
-        String usuarioId = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        Usuario usuario = new Usuario(usuarioId, edtNomeUsuario.getText().toString(),CHAVE_CARGO_COLABORADOR);
+        String usuarioId = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid();
+        Usuario usuario = new Usuario(usuarioId, Objects.requireNonNull(edtNomeUsuario.getText()).toString(),CHAVE_CARGO_COLABORADOR);
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference minhareferencia = database.getReference(CHAVE_USUARIO);
         minhareferencia.child(usuarioId).setValue(usuario);
@@ -85,9 +86,8 @@ public class CadastraUsuarioActivity extends AppCompatActivity {
 
     private boolean campoSenhaValida() {
         boolean confirmacao = false;
-        if (edtSenhaUsuario.getText().toString().isEmpty()){
+        if (Objects.requireNonNull(edtSenhaUsuario.getText()).toString().isEmpty()){
             txtSenhaUsuario.setHelperText(getString(R.string.stringCampoNecessario));
-            confirmacao = false;
         } else if (verificaSenhaRobusta()) {
             txtSenhaUsuario.setHelperTextEnabled(false);
             confirmacao = true;
@@ -97,7 +97,7 @@ public class CadastraUsuarioActivity extends AppCompatActivity {
 
     private boolean campoEmailValido() {
         boolean confirmacao;
-        String email = edtEmailUsuario.getText().toString();
+        String email = Objects.requireNonNull(edtEmailUsuario.getText()).toString();
         String emailPadrao = getString(R.string.stringEmailPadrao);
         if (email.isEmpty()){
             txtEmailUsuario.setHelperText(getString(R.string.stringCampoNecessario));
@@ -114,7 +114,7 @@ public class CadastraUsuarioActivity extends AppCompatActivity {
 
     private boolean campoNomeValido() {
         boolean confirmacao;
-        if (edtNomeUsuario.getText().toString().isEmpty()){
+        if (Objects.requireNonNull(edtNomeUsuario.getText()).toString().isEmpty()){
             txtNomeUsuario.setHelperText(getString(R.string.stringCampoNecessario));
             confirmacao = false;
         } else {
@@ -126,7 +126,7 @@ public class CadastraUsuarioActivity extends AppCompatActivity {
 
     private boolean verificaSenhaRobusta() {
         boolean confirmacao;
-        String senha = edtSenhaUsuario.getText().toString();
+        String senha = Objects.requireNonNull(edtSenhaUsuario.getText()).toString();
         int tamanhoSenha = senha.length();
         String letraMinuscula = getString(R.string.stringCasoLetraMinuscula);
         String letraMaiuscula = getString(R.string.stringCasoLetraMaiuscula);

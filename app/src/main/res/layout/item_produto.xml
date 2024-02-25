@@ -7,6 +7,7 @@
     android:layout_height="wrap_content"
     android:layout_margin="8dp"
     style="@style/Widget.Material3.CardView.Outlined"
+    android:theme="@style/Theme.Material3.DayNight"
     android:id="@+id/cardViewProduto">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -28,7 +29,7 @@
             tools:text="Nome"/>
 
         <TextView
-            android:id="@+id/itemNumeroMesaPedido"
+            android:id="@+id/itemDescricaoNovoPedido"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:gravity="start"

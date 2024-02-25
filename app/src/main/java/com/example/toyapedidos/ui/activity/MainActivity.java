@@ -1,22 +1,13 @@
 package com.example.toyapedidos.ui.activity;
 
-import static com.example.toyapedidos.ui.Constantes.CHAVE_CADASTRA_PRODUTO;
-import static com.example.toyapedidos.ui.Constantes.CHAVE_MODIFICA_PRODUTO;
-import static com.example.toyapedidos.ui.Constantes.CHAVE_PRODUTO;
 import static com.example.toyapedidos.ui.Constantes.CHAVE_USUARIO;
 
-import android.content.Context;
 import android.content.Intent;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
@@ -45,7 +36,6 @@ import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
-    private ActivityResultLauncher<Intent> activityResultLauncher;
     private ActivityMainBinding binding;
     private DrawerLayout drawer;
     private String TAG;
@@ -58,7 +48,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         setContentView(binding.getRoot());
 
         int itemNavegacao = R.id.navPedidos;
-        itemNavegacao = recebeDadosIntent(itemNavegacao);
         drawer = binding.drawerLayout;
         NavigationView navigationView = binding.navegacaoView;
         Toolbar toolbar = binding.toolbar;
@@ -92,19 +81,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 Snackbar.make(Objects.requireNonNull(getCurrentFocus()), "Erro: "+error, Snackbar.LENGTH_LONG).show();
             }
         });
-    }
-
-    private int recebeDadosIntent(int itemNavegacao) {
-        Intent dadosRecebidos = getIntent();
-        if (dadosRecebidos.hasExtra(CHAVE_PRODUTO)){
-            int chaveProduto = (int) dadosRecebidos.getSerializableExtra(CHAVE_PRODUTO);
-            if (chaveProduto == CHAVE_CADASTRA_PRODUTO){
-                itemNavegacao = R.id.navCardapio;
-            } else if (chaveProduto == CHAVE_MODIFICA_PRODUTO) {
-
-            }
-        }
-        return itemNavegacao;
     }
 
     private void mostraFragmentoSelecionado(int itemNavegacao) {
@@ -141,31 +117,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     private void inicializaComponentes() {
         binding = ActivityMainBinding.inflate(getLayoutInflater());
-        activityResultLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result->{
-            Log.d("mainActivity","onActivityResult");
-            if (result.getResultCode()==1){
-                Intent intent=result.getData();
-                if (intent!=null){
-
-                }
-            }
-        });
     }
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         item.setChecked(true);
         mostraFragmentoSelecionado(item.getItemId());
         return true;
-    }
-    public boolean estaConectado(){
-        ConnectivityManager gerenciadorDeConexao = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo informacaoDeConexao = gerenciadorDeConexao.getActiveNetworkInfo();
-        if (informacaoDeConexao == null)
-            return false;
-        if (informacaoDeConexao.getType() == ConnectivityManager.TYPE_WIFI)
-            Snackbar.make(binding.getRoot(), "Conexão wifi", Snackbar.LENGTH_LONG).show();
-        if (informacaoDeConexao.getType() == ConnectivityManager.TYPE_MOBILE)
-            Snackbar.make(binding.getRoot(), "Conexão mobile", Snackbar.LENGTH_LONG).show();
-        return informacaoDeConexao.isConnectedOrConnecting();
     }
 }

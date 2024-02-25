@@ -2,23 +2,22 @@ package com.example.toyapedidos.modelo;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
 
-public class Pedido implements Serializable {
+public class Pedido implements Serializable, Comparable<Pedido>{
     private String id;
     private ArrayList<ProdutoPedido> produtos;
-    private String data;
-    private String hora;
+    private Date dataHora;
     private String observacao;
     private double valor;
     private int numeroMesa;
     private int estado;
     private boolean isExpandable;
     public Pedido(){}
-    public Pedido(String id, ArrayList<ProdutoPedido> produtos, String data, String hora, String descricao, double valor, int numeroMesa, int estado) {
+    public Pedido(String id, ArrayList<ProdutoPedido> produtos, Date dataHora, String descricao, double valor, int numeroMesa, int estado) {
         this.id = id;
         this.produtos = produtos;
-        this.data = data;
-        this.hora = hora;
+        this.dataHora = dataHora;
         this.observacao = descricao;
         this.valor = valor;
         this.numeroMesa = numeroMesa;
@@ -50,19 +49,21 @@ public class Pedido implements Serializable {
         return estado;
     }
 
-    public String getData() {
-        return data;
-    }
-
-    public String getHora() {
-        return hora;
-    }
-
     public boolean isExpandable() {
         return isExpandable;
     }
 
     public void setExpandable(boolean expandable) {
         isExpandable = expandable;
+    }
+
+    public Date getDataHora() {
+        return dataHora;
+    }
+
+    public int compareTo(Pedido pedido) {
+        if (getDataHora() == null || pedido.getDataHora() == null)
+            return 0;
+        return getDataHora().compareTo(pedido.getDataHora());
     }
 }

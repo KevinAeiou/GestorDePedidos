@@ -32,6 +32,7 @@ import com.google.firebase.database.FirebaseDatabase;
 
 import java.text.ParseException;
 import java.util.Locale;
+import java.util.Objects;
 
 public class CadastraProdutoActivity extends AppCompatActivity {
     private FirebaseDatabase database;
@@ -39,11 +40,12 @@ public class CadastraProdutoActivity extends AppCompatActivity {
     private ActivityCadastraProdutoBinding binding;
     private TextInputEditText inputEditNome, inputEditDescricao;
     private CurrencyEditText inputEditValor;
-    private TextInputLayout inputTextNome, inputTextDescricao,inputTextValor, inputTextCategoria;
+    private TextInputLayout inputTextNome;
+    private TextInputLayout inputTextDescricao;
     private MaterialAutoCompleteTextView autoCompleteCategorias;
     private String nome, descricao, categoria,valor;
     private String[] categorias;
-    private Produto produtoRecebido;
+    private Produto produtoRecebido, produtoModificado;
     private int codigoRequisicao;
     private final String[] menssagemErro={"Campo requerido!","Inválido!"};
 
@@ -80,7 +82,7 @@ public class CadastraProdutoActivity extends AppCompatActivity {
         inputEditNome.setText(produtoRecebido.getNome());
         inputEditDescricao.setText(produtoRecebido.getDescricao());
         Log.d("cadastraProduto", "Valor: "+produtoRecebido.getValor()+"0");
-        inputEditValor.setText(String.valueOf(produtoRecebido.getValor())+0);
+        inputEditValor.setText(produtoRecebido.getValor()+"0");
         autoCompleteCategorias.setText(produtoRecebido.getCategoria());
     }
 
@@ -91,8 +93,6 @@ public class CadastraProdutoActivity extends AppCompatActivity {
         autoCompleteCategorias = binding.inputEditTextCategoriaProduto;
         inputTextNome = binding.inputLayoutTextNomeProduto;
         inputTextDescricao = binding.inputLayoutTextDescricaoProduto;
-        inputTextValor = binding.inputLayoutTextValorProduto;
-        inputTextCategoria = binding.inputLayoutTextCategoriaProduto;
         database = FirebaseDatabase.getInstance();
         minhaReferencia = database.getReference();
         categorias = getResources().getStringArray(R.array.categorias);
@@ -112,12 +112,12 @@ public class CadastraProdutoActivity extends AppCompatActivity {
                 NumberFormat nf = NumberFormat.getNumberInstance(new Locale("pt", "BR"));
                 try {
                     if (codigoRequisicao == CHAVE_CADASTRA_PRODUTO){
-                    valorDouble = nf.parse(valor).doubleValue();
+                        valorDouble = nf.parse(valor).doubleValue();
                         cadastraNovoProduto(valorDouble);
+                        finish();
                     } else if (codigoRequisicao == CHAVE_MODIFICA_PRODUTO) {
                         modificaProduto();
                     }
-                    finish();
                 } catch (ParseException e) {
                     throw new RuntimeException(e);
                 }
@@ -127,31 +127,43 @@ public class CadastraProdutoActivity extends AppCompatActivity {
     }
 
     private void modificaProduto() {
-        if (produtoRecebidoEhModificado()){
+        if (produtoRecebidoEhModificado()) {
+            minhaReferencia = database.getReference(CHAVE_LISTA_PRODUTO);
+            minhaReferencia.child(produtoModificado.getId()).setValue(produtoModificado);
             Log.d("cadastraProduto", "Produto modificado");
-        } else {
-            Log.d("cadastraProduto", "Produto não modificado");
         }
+        finish();
     }
 
     private boolean produtoRecebidoEhModificado() {
+        produtoModificado = produtoRecebido;
         boolean confirmacao = false;
-        String valorRecebidoFormatado = (produtoRecebido.getValor()+"0");
-        String valorFormatado = valor.replaceAll(",",".");
-        if (!produtoRecebido.getNome().equals(nome)){
-            Log.d("cadastraProduto", "Nome mofificado");
-            confirmacao = true;
-        } else if (!produtoRecebido.getDescricao().equals(descricao)) {
-            Log.d("cadastraProduto", "Descrição mofificado");
-            confirmacao = true;
-        } else if (!produtoRecebido.getCategoria().equals(categoria)) {
-            Log.d("cadastraProduto", "Categoria mofificado");
-            confirmacao = true;
-        } else if (!valorRecebidoFormatado.equals(valorFormatado)) {
-            Log.d("cadastraProduto", "Valor mofificado");
-            Log.d("cadastraProduto", "Valor recebido: "+valorRecebidoFormatado);
-            Log.d("cadastraProduto", "Valor mofificado: "+valorFormatado);
-            confirmacao = true;
+        double valorRecebidoFormatado = (produtoRecebido.getValor());
+        double valorDouble;
+        NumberFormat nf = NumberFormat.getNumberInstance(new Locale("pt", "BR"));
+        try {
+            valorDouble = nf.parse(valor).doubleValue();
+            if (!produtoRecebido.getNome().equals(nome)){
+                Log.d("cadastraProduto", "Nome mofificado");
+                produtoModificado.setNome(nome);
+                confirmacao = true;
+            } else if (!produtoRecebido.getDescricao().equals(descricao)) {
+                Log.d("cadastraProduto", "Descrição mofificado");
+                produtoModificado.setDescricao(descricao);
+                confirmacao = true;
+            } else if (!produtoRecebido.getCategoria().equals(categoria)) {
+                Log.d("cadastraProduto", "Categoria mofificado");
+                produtoModificado.setCategoria(categoria);
+                confirmacao = true;
+            } else if (valorRecebidoFormatado != valorDouble) {
+                Log.d("cadastraProduto", "Valor mofificado");
+                Log.d("cadastraProduto", "Valor recebido: "+valorRecebidoFormatado);
+                Log.d("cadastraProduto", "Valor mofificado: "+valorDouble);
+                produtoModificado.setValor(valorDouble);
+                confirmacao = true;
+            }
+        } catch (ParseException e) {
+            throw new RuntimeException(e);
         }
         return confirmacao;
     }
@@ -169,18 +181,19 @@ public class CadastraProdutoActivity extends AppCompatActivity {
         minhaReferencia.child(novoId).setValue(produto);
     }
     private boolean verificaCamposNovoProduto() {
-        nome = inputEditNome.getText().toString();
-        descricao = inputEditDescricao.getText().toString();
+        nome = Objects.requireNonNull(inputEditNome.getText()).toString();
+        descricao = Objects.requireNonNull(inputEditDescricao.getText()).toString();
         categoria = autoCompleteCategorias.getText().toString();
-        valor = inputEditValor.getText().toString();
-        return verificaInputEditProduto(nome, inputTextNome, 0)&
-                verificaInputEditProduto(descricao, inputTextDescricao, 0);
+        valor = Objects.requireNonNull(inputEditValor.getText()).toString();
+        Log.d("cadastraProduto", "Valor recuperado da view: "+valor);
+        return verificaInputEditProduto(nome, inputTextNome)&
+                verificaInputEditProduto(descricao, inputTextDescricao);
     }
 
-    private boolean verificaInputEditProduto(String edtTexto, TextInputLayout inputLayout, int posicaoErro) {
+    private boolean verificaInputEditProduto(String edtTexto, TextInputLayout inputLayout) {
         if (edtTexto.isEmpty()){
             inputLayout.setHelperTextEnabled(true);
-            inputLayout.setHelperText(menssagemErro[posicaoErro]);
+            inputLayout.setHelperText(menssagemErro[0]);
             inputLayout.setHelperTextColor(AppCompatResources.getColorStateList(getApplicationContext(),R.color.bordo));
             Log.d("cadastraProduto", "Negativo!");
             return false;

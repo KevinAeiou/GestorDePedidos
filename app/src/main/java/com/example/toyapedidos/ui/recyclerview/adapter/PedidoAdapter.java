@@ -3,7 +3,6 @@ package com.example.toyapedidos.ui.recyclerview.adapter;
 import static com.example.toyapedidos.R.drawable.*;
 
 import android.content.Context;
-import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,15 +11,12 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.widget.AppCompatImageButton;
-import androidx.appcompat.widget.LinearLayoutCompat;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.toyapedidos.R;
 import com.example.toyapedidos.modelo.Pedido;
-import com.example.toyapedidos.modelo.Produto;
 import com.example.toyapedidos.modelo.ProdutoPedido;
 
 import java.util.List;
@@ -28,7 +24,7 @@ import java.util.List;
 public class PedidoAdapter extends RecyclerView.Adapter<PedidoAdapter.PedidoViewHolder> {
     private List<Pedido> pedidos;
     private List<ProdutoPedido> produtosPedido;
-    private Context context;
+    private final Context context;
 
     public PedidoAdapter(List<Pedido> pedidos, Context context) {
         this.pedidos = pedidos;
@@ -83,47 +79,34 @@ public class PedidoAdapter extends RecyclerView.Adapter<PedidoAdapter.PedidoView
         notifyItemRangeChanged(posicao,pedidos.size());
         notifyDataSetChanged();
     }
-    public void adiciona(int posicao, Pedido pedido){
-        if (posicao < 0 || posicao >= pedidos.size()){
-            return;
-        }
-        pedidos.add(posicao,pedido);
-        notifyItemInserted(posicao);
-        notifyItemRangeChanged(posicao, pedidos.size());
-        notifyDataSetChanged();
-    }
     public void limpaLista(){
         pedidos.clear();
         notifyDataSetChanged();
     }
-    public class PedidoViewHolder extends RecyclerView.ViewHolder{
+    public static class PedidoViewHolder extends RecyclerView.ViewHolder{
         private final LinearLayout linearLayoutItemPedido;
         private final ConstraintLayout layoutExpansivelItemPedido;
         private final TextView numeroMesaPedido;
         private final TextView observacaoPedido;
-        //private final TextView valorPedido;
-        //private final ArrayList<ProdutoPedido> listaProdutoPedido;
         private final RecyclerView recyclerExpasivelItemPedido;
         private final ImageView iconeSeta;
-        private Pedido pedido;
 
         public PedidoViewHolder(@NonNull View itemView) {
             super(itemView);
             linearLayoutItemPedido = itemView.findViewById(R.id.linearLayoutItemPedido);
             layoutExpansivelItemPedido = itemView.findViewById(R.id.layoutExpansivelItemPedido);
-            numeroMesaPedido = itemView.findViewById(R.id.itemNumeroMesaPedido);
+            numeroMesaPedido = itemView.findViewById(R.id.itemDescricaoNovoPedido);
             observacaoPedido = itemView.findViewById(R.id.txtObservacaoItemPedido);
             recyclerExpasivelItemPedido = itemView.findViewById(R.id.recyclerViewItemPedido);
-            iconeSeta = itemView.findViewById(R.id.itemBtnExpandeConteudo);
+            iconeSeta = itemView.findViewById(R.id.itemBtnIncrementaQuantidadeNovoPedido);
         }
 
         public void vincula(Pedido pedido) {
-            this.pedido = pedido;
             preencheCampos(pedido);
         }
 
         private void preencheCampos(Pedido pedido) {
-            if (pedido.getObservacao() == null){
+            if (pedido.getObservacao().isEmpty()){
                 observacaoPedido.setVisibility(View.GONE);
             } else {
                 observacaoPedido.setVisibility(View.VISIBLE);

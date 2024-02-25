@@ -41,12 +41,18 @@
     <string name="string_resumo_pedido">Resumo do pedido</string>
     <string name="string_confirma_pedido">Confirma pedido</string>
     <string name="string_observacao">Observações</string>
-    <string name="string_mesa">Mesa</string>
-    <string name="string_bebidas">Bebidas</string>
-    <string name="string_pizzas">Pizzas</string>
-    <string name="string_sanduiches">Sanduíches</string>
-    <string name="string_tacas">Taças e Milk-shakes</string>
-    <string name="string_diversos">Diversos</string>
+    <string name="stringMesa">Mesa </string>
+    <string name="stringBebidas">Bebidas</string>
+    <string name="stringPizzas">Pizzas</string>
+    <string name="stringSanduiches">Sanduíches</string>
+    <string name="stringTacas">Taças e Milk-shakes</string>
+    <string name="stringDiversos">Diversos</string>
+    <string name="stringMoedaReal">R$ </string>
+    <string name="stringEstatoParaFazer">Para fazer</string>
+    <string name="stringEstadoFazendo">Fazendo</string>
+    <string name="stringEstadoPronto">Pronto</string>
+    <string name="stringEstadoEntregue">Entregue</string>
+    <string name="stringImagemConteudoExpandido">Imagem índice conteudo expandido</string>
     <string-array name="categorias">
         <item>Sanduíches</item>
         <item>Pizzas</item>

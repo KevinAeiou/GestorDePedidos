@@ -5,21 +5,18 @@ import static com.example.toyapedidos.ui.Constantes.CHAVE_NOVO_PEDIDO;
 import static com.example.toyapedidos.ui.Constantes.CHAVE_TITULO_NOVO_PEDIDO;
 import static com.example.toyapedidos.ui.Utilitario.removeAcentos;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
-import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.HorizontalScrollView;
 import android.widget.ProgressBar;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.toyapedidos.R;
 import com.example.toyapedidos.databinding.ActivityNovoPedidoBinding;
@@ -150,24 +147,24 @@ public class NovoPedidoActivity extends AppCompatActivity {
             for (int idCategoriaSelecionada : listaIdCategoriasSelecionadas){
 
                 if (idCategoriaSelecionada == R.id.chipCategoriaBebidas){
-                    if (!categoriasSelecionadas.contains(getString(R.string.string_bebidas))){
-                        categoriasSelecionadas.add(getString(R.string.string_bebidas));
+                    if (!categoriasSelecionadas.contains(getString(R.string.stringBebidas))){
+                        categoriasSelecionadas.add(getString(R.string.stringBebidas));
                     }
                 } else if (idCategoriaSelecionada == R.id.chipCategoriaDiversos) {
-                    if (!categoriasSelecionadas.contains(getString(R.string.string_diversos))){
-                        categoriasSelecionadas.add(getString(R.string.string_diversos));
+                    if (!categoriasSelecionadas.contains(getString(R.string.stringDiversos))){
+                        categoriasSelecionadas.add(getString(R.string.stringDiversos));
                     }
                 } else if (idCategoriaSelecionada == R.id.chipCategoriaPizzas) {
-                    if (!categoriasSelecionadas.contains(getString(R.string.string_pizzas))){
-                        categoriasSelecionadas.add(getString(R.string.string_pizzas));
+                    if (!categoriasSelecionadas.contains(getString(R.string.stringPizzas))){
+                        categoriasSelecionadas.add(getString(R.string.stringPizzas));
                     }
                 } else if (idCategoriaSelecionada == R.id.chipCategoriaSanduiches) {
-                    if (!categoriasSelecionadas.contains(getString(R.string.string_sanduiches))){
-                        categoriasSelecionadas.add(getString(R.string.string_sanduiches));
+                    if (!categoriasSelecionadas.contains(getString(R.string.stringSanduiches))){
+                        categoriasSelecionadas.add(getString(R.string.stringSanduiches));
                     }
                 } else if (idCategoriaSelecionada == R.id.chipCategoriaTacasMilkshakes) {
-                    if (!categoriasSelecionadas.contains(getString(R.string.string_tacas))){
-                        categoriasSelecionadas.add(getString(R.string.string_tacas));
+                    if (!categoriasSelecionadas.contains(getString(R.string.stringTacas))){
+                        categoriasSelecionadas.add(getString(R.string.stringTacas));
                     }
                 }
             }
@@ -218,14 +215,14 @@ public class NovoPedidoActivity extends AppCompatActivity {
     }
 
     private void alteraQuantidadeProdutoPedido(ProdutoPedido produtoPedido, int posicao, int botaoId) {
-        if (botaoId == R.id.itemBtnExpandeConteudo){
+        if (botaoId == R.id.itemBtnIncrementaQuantidadeNovoPedido){
             Log.d("adicionaNovoPedido", "Clicou em adiciona: "+produtoPedido.getNome());
             int novaQuantidade = produtoPedido.getQuantidade() + 1;
             produtoPedido.setQuantidade(novaQuantidade);
             Log.d("adicionaNovoPedido", "Nova quantidade: "+produtoPedido.getQuantidade());
             novoPedidoAdapter.altera(produtoPedido, posicao);
             atualizaTxtSomaTotal();
-        } else if (botaoId == R.id.itemBtnSubtraiQuantidade) {
+        } else if (botaoId == R.id.itemBtnDecrementaQuantidadeNovoPedido) {
             Log.d("adicionaNovoPedido", "Clicou em subtrai: "+produtoPedido.getNome());
             if (produtoPedido.getQuantidade() > 0){
                 int novaQuantidade = produtoPedido.getQuantidade() - 1;
@@ -235,17 +232,6 @@ public class NovoPedidoActivity extends AppCompatActivity {
                 atualizaTxtSomaTotal();
             }
         }
-    }
-    public boolean estaConectado(){
-        ConnectivityManager gerenciadorDeConexao = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo informacaoDeConexao = gerenciadorDeConexao.getActiveNetworkInfo();
-        if (informacaoDeConexao == null)
-            return false;
-        if (informacaoDeConexao.getType() == ConnectivityManager.TYPE_WIFI)
-            Snackbar.make(binding.getRoot(), "Conexão wifi", Snackbar.LENGTH_LONG).show();
-        if (informacaoDeConexao.getType() == ConnectivityManager.TYPE_MOBILE)
-            Snackbar.make(binding.getRoot(), "Conexão mobile", Snackbar.LENGTH_LONG).show();
-        return informacaoDeConexao.isConnectedOrConnecting();
     }
 
     @Override

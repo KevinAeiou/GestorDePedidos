@@ -2,6 +2,7 @@ package com.example.toyapedidos.ui.fragment;
 
 import static com.example.toyapedidos.ui.Constantes.CHAVE_LISTA_PEDIDO;
 import static com.example.toyapedidos.ui.Constantes.CHAVE_TITULO_PEDIDOS;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -32,7 +33,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 
 public class FragmentoPedidos extends Fragment {
@@ -118,7 +118,17 @@ public class FragmentoPedidos extends Fragment {
             Snackbar.make(binding.getRoot(), "Nem um pedido encontrado!", Snackbar.LENGTH_LONG).show();
             pedidoAdapter.limpaLista();
         } else {
-            pedidosFiltrado.sort(Comparator.comparing(Pedido::getHora));
+            for (int x=0;x<pedidosFiltrado.size();x++){
+                Log.d("pedidoLista", "Data hora não ordenado: "+pedidosFiltrado.get(x).getNumeroMesa()+pedidosFiltrado.get(x).getDataHora());
+            }
+            pedidosFiltrado.sort((o1, o2) -> {
+                if (o1.getDataHora() == null  || o2.getDataHora() == null)
+                    return 0;
+                return o1.getDataHora().compareTo(o2.getDataHora());
+            });
+            for (int x=0;x<pedidosFiltrado.size();x++){
+                Log.d("pedidoLista", "Data hora ordenado: "+pedidosFiltrado.get(x).getNumeroMesa()+pedidosFiltrado.get(x).getDataHora());
+            }
             pedidoAdapter.setListaFiltrada(pedidosFiltrado);
         }
     }

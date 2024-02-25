@@ -1,16 +1,27 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Theme.ToyaPedidos" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
+    <style name="Theme.ToyaPedidos" parent="Theme.MaterialComponents.DayNight">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/azul_medio</item>
-        <item name="colorPrimaryVariant">@color/azul_escuro</item>
-        <item name="colorOnPrimary">@color/black</item>
+        <item name="colorPrimary">@color/azul_claro</item>
+        <item name="colorPrimaryVariant">@color/azul_medio</item>
+        <item name="colorOnPrimary">@color/white</item>
         <!-- Secondary brand color. -->
-        <item name="colorSecondary">@color/teal_200</item>
-        <item name="colorSecondaryVariant">@color/teal_200</item>
+        <item name="colorSecondary">@color/azul_medio</item>
+        <item name="colorSecondaryVariant">@color/azul_escuro</item>
         <item name="colorOnSecondary">@color/black</item>
         <!-- Status bar color. -->
         <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
     </style>
+
+    <style name="Theme.ToyaPedidos.NoActionBar" parent="Theme.ToyaPedidos">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <!-- <style name="Theme.ToyaPedidos.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" /> -->
+    <style name="Theme.ToyaPedidos.AppBarOverlay" parent="ThemeOverlay.Material3.Dark" />
+
+    <!-- <style name="Theme.ToyaPedidos.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />-->
+    <style name="Theme.ToyaPedidos.PopupOverlay" parent="ThemeOverlay.Material3.Light" />
 </resources>

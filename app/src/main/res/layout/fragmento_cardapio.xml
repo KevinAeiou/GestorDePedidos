@@ -31,8 +31,19 @@
         android:clickable="true"
         android:contentDescription="@string/stringDescricaoBotaoFlutuanteCadastraProduto"
         android:src="@drawable/ic_adiciona"
+        android:theme="@style/Theme.Material3.DayNight"
         style="@style/Widget.Material3.FloatingActionButton.Primary"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:focusable="true" />
+
+    <ProgressBar
+        android:id="@+id/progressoCircularCardapio"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

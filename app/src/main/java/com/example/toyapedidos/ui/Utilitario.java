@@ -1,8 +1,5 @@
 package com.example.toyapedidos.ui;
 
-import android.content.Context;
-import android.net.ConnectivityManager;
-
 import java.text.Normalizer;
 
 public class Utilitario {
