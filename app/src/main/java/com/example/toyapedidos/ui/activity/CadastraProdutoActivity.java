@@ -16,6 +16,7 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.content.res.AppCompatResources;
 
@@ -24,6 +25,7 @@ import com.example.toyapedidos.databinding.ActivityCadastraProdutoBinding;
 import com.example.toyapedidos.editText.CurrencyEditText;
 import com.example.toyapedidos.modelo.Produto;
 import com.example.toyapedidos.ui.Utilitario;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textfield.MaterialAutoCompleteTextView;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
@@ -128,11 +130,19 @@ public class CadastraProdutoActivity extends AppCompatActivity {
 
     private void modificaProduto() {
         if (produtoRecebidoEhModificado()) {
-            minhaReferencia = database.getReference(CHAVE_LISTA_PRODUTO);
-            minhaReferencia.child(produtoModificado.getId()).setValue(produtoModificado);
+            new MaterialAlertDialogBuilder(CadastraProdutoActivity.this)
+                    .setTitle("Modificar produto?")
+                    .setNegativeButton("Não", (dialog, which) ->{
+                        finish();
+                    })
+                    .setPositiveButton("Sim", (dialog, which) -> {
+                        minhaReferencia = database.getReference(CHAVE_LISTA_PRODUTO);
+                        minhaReferencia.child(produtoModificado.getId()).setValue(produtoModificado);
+                        finish();
+                    })
+                    .show();
             Log.d("cadastraProduto", "Produto modificado");
         }
-        finish();
     }
 
     private boolean produtoRecebidoEhModificado() {
