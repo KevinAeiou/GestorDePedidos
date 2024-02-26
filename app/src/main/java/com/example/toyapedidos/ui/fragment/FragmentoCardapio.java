@@ -83,7 +83,7 @@ public class FragmentoCardapio extends Fragment {
                 if (cardapioAdapter != null){
                     Produto produtoRemovido = cardapio.get(itemPosicao);
                     cardapioAdapter.remove(itemPosicao);
-                    Snackbar snackbarDesfazer = Snackbar.make(requireView(), produtoRemovido.getNome(), Snackbar.LENGTH_LONG);
+                    Snackbar snackbarDesfazer = Snackbar.make(getActivity().findViewById(R.id.drawerLayoutMain), produtoRemovido.getNome(), Snackbar.LENGTH_LONG);
                     snackbarDesfazer.setAction(getString(R.string.stringDesfazer), v -> cardapioAdapter.adiciona(itemPosicao, produtoRemovido));
                     snackbarDesfazer.show();
                     snackbarDesfazer.addCallback(new Snackbar.Callback(){
@@ -157,7 +157,7 @@ public class FragmentoCardapio extends Fragment {
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                Snackbar.make(requireView(), "Erro ao carregar cardápio: "+ error, Snackbar.LENGTH_LONG).show();
+                Snackbar.make(getActivity().findViewById(R.id.drawerLayoutMain), "Erro ao carregar cardápio: "+ error, Snackbar.LENGTH_LONG).show();
             }
         });
         return cardapio;

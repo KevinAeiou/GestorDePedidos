@@ -22,6 +22,7 @@ import com.example.toyapedidos.ui.Utilitario;
 import com.example.toyapedidos.ui.recyclerview.adapter.NovoPedidoAdapter;
 import com.example.toyapedidos.ui.recyclerview.adapter.listener.OnItemClickListener;
 import com.google.android.material.button.MaterialButton;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.android.material.textview.MaterialTextView;
@@ -77,9 +78,13 @@ public class ResumoPedidoActivity extends AppCompatActivity {
                 NumberFormat nf = NumberFormat.getNumberInstance(new Locale("pt", "BR"));
                 try {
                     valorDouble = nf.parse(total).doubleValue();
-                    Pedido novoPedido = new Pedido(id, resumoPedido, dataHora, observacao, valorDouble, Integer.parseInt(edtNumeroMesa.getText().toString()), 0);
-                    cadastraNovoPedido(novoPedido);
-                    vaiParaMainActivity();
+                    if (valorDouble != 0){
+                        Pedido novoPedido = new Pedido(id, resumoPedido, dataHora, observacao, valorDouble, Integer.parseInt(edtNumeroMesa.getText().toString()), 0);
+                        cadastraNovoPedido(novoPedido);
+                        vaiParaMainActivity();
+                    } else {
+                        Snackbar.make(binding.getRoot(), "Quantidade de produtos inválida!", Snackbar.LENGTH_LONG).show();
+                    }
                 } catch (ParseException e) {
                     throw new RuntimeException(e);
                 }

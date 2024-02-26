@@ -82,6 +82,8 @@
         android:text="@string/string_confirma_pedido"
         android:layout_margin="16dp"
         android:padding="8dp"
+        android:textAllCaps="false"
+        style="@style/Widget.Material3.Button.OutlinedButton"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"/>

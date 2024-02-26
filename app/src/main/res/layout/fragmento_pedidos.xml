@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/constraintLayoutFragmentoPedidos"
     tools:context=".ui.fragment.FragmentoPedidos">
 
     <com.google.android.material.chip.ChipGroup
@@ -74,7 +75,6 @@
         android:contentDescription="@string/stringDescricaoBotaoFlutuanteCadastraPedido"
         android:src="@drawable/ic_adiciona"
         android:theme="@style/Theme.Material3.DayNight"
-        style="@style/Widget.Material3.FloatingActionButton.Primary"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:focusable="true" />

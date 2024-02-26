@@ -48,7 +48,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         setContentView(binding.getRoot());
 
         int itemNavegacao = R.id.navPedidos;
-        drawer = binding.drawerLayout;
+        drawer = binding.drawerLayoutMain;
         NavigationView navigationView = binding.navegacaoView;
         Toolbar toolbar = binding.toolbar;
         setSupportActionBar(toolbar);

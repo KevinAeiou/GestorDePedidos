@@ -13,6 +13,8 @@ import android.widget.ProgressBar;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -34,6 +36,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class FragmentoPedidos extends Fragment {
 
@@ -46,21 +49,28 @@ public class FragmentoPedidos extends Fragment {
     private DatabaseReference minhaReferencia;
     private int estadoSelecionado;
     private ProgressBar progresso;
+    private DrawerLayout drawerLayoutMain;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         requireActivity().setTitle(CHAVE_TITULO_PEDIDOS);
         binding = FragmentoPedidosBinding.inflate(inflater, container, false);
+        Log.d("fragmentoPedidos", "onCreateView criado.");
         return binding.getRoot();
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        Log.d("fragmentoPedidos", "onViewCreate criado.");
         inicializaComponentes();
         configuraBotaoFlutuante();
         atualizaPedidos();
         configuraDeslizeItem();
+        configuraChipFiltraEstados();
+    }
+
+    private void configuraChipFiltraEstados() {
         chipGrupo.setOnCheckedStateChangeListener((group, checkedIds) -> {
             int idChipSelecionado = checkedIds.get(0);
             if (idChipSelecionado == R.id.chipEstadoParaFazerPedidos){
@@ -88,7 +98,7 @@ public class FragmentoPedidos extends Fragment {
             public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
                 int posicaoDeslize = viewHolder.getAdapterPosition();
                 if (pedidosFiltrado.get(posicaoDeslize).getEstado()==3){
-                    Snackbar.make(binding.getRoot(),"Estado não pode ser alterado", Snackbar.LENGTH_LONG).show();
+                    Snackbar.make(getActivity().findViewById(R.id.drawerLayoutMain),"Estado não pode ser alterado", Snackbar.LENGTH_LONG).show();
                     pedidoAdapter.notifyDataSetChanged();
                 }else {
                     alteraEstadoPedido(posicaoDeslize);
@@ -115,7 +125,7 @@ public class FragmentoPedidos extends Fragment {
         }
         pedidosFiltrado = filtraListaChip(estadoSelecionado);
         if (pedidosFiltrado.isEmpty()) {
-            Snackbar.make(binding.getRoot(), "Nem um pedido encontrado!", Snackbar.LENGTH_LONG).show();
+            Snackbar.make(getActivity().findViewById(R.id.drawerLayoutMain), "Nem um pedido encontrado!", Snackbar.LENGTH_LONG).show();
             pedidoAdapter.limpaLista();
         } else {
             for (int x=0;x<pedidosFiltrado.size();x++){
@@ -181,7 +191,7 @@ public class FragmentoPedidos extends Fragment {
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                Snackbar.make(binding.getRoot(), "Erro ao carregar pedidos!"+ error, Snackbar.LENGTH_LONG).show();
+                Snackbar.make(getActivity().findViewById(R.id.drawerLayoutMain), "Erro ao carregar pedidos!"+ error, Snackbar.LENGTH_LONG).show();
             }
         });
     }

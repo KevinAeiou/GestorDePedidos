@@ -142,6 +142,8 @@ public class CadastraProdutoActivity extends AppCompatActivity {
                     })
                     .show();
             Log.d("cadastraProduto", "Produto modificado");
+        } else {
+            finish();
         }
     }
 

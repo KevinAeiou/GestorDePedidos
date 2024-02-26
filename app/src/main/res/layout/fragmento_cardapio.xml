@@ -32,7 +32,6 @@
         android:contentDescription="@string/stringDescricaoBotaoFlutuanteCadastraProduto"
         android:src="@drawable/ic_adiciona"
         android:theme="@style/Theme.Material3.DayNight"
-        style="@style/Widget.Material3.FloatingActionButton.Primary"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:focusable="true" />
