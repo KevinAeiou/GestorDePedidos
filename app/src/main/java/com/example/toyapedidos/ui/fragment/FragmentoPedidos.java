@@ -23,6 +23,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.toyapedidos.R;
 import com.example.toyapedidos.databinding.FragmentoPedidosBinding;
 import com.example.toyapedidos.modelo.Pedido;
+import com.example.toyapedidos.ui.activity.MainActivity;
 import com.example.toyapedidos.ui.activity.NovoPedidoActivity;
 import com.example.toyapedidos.ui.recyclerview.adapter.PedidoAdapter;
 import com.google.android.material.chip.ChipGroup;

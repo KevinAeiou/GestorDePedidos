@@ -2,7 +2,15 @@ package com.example.toyapedidos.ui.activity;
 
 import static com.example.toyapedidos.ui.Constantes.CHAVE_USUARIO;
 
+import android.Manifest;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
@@ -12,6 +20,10 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.ActivityCompat;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
+import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
@@ -39,7 +51,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private ActivityMainBinding binding;
     private DrawerLayout drawer;
     private String TAG;
-
+    private NotificationManager notificationManager;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -81,12 +93,21 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 Snackbar.make(Objects.requireNonNull(getCurrentFocus()), "Erro: "+error, Snackbar.LENGTH_LONG).show();
             }
         });
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            if (ContextCompat.checkSelfPermission(MainActivity.this,
+                    android.Manifest.permission.POST_NOTIFICATIONS) !=
+                    PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(MainActivity.this,
+                        new String[]{Manifest.permission.POST_NOTIFICATIONS}, 101);
+            }
+        }
     }
 
     private void mostraFragmentoSelecionado(int itemNavegacao) {
         Fragment fragmentoSelecionado = null;
         if (itemNavegacao == R.id.navPedidos){
             fragmentoSelecionado = new FragmentoPedidos();
+            criaCanalDeNotificacao();
             TAG = "navPedidos";
         } else if (itemNavegacao == R.id.navCardapio){
             fragmentoSelecionado = new FragmentoCardapio();
@@ -123,5 +144,38 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         item.setChecked(true);
         mostraFragmentoSelecionado(item.getItemId());
         return true;
+    }
+    public void criaCanalDeNotificacao() {
+        String ID_CANAL = "ID_CANAL_NOTIFICACAO";
+        Intent iniciaAplicacao = new Intent(this, MainActivity.class);
+        iniciaAplicacao.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, iniciaAplicacao, PendingIntent.FLAG_IMMUTABLE);
+
+        NotificationCompat.Builder construtor =
+                new NotificationCompat.Builder(this, ID_CANAL);
+        construtor.setSmallIcon(R.drawable.ic_menu)
+                .setContentTitle("Titulo teste")
+                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                .setCategory(NotificationCompat.CATEGORY_REMINDER)
+                .setContentIntent(pendingIntent)
+                .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
+                .setAutoCancel(true);
+
+        notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            NotificationChannel canalNotificacao = notificationManager.getNotificationChannel(ID_CANAL);
+            if (canalNotificacao == null){
+                CharSequence name = "NomeDoCanal";
+                String description = "DescriçãoDoCanal";
+                int importance = NotificationManager.IMPORTANCE_DEFAULT;
+                canalNotificacao = new NotificationChannel(ID_CANAL, name, importance);
+                canalNotificacao.enableVibration(true);
+                canalNotificacao.setDescription(description);
+                canalNotificacao.enableLights(true);
+                canalNotificacao.setLightColor(Color.RED);
+                notificationManager.createNotificationChannel(canalNotificacao);
+            }
+        }
+        notificationManager.notify(0, construtor.build());
     }
 }
