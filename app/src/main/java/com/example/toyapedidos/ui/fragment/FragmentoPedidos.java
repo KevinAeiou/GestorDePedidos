@@ -2,8 +2,15 @@ package com.example.toyapedidos.ui.fragment;
 
 import static com.example.toyapedidos.ui.Constantes.CHAVE_LISTA_PEDIDO;
 import static com.example.toyapedidos.ui.Constantes.CHAVE_TITULO_PEDIDOS;
+import static com.example.toyapedidos.ui.Constantes.ID_CANAL;
 
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -13,7 +20,7 @@ import android.widget.ProgressBar;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.app.NotificationCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.ItemTouchHelper;
@@ -37,7 +44,6 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 public class FragmentoPedidos extends Fragment {
 
@@ -178,6 +184,7 @@ public class FragmentoPedidos extends Fragment {
         minhaReferencia.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
+                List<Pedido> pedidosAux = pedidos;
                 pedidos.clear();
                 for (DataSnapshot dn: snapshot.getChildren()){
                     Pedido pedido = dn.getValue(Pedido.class);
@@ -185,6 +192,8 @@ public class FragmentoPedidos extends Fragment {
                         pedidos.add(pedido);
                     }
                 }
+                //verificaNovoPedido(pedidosAux, pedidos);
+                //pedidosAux.clear();
                 Log.d(CHAVE_TITULO_PEDIDOS, "Carregou lista de pedidos no servidor.");
                 configuraChipEstados(estadoSelecionado);
                 progresso.setVisibility(View.GONE);
@@ -195,6 +204,47 @@ public class FragmentoPedidos extends Fragment {
                 Snackbar.make(getActivity().findViewById(R.id.drawerLayoutMain), "Erro ao carregar pedidos!"+ error, Snackbar.LENGTH_LONG).show();
             }
         });
+    }
+    private void verificaNovoPedido(List<Pedido> pedidosAux, List<Pedido> pedidoAtual) {
+        String tituloNotificacao;
+        for (Pedido pedido : pedidoAtual) {
+            if (!pedidosAux.contains(pedido.getId())) {
+                tituloNotificacao = "Novo pedido";
+                notificaModificacaoListaPedidos(tituloNotificacao);
+                break;
+            }
+        }
+    }
+    private void notificaModificacaoListaPedidos(String tituloNotificacao) {
+        Intent iniciaAplicacao = new Intent(getContext(), MainActivity.class);
+        iniciaAplicacao.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        PendingIntent pendingIntent = PendingIntent.getActivity(getContext(), 0, iniciaAplicacao, PendingIntent.FLAG_IMMUTABLE);
+
+        NotificationCompat.Builder construtor = new NotificationCompat.Builder(getContext(), ID_CANAL);
+        construtor.setSmallIcon(R.drawable.ic_menu)
+                .setContentTitle(tituloNotificacao)
+                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                .setCategory(NotificationCompat.CATEGORY_REMINDER)
+                .setContentIntent(pendingIntent)
+                .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
+                .setAutoCancel(true);
+
+        NotificationManager notificationManager = (NotificationManager) getActivity().getSystemService(Context.NOTIFICATION_SERVICE);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            NotificationChannel canalNotificacao = notificationManager.getNotificationChannel(ID_CANAL);
+            if (canalNotificacao == null) {
+                CharSequence name = "NomeDoCanal";
+                String description = "DescriçãoDoCanal";
+                int importance = NotificationManager.IMPORTANCE_DEFAULT;
+                canalNotificacao = new NotificationChannel(ID_CANAL, name, importance);
+                canalNotificacao.enableVibration(true);
+                canalNotificacao.setDescription(description);
+                canalNotificacao.enableLights(true);
+                canalNotificacao.setLightColor(Color.RED);
+                notificationManager.createNotificationChannel(canalNotificacao);
+            }
+        }
+        notificationManager.notify(0, construtor.build());
     }
 
     private void configuraBotaoFlutuante() {

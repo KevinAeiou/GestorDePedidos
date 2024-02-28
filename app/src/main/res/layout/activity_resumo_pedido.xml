@@ -25,8 +25,8 @@
         android:paddingBottom="0dp"
         android:hint="@string/string_observacao"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
-        app:layout_constraintStart_toStartOf="@id/txtLayoutNumeroMesaResumoPedido"
-        app:layout_constraintEnd_toEndOf="@id/txtTotalResumoPedido"
+        app:layout_constraintStart_toStartOf="@id/txtMoedaResumoPedido"
+        app:layout_constraintEnd_toEndOf="@id/txtLayoutNumeroMesaResumoPedido"
         app:layout_constraintTop_toBottomOf="@id/recyclerViewResumoPedido"
         app:layout_constraintBottom_toTopOf="@id/txtLayoutNumeroMesaResumoPedido">
 
@@ -48,7 +48,7 @@
         android:paddingBottom="0dp"
         android:hint="@string/stringMesa"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
-        app:layout_constraintStart_toStartOf="@id/btnConfirmaResumoPedido"
+        app:layout_constraintEnd_toEndOf="@id/btnConfirmaResumoPedido"
         app:layout_constraintBottom_toTopOf="@id/btnConfirmaResumoPedido">
 
         <com.google.android.material.textfield.TextInputEditText
@@ -56,21 +56,33 @@
             android:layout_width="match_parent"
             android:inputType="numberSigned"
             android:layout_height="wrap_content"
+            android:gravity="center"
             android:text="0"/>
     </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/txtMoedaResumoPedido"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="8dp"
+        android:gravity="end"
+        android:textSize="20sp"
+        android:text="@string/stringMoedaReal"
+        app:layout_constraintStart_toStartOf="@id/btnConfirmaResumoPedido"
+        app:layout_constraintEnd_toStartOf="@id/txtTotalResumoPedido"
+        app:layout_constraintTop_toTopOf="@id/txtTotalResumoPedido"
+        app:layout_constraintBottom_toBottomOf="@id/txtTotalResumoPedido"/>
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/txtTotalResumoPedido"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_margin="8dp"
-        android:paddingStart="8dp"
-        android:paddingEnd="8dp"
-        android:paddingTop="8dp"
-        android:gravity="end"
+        android:padding="8dp"
+        android:layout_marginEnd="8dp"
+        android:gravity="start"
         android:textSize="20sp"
-        app:layout_constraintStart_toEndOf="@id/txtLayoutNumeroMesaResumoPedido"
-        app:layout_constraintEnd_toEndOf="@id/btnConfirmaResumoPedido"
+        app:layout_constraintStart_toEndOf="@id/txtMoedaResumoPedido"
+        app:layout_constraintEnd_toStartOf="@id/txtLayoutNumeroMesaResumoPedido"
         app:layout_constraintTop_toTopOf="@id/txtLayoutNumeroMesaResumoPedido"
         app:layout_constraintBottom_toBottomOf="@id/txtLayoutNumeroMesaResumoPedido"/>
 

@@ -1,6 +1,7 @@
 package com.example.toyapedidos.ui.activity;
 
 import static com.example.toyapedidos.ui.Constantes.CHAVE_USUARIO;
+import static com.example.toyapedidos.ui.Constantes.ID_CANAL;
 
 import android.Manifest;
 import android.app.NotificationChannel;
@@ -22,7 +23,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
 import androidx.core.app.NotificationCompat;
-import androidx.core.app.NotificationManagerCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -51,7 +51,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private ActivityMainBinding binding;
     private DrawerLayout drawer;
     private String TAG;
-    private NotificationManager notificationManager;
+    private static NotificationManager notificationManager;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -107,14 +107,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         Fragment fragmentoSelecionado = null;
         if (itemNavegacao == R.id.navPedidos){
             fragmentoSelecionado = new FragmentoPedidos();
-            criaCanalDeNotificacao();
             TAG = "navPedidos";
         } else if (itemNavegacao == R.id.navCardapio){
             fragmentoSelecionado = new FragmentoCardapio();
             TAG = "navCardapio";
         }else if (itemNavegacao == R.id.navSair){
             FirebaseAuth.getInstance().signOut();
-            vaiParaEntraUsuarioActivity();
+            vaiParaTelaInicialActivity();
         }
         if (fragmentoSelecionado != null){
             reposicionaFragmento(fragmentoSelecionado);
@@ -122,9 +121,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         drawer.closeDrawer(GravityCompat.START);
     }
 
-    private void vaiParaEntraUsuarioActivity() {
-        Intent iniciaVaiParaEntraUsuarioActivity = new Intent(getApplicationContext(), EntraUsuarioActivity.class);
-        startActivity(iniciaVaiParaEntraUsuarioActivity);
+    private void vaiParaTelaInicialActivity() {
+        Intent iniciaVaiParaTelaInicialActivity = new Intent(getApplicationContext(), TelaInicialActivity.class);
+        startActivity(iniciaVaiParaTelaInicialActivity);
         finish();
     }
 
@@ -145,14 +144,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         mostraFragmentoSelecionado(item.getItemId());
         return true;
     }
-    public void criaCanalDeNotificacao() {
-        String ID_CANAL = "ID_CANAL_NOTIFICACAO";
+    public void criaCanalDeNotificacao(NotificationCompat.Builder construtor) {
         Intent iniciaAplicacao = new Intent(this, MainActivity.class);
         iniciaAplicacao.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, iniciaAplicacao, PendingIntent.FLAG_IMMUTABLE);
 
-        NotificationCompat.Builder construtor =
-                new NotificationCompat.Builder(this, ID_CANAL);
         construtor.setSmallIcon(R.drawable.ic_menu)
                 .setContentTitle("Titulo teste")
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT)
@@ -164,7 +160,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             NotificationChannel canalNotificacao = notificationManager.getNotificationChannel(ID_CANAL);
-            if (canalNotificacao == null){
+            if (canalNotificacao == null) {
                 CharSequence name = "NomeDoCanal";
                 String description = "DescriçãoDoCanal";
                 int importance = NotificationManager.IMPORTANCE_DEFAULT;

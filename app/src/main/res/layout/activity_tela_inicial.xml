@@ -20,7 +20,7 @@
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btnEntrar"
-        style="@style/ShapeAppearanceOverlay.Material3.Button"
+        style="@style/Widget.Material3.Button.OutlinedButton"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
@@ -33,7 +33,7 @@
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btnCadastrar"
-        style="@style/ShapeAppearanceOverlay.Material3.Button"
+        style="@style/Widget.Material3.Button.OutlinedButton"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="32dp"
