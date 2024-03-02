@@ -51,7 +51,7 @@ public class FragmentoPedidos extends Fragment {
     private FloatingActionButton botaoFlutuante;
     private PedidoAdapter pedidoAdapter;
     private RecyclerView meuRecycler;
-    private List<Pedido> pedidos, pedidosFiltrado;
+    private List<Pedido> pedidos, pedidosFiltrado, pedidosAux;
     private ChipGroup chipGrupo;
     private DatabaseReference minhaReferencia;
     private int estadoSelecionado;
@@ -184,7 +184,6 @@ public class FragmentoPedidos extends Fragment {
         minhaReferencia.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                List<Pedido> pedidosAux = pedidos;
                 pedidos.clear();
                 for (DataSnapshot dn: snapshot.getChildren()){
                     Pedido pedido = dn.getValue(Pedido.class);
@@ -192,8 +191,27 @@ public class FragmentoPedidos extends Fragment {
                         pedidos.add(pedido);
                     }
                 }
-                //verificaNovoPedido(pedidosAux, pedidos);
-                //pedidosAux.clear();
+                if (!pedidosAux.isEmpty()) {
+                    Log.d(CHAVE_TITULO_PEDIDOS, "Lista de pedidos auxiliar cheia!");
+                    if (pedidos.size() > pedidosAux.size()) {
+                        Log.d(CHAVE_TITULO_PEDIDOS, "Lista pedidos atualizada é maior que lista auxiliar!");
+                    } else if (pedidos.size() == pedidosAux.size()) {
+                        Log.d(CHAVE_TITULO_PEDIDOS, "Lista pedidos atualizada é igual a lista auxiliar!");
+                        for (Pedido pedidoAux : pedidosAux) {
+                            for (Pedido pedidoAtual : pedidos) {
+                                if (pedidoAux.getId().equals(pedidoAtual.getId())) {
+                                    
+                                }
+                            }
+                        }
+                    }
+                    //verificaNovoPedido(pedidosAux, pedidos);
+                    //pedidosAux.clear();
+
+                } else {
+                    Log.d(CHAVE_TITULO_PEDIDOS, "Lista de pedidos auxiliar vazia!");
+                    pedidosAux = pedidos;
+                }
                 Log.d(CHAVE_TITULO_PEDIDOS, "Carregou lista de pedidos no servidor.");
                 configuraChipEstados(estadoSelecionado);
                 progresso.setVisibility(View.GONE);
@@ -275,6 +293,7 @@ public class FragmentoPedidos extends Fragment {
         } else if(idChipSelecionado == R.id.chipEstadoEntreguePedidos){
             estadoSelecionado = 3;
         }
+        pedidosAux = new ArrayList<>();
         Log.d(CHAVE_TITULO_PEDIDOS, "Estado inicial selecionado: "+estadoSelecionado);
      }
 
