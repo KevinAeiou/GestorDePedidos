@@ -9,9 +9,14 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.ContextMenu;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.HorizontalScrollView;
 import android.widget.ProgressBar;
+import android.widget.SearchView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -66,6 +71,42 @@ public class NovoPedidoActivity extends AppCompatActivity {
         intentFilter.addAction("android.net.wifi.WIFI_STATE_CHANGED");
         conexaoInternet = new ConexaoInternet();
         registerReceiver(conexaoInternet,intentFilter);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_busca, menu);
+        MenuItem itemBusca = menu.findItem(R.id.itemMenuBusca);
+        SearchView busca = (SearchView) itemBusca.getActionView();
+        busca.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                filtroLista(newText);
+                return false;
+            }
+        });
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    private void filtroLista(String newText) {
+        List<ProdutoPedido> listaFiltrada = new ArrayList<>();
+
+        for (ProdutoPedido item : cardapioNovoPedido) {
+            if (item.getNome().toLowerCase().contains(newText.toLowerCase())) {
+                listaFiltrada.add(item);
+            }
+        }
+        if (listaFiltrada.isEmpty()) {
+            novoPedidoAdapter.limpaLista();
+            Snackbar.make(getCurrentFocus(),"Nem um resultado encontrado!", Snackbar.LENGTH_LONG).show();
+        } else {
+            novoPedidoAdapter.setListaFiltrada(listaFiltrada);
+        }
     }
 
     private void configuraChipGrupo() {

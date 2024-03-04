@@ -74,11 +74,22 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="8dp"
-                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/txtObservacaoItemPedido"
                 tools:listitem="@layout/item_pedido"/>
+
+            <TextView
+                android:id="@+id/txtDataItemPedido"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:padding="8dp"
+                android:textSize="18sp"
+                app:layout_constraintStart_toStartOf="@id/recyclerViewItemPedido"
+                app:layout_constraintEnd_toEndOf="@id/recyclerViewItemPedido"
+                app:layout_constraintTop_toBottomOf="@id/recyclerViewItemPedido"
+                app:layout_constraintBottom_toBottomOf="parent"/>
         </androidx.constraintlayout.widget.ConstraintLayout>
     </LinearLayout>
 </com.google.android.material.card.MaterialCardView>

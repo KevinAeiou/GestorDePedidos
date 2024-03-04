@@ -13,13 +13,16 @@ import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.SearchView;
 import androidx.core.app.NotificationCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
@@ -65,7 +68,6 @@ public class FragmentoPedidos extends Fragment {
         Log.d("fragmentoPedidos", "onCreateView criado.");
         return binding.getRoot();
     }
-
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -95,7 +97,7 @@ public class FragmentoPedidos extends Fragment {
     }
 
     private void configuraDeslizeItem() {
-        ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT) {
+        ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.END | ItemTouchHelper.START) {
             @Override
             public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
                 return false;
@@ -104,11 +106,24 @@ public class FragmentoPedidos extends Fragment {
             @Override
             public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
                 int posicaoDeslize = viewHolder.getAdapterPosition();
-                if (pedidosFiltrado.get(posicaoDeslize).getEstado()==3){
+                Pedido pedidoSelecionado = pedidosFiltrado.get(posicaoDeslize);
+                if (direction == ItemTouchHelper.END) {
+                    int novoEstado = pedidoSelecionado.getEstado() + 1;
+                    pedidoSelecionado.setEstado(novoEstado);
+                } else if(direction == ItemTouchHelper.START) {
+                    int novoEstado = pedidoSelecionado.getEstado() - 1;
+                    pedidoSelecionado.setEstado(novoEstado);
+                }
+                if (pedidoSelecionado.getEstado() > 3) {
+                    pedidoSelecionado.setEstado(3);
                     Snackbar.make(getActivity().findViewById(R.id.drawerLayoutMain),"Estado não pode ser alterado", Snackbar.LENGTH_LONG).show();
                     pedidoAdapter.notifyDataSetChanged();
-                }else {
-                    alteraEstadoPedido(posicaoDeslize);
+                } else if(pedidoSelecionado.getEstado() < 0) {
+                    pedidoSelecionado.setEstado(0);
+                    Snackbar.make(getActivity().findViewById(R.id.drawerLayoutMain),"Estado não pode ser alterado", Snackbar.LENGTH_LONG).show();
+                    pedidoAdapter.notifyDataSetChanged();
+                } else {
+                    alteraEstadoPedido(pedidoSelecionado);
                     if (pedidoAdapter != null){
                         pedidoAdapter.remove(posicaoDeslize);
                     }
@@ -119,11 +134,8 @@ public class FragmentoPedidos extends Fragment {
         itemTouchHelper.attachToRecyclerView(meuRecycler);
     }
 
-    private void alteraEstadoPedido(int posicaoDeslize) {
-        Pedido pedidoSelecionado = pedidosFiltrado.get(posicaoDeslize);
-        int novoEstado = pedidoSelecionado.getEstado() + 1;
-        String idPedido = pedidoSelecionado.getId();
-        minhaReferencia.child(idPedido).child("estado").setValue(novoEstado);
+    private void alteraEstadoPedido(Pedido pedidoSelecionado) {
+        minhaReferencia.child(pedidoSelecionado.getId()).child("estado").setValue(pedidoSelecionado.getEstado());
     }
 
     private void configuraChipEstados(int estadoSelecionado) {
@@ -192,27 +204,11 @@ public class FragmentoPedidos extends Fragment {
                     }
                 }
                 if (!pedidosAux.isEmpty()) {
-                    Log.d(CHAVE_TITULO_PEDIDOS, "Lista de pedidos auxiliar cheia!");
-                    if (pedidos.size() > pedidosAux.size()) {
-                        Log.d(CHAVE_TITULO_PEDIDOS, "Lista pedidos atualizada é maior que lista auxiliar!");
-                    } else if (pedidos.size() == pedidosAux.size()) {
-                        Log.d(CHAVE_TITULO_PEDIDOS, "Lista pedidos atualizada é igual a lista auxiliar!");
-                        for (Pedido pedidoAux : pedidosAux) {
-                            for (Pedido pedidoAtual : pedidos) {
-                                if (pedidoAux.getId().equals(pedidoAtual.getId())) {
-                                    
-                                }
-                            }
-                        }
-                    }
-                    //verificaNovoPedido(pedidosAux, pedidos);
-                    //pedidosAux.clear();
-
+                    notificaModificacaoListaPedidos("Lista de pedidos atualizada!");
                 } else {
-                    Log.d(CHAVE_TITULO_PEDIDOS, "Lista de pedidos auxiliar vazia!");
+                    Log.d(CHAVE_TITULO_PEDIDOS, "Lista auxiliar está vazia!");
                     pedidosAux = pedidos;
                 }
-                Log.d(CHAVE_TITULO_PEDIDOS, "Carregou lista de pedidos no servidor.");
                 configuraChipEstados(estadoSelecionado);
                 progresso.setVisibility(View.GONE);
             }
@@ -223,26 +219,17 @@ public class FragmentoPedidos extends Fragment {
             }
         });
     }
-    private void verificaNovoPedido(List<Pedido> pedidosAux, List<Pedido> pedidoAtual) {
-        String tituloNotificacao;
-        for (Pedido pedido : pedidoAtual) {
-            if (!pedidosAux.contains(pedido.getId())) {
-                tituloNotificacao = "Novo pedido";
-                notificaModificacaoListaPedidos(tituloNotificacao);
-                break;
-            }
-        }
-    }
-    private void notificaModificacaoListaPedidos(String tituloNotificacao) {
+    private void notificaModificacaoListaPedidos(String descricaoNotificacao) {
         Intent iniciaAplicacao = new Intent(getContext(), MainActivity.class);
         iniciaAplicacao.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         PendingIntent pendingIntent = PendingIntent.getActivity(getContext(), 0, iniciaAplicacao, PendingIntent.FLAG_IMMUTABLE);
 
         NotificationCompat.Builder construtor = new NotificationCompat.Builder(getContext(), ID_CANAL);
         construtor.setSmallIcon(R.drawable.ic_menu)
-                .setContentTitle(tituloNotificacao)
+                .setContentTitle("Gerenciador de comandas")
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-                .setCategory(NotificationCompat.CATEGORY_REMINDER)
+                .setCategory(NotificationCompat.CATEGORY_EVENT)
+                .setContentText(descricaoNotificacao)
                 .setContentIntent(pendingIntent)
                 .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
                 .setAutoCancel(true);
@@ -294,7 +281,7 @@ public class FragmentoPedidos extends Fragment {
             estadoSelecionado = 3;
         }
         pedidosAux = new ArrayList<>();
-        Log.d(CHAVE_TITULO_PEDIDOS, "Estado inicial selecionado: "+estadoSelecionado);
+        Log.d(CHAVE_TITULO_PEDIDOS, "Lista de pedidosAux foi criada!");
      }
 
     @Override

@@ -19,6 +19,8 @@ import com.example.toyapedidos.R;
 import com.example.toyapedidos.modelo.Pedido;
 import com.example.toyapedidos.modelo.ProdutoPedido;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 public class PedidoAdapter extends RecyclerView.Adapter<PedidoAdapter.PedidoViewHolder> {
@@ -88,6 +90,7 @@ public class PedidoAdapter extends RecyclerView.Adapter<PedidoAdapter.PedidoView
         private final ConstraintLayout layoutExpansivelItemPedido;
         private final TextView numeroMesaPedido;
         private final TextView observacaoPedido;
+        private final TextView dataPedido;
         private final RecyclerView recyclerExpasivelItemPedido;
         private final ImageView iconeSeta;
 
@@ -97,6 +100,7 @@ public class PedidoAdapter extends RecyclerView.Adapter<PedidoAdapter.PedidoView
             layoutExpansivelItemPedido = itemView.findViewById(R.id.layoutExpansivelItemPedido);
             numeroMesaPedido = itemView.findViewById(R.id.itemDescricaoNovoPedido);
             observacaoPedido = itemView.findViewById(R.id.txtObservacaoItemPedido);
+            dataPedido = itemView.findViewById(R.id.txtDataItemPedido);
             recyclerExpasivelItemPedido = itemView.findViewById(R.id.recyclerViewItemPedido);
             iconeSeta = itemView.findViewById(R.id.itemBtnIncrementaQuantidadeNovoPedido);
         }
@@ -113,6 +117,9 @@ public class PedidoAdapter extends RecyclerView.Adapter<PedidoAdapter.PedidoView
                 observacaoPedido.setText(pedido.getObservacao());
             }
             numeroMesaPedido.setText("Mesa "+pedido.getNumeroMesa());
+            DateFormat dateFormat = new SimpleDateFormat("HH:mm dd/MM/yyyy");
+            String dataFormatada = dateFormat.format(pedido.getDataHora());
+            dataPedido.setText(dataFormatada);
         }
     }
 }

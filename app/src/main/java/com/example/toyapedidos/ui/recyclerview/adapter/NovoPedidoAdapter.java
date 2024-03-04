@@ -56,7 +56,10 @@ public class NovoPedidoAdapter extends RecyclerView.Adapter<NovoPedidoAdapter.No
         novoPedido.set(posicao, produtoPedido);
         notifyDataSetChanged();
     }
-
+    public void limpaLista() {
+        novoPedido.clear();
+        notifyDataSetChanged();
+    }
     public class NovoPedidoViewHolder extends RecyclerView.ViewHolder {
         private final TextView nomeProdutoPedido;
         private final TextView descricaoProdutoPedido;

@@ -49,6 +49,9 @@ public class Pedido implements Serializable, Comparable<Pedido>{
         return estado;
     }
 
+    public void setEstado(int estado) {
+        this.estado = estado;
+    }
     public boolean isExpandable() {
         return isExpandable;
     }
