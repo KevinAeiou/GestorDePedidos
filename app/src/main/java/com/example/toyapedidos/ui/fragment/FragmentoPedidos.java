@@ -13,16 +13,13 @@ import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.ContextMenu;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.widget.SearchView;
 import androidx.core.app.NotificationCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
@@ -116,11 +113,11 @@ public class FragmentoPedidos extends Fragment {
                 }
                 if (pedidoSelecionado.getEstado() > 3) {
                     pedidoSelecionado.setEstado(3);
-                    Snackbar.make(getActivity().findViewById(R.id.drawerLayoutMain),"Estado não pode ser alterado", Snackbar.LENGTH_LONG).show();
+                    Snackbar.make(binding.constraintLayoutFragmentoPedidos,"Estado não pode ser alterado", Snackbar.LENGTH_LONG).show();
                     pedidoAdapter.notifyDataSetChanged();
                 } else if(pedidoSelecionado.getEstado() < 0) {
                     pedidoSelecionado.setEstado(0);
-                    Snackbar.make(getActivity().findViewById(R.id.drawerLayoutMain),"Estado não pode ser alterado", Snackbar.LENGTH_LONG).show();
+                    Snackbar.make(binding.constraintLayoutFragmentoPedidos,"Estado não pode ser alterado", Snackbar.LENGTH_LONG).show();
                     pedidoAdapter.notifyDataSetChanged();
                 } else {
                     alteraEstadoPedido(pedidoSelecionado);
@@ -144,7 +141,7 @@ public class FragmentoPedidos extends Fragment {
         }
         pedidosFiltrado = filtraListaChip(estadoSelecionado);
         if (pedidosFiltrado.isEmpty()) {
-            Snackbar.make(getActivity().findViewById(R.id.drawerLayoutMain), "Nem um pedido encontrado!", Snackbar.LENGTH_LONG).show();
+            Snackbar.make(binding.constraintLayoutFragmentoPedidos, "Nem um pedido encontrado!", Snackbar.LENGTH_LONG).show();
             pedidoAdapter.limpaLista();
         } else {
             for (int x=0;x<pedidosFiltrado.size();x++){
@@ -215,7 +212,7 @@ public class FragmentoPedidos extends Fragment {
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                Snackbar.make(getActivity().findViewById(R.id.drawerLayoutMain), "Erro ao carregar pedidos!"+ error, Snackbar.LENGTH_LONG).show();
+                Snackbar.make(binding.constraintLayoutFragmentoPedidos, "Erro ao carregar pedidos!"+ error, Snackbar.LENGTH_LONG).show();
             }
         });
     }

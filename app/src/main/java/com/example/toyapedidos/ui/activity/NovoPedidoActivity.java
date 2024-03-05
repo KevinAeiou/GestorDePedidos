@@ -62,15 +62,21 @@ public class NovoPedidoActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
         setTitle(CHAVE_TITULO_NOVO_PEDIDO);
         inicializaComponentes();
+        IntentFilter intentFilter = new IntentFilter("android.net.conn.CONNECTIVITY_CHANGE");
+        intentFilter.addAction("android.net.wifi.WIFI_STATE_CHANGED");
+        conexaoInternet = new ConexaoInternet();
+        registerReceiver(conexaoInternet,intentFilter);
+        
         atualizaCardapioNovoPedido();
         configuraBotaoResumoPedido();
 
         chipGrupo.setOnCheckedStateChangeListener((group, checkedIds) -> configuraListaFiltrada(checkedIds));
 
-        IntentFilter intentFilter = new IntentFilter("android.net.conn.CONNECTIVITY_CHANGE");
-        intentFilter.addAction("android.net.wifi.WIFI_STATE_CHANGED");
-        conexaoInternet = new ConexaoInternet();
-        registerReceiver(conexaoInternet,intentFilter);
+        conexaoInternet.addOnMudarEstadoConexao(tipoConexao -> {
+            if(conexaoExiste(tipoConexao)){
+                pegaTodosProdutos();
+            }
+        });
     }
 
     @Override
@@ -103,7 +109,7 @@ public class NovoPedidoActivity extends AppCompatActivity {
         }
         if (listaFiltrada.isEmpty()) {
             novoPedidoAdapter.limpaLista();
-            Snackbar.make(getCurrentFocus(),"Nem um resultado encontrado!", Snackbar.LENGTH_LONG).show();
+            Snackbar.make(binding.constraintLayoutAdicionaNovoPedido,"Nem um resultado encontrado!", Snackbar.LENGTH_LONG).show();
         } else {
             novoPedidoAdapter.setListaFiltrada(listaFiltrada);
         }
@@ -118,11 +124,11 @@ public class NovoPedidoActivity extends AppCompatActivity {
         progressoCircular = binding.progressoCircularNovoPedido;
         chipGrupo = binding.chipGroupCategoriasNovoPedido;
         scrollView = binding.scrollViewGrupoChip;
+        btnResumoPedido = binding.btnResumoPedido;
         listaCategoriasSelecionadas = new ArrayList<>();
     }
 
     private void configuraBotaoResumoPedido() {
-        btnResumoPedido = binding.btnResumoPedido;
         btnResumoPedido.setOnClickListener(v ->{
             ArrayList<ProdutoPedido> novoPedido = new ArrayList<>();
             for (ProdutoPedido itemPedido: cardapioNovoPedido){
@@ -131,7 +137,7 @@ public class NovoPedidoActivity extends AppCompatActivity {
                 }
             }
             if (novoPedido.isEmpty()){
-                Snackbar.make(binding.getRoot(), "Nem um item selecionado!", Snackbar.LENGTH_LONG).show();
+                Snackbar.make(binding.constraintLayoutAdicionaNovoPedido, "Nem um item selecionado!", Snackbar.LENGTH_LONG).show();
             }else {
                 vaiParaResumoPedidoActivity(novoPedido);
             }
@@ -146,7 +152,10 @@ public class NovoPedidoActivity extends AppCompatActivity {
     }
 
     private void atualizaCardapioNovoPedido() {
-        pegaTodosProdutos();
+        ConexaoInternet.TipoConexao tipoConexao = conexaoInternet.getTipoConexaoAtual(getApplicationContext());
+        if (conexaoExiste(tipoConexao)) {
+            pegaTodosProdutos();
+        }
         List<ProdutoPedido> cardapioNovoPedido = new ArrayList<>();
         configuraRecyclerView(cardapioNovoPedido);
     }
@@ -158,9 +167,9 @@ public class NovoPedidoActivity extends AppCompatActivity {
         minhaReferencia.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                for (DataSnapshot dn:snapshot.getChildren()){
+                for (DataSnapshot dn : snapshot.getChildren()) {
                     ProdutoPedido produtoPedido = dn.getValue(ProdutoPedido.class);
-                    if (produtoPedido != null){
+                    if (produtoPedido != null) {
                         produtoPedido.setQuantidade(0);
                         cardapioNovoPedido.add(produtoPedido);
                     }
@@ -168,15 +177,27 @@ public class NovoPedidoActivity extends AppCompatActivity {
 
                 configuraChipGrupo();
                 atualizaTxtSomaTotal();
+                btnResumoPedido.setEnabled(true);
                 progressoCircular.setVisibility(View.GONE);
                 configuraListaFiltrada(listaCategoriasSelecionadas);
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                Snackbar.make(binding.getRoot(), "Erro ao recuperar cardápio: "+error, Snackbar.LENGTH_LONG).show();
+                Snackbar.make(binding.constraintLayoutAdicionaNovoPedido, "Erro ao recuperar cardápio: " + error, Snackbar.LENGTH_LONG).show();
             }
         });
+    }
+
+    private boolean conexaoExiste(ConexaoInternet.TipoConexao tipoConexao) {
+        if(tipoConexao == ConexaoInternet.TipoConexao.TIPO_MOBILE || tipoConexao == ConexaoInternet.TipoConexao.TIPO_WIFI){
+            return true;
+        }
+        else if (tipoConexao == ConexaoInternet.TipoConexao.TIPO_NAO_CONECTADO) {
+            Snackbar.make(binding.constraintLayoutAdicionaNovoPedido,"Sem conexão!", Snackbar.LENGTH_LONG).show();
+            btnResumoPedido.setEnabled(false);
+        }
+        return false;
     }
 
     private void configuraListaFiltrada(List<Integer> listaIdCategoriasSelecionadas) {

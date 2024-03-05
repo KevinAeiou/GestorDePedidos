@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
         android:allowBackup="true"
@@ -15,11 +17,21 @@
         tools:targetApi="31">
         <activity
             android:name=".ui.activity.ResumoPedidoActivity"
-            android:exported="false" />
+            android:exported="false" >
+            <intent-filter>
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE"/>
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
         <activity
             android:name=".ui.activity.CadastraUsuarioActivity"
             android:exported="false"
-            android:theme="@style/Theme.ToyaPedidos.NoActionBar" />
+            android:theme="@style/Theme.ToyaPedidos.NoActionBar" >
+            <intent-filter>
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE"/>
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
         <activity
             android:name=".ui.activity.TelaInicialActivity"
             android:exported="true"
@@ -33,17 +45,32 @@
         <activity
             android:name=".ui.activity.EntraUsuarioActivity"
             android:exported="true"
-            android:theme="@style/Theme.ToyaPedidos.NoActionBar" />
+            android:theme="@style/Theme.ToyaPedidos.NoActionBar" >
+            <intent-filter>
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE"/>
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
         <activity
             android:name=".ui.activity.CadastraProdutoActivity"
-            android:exported="false" />
+            android:exported="false" >
+            <intent-filter>
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE"/>
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
         <activity
             android:name=".ui.activity.MainActivity"
             android:exported="true"
             android:theme="@style/Theme.ToyaPedidos.NoActionBar" />
         <activity
             android:name=".ui.activity.NovoPedidoActivity"
-            android:exported="true" />
+            android:exported="true" >
+            <intent-filter>
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE"/>
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>

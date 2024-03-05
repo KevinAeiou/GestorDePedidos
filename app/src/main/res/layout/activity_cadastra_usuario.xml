@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/constraint_layout_cadastra_usuario"
     tools:context=".ui.activity.CadastraUsuarioActivity">
 
     <com.google.android.material.textview.MaterialTextView

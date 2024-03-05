@@ -74,7 +74,6 @@
         android:clickable="true"
         android:contentDescription="@string/stringDescricaoBotaoFlutuanteCadastraPedido"
         android:src="@drawable/ic_adiciona"
-        android:theme="@style/Theme.Material3.DayNight"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:focusable="true" />

@@ -4,6 +4,7 @@ import static com.example.toyapedidos.ui.Constantes.CHAVE_CARGO_COLABORADOR;
 import static com.example.toyapedidos.ui.Constantes.CHAVE_USUARIO;
 
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -11,6 +12,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.toyapedidos.R;
 import com.example.toyapedidos.databinding.ActivityCadastraUsuarioBinding;
 import com.example.toyapedidos.modelo.Usuario;
+import com.example.toyapedidos.ui.ConexaoInternet;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
@@ -26,7 +28,8 @@ public class CadastraUsuarioActivity extends AppCompatActivity {
     private ActivityCadastraUsuarioBinding binding;
     private TextInputLayout txtNomeUsuario, txtEmailUsuario, txtSenhaUsuario;
     private TextInputEditText edtNomeUsuario, edtEmailUsuario, edtSenhaUsuario;
-
+    private MaterialButton btnCadastrarUsuario;
+    private ConexaoInternet conexaoInternet;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,31 +42,55 @@ public class CadastraUsuarioActivity extends AppCompatActivity {
         edtNomeUsuario = binding.edtNomeCadastraUsuario;
         edtEmailUsuario = binding.edtEmailCadastraUsuario;
         edtSenhaUsuario = binding.edtSenhaCadastraUsuario;
-        MaterialButton btnCadastrarUsuario = binding.btnCadastrarUsuario;
+        btnCadastrarUsuario = binding.btnCadastrarUsuario;
+
+        IntentFilter intentFilter = new IntentFilter("android.net.conn.CONNECTIVITY_CHANGE");
+        intentFilter.addAction("android.net.wifi.WIFI_STATE_CHANGED");
+        conexaoInternet = new ConexaoInternet();
+        registerReceiver(conexaoInternet,intentFilter);
 
         btnCadastrarUsuario.setOnClickListener(v ->{
             if (verificaCampos()){
-                Snackbar.make(binding.getRoot(), "Todos os campos satisfeitos.", Snackbar.LENGTH_LONG).show();
-                FirebaseAuth.getInstance()
-                        .createUserWithEmailAndPassword(Objects.requireNonNull(edtEmailUsuario.getText()).toString(), Objects.requireNonNull(edtSenhaUsuario.getText()).toString())
-                        .addOnCompleteListener(task -> {
-                            if (task.isSuccessful()){
-                                salvaDadosUsuario();
-                                vaiParaEntrarActivity();
-                            } else {
-                                String erro;
-                                try {
-                                    throw Objects.requireNonNull(task.getException());
-                                } catch (FirebaseAuthUserCollisionException exception){
-                                    erro = "Email já cadastrado!";
-                                } catch (Exception exception){
-                                    erro = "Erro ao cadastrar usuário! Tente novamente!";
+                btnCadastrarUsuario.setEnabled(false);
+                ConexaoInternet.TipoConexao tipoConexao = conexaoInternet.getTipoConexaoAtual(getApplicationContext());
+                if (conexaoExiste(tipoConexao)){
+                    FirebaseAuth.getInstance()
+                            .createUserWithEmailAndPassword(Objects.requireNonNull(edtEmailUsuario.getText()).toString(), Objects.requireNonNull(edtSenhaUsuario.getText()).toString())
+                            .addOnCompleteListener(task -> {
+                                if (task.isSuccessful()){
+                                    salvaDadosUsuario();
+                                    vaiParaEntrarActivity();
+                                } else {
+                                    String erro;
+                                    try {
+                                        throw Objects.requireNonNull(task.getException());
+                                    } catch (FirebaseAuthUserCollisionException exception){
+                                        erro = "Email já cadastrado!";
+                                    } catch (Exception exception){
+                                        erro = "Erro ao cadastrar usuário! Tente novamente!";
+                                    }
+                                    btnCadastrarUsuario.setEnabled(true);
+                                    Snackbar.make(binding.constraintLayoutCadastraUsuario, erro, Snackbar.LENGTH_LONG).show();
                                 }
-                                Snackbar.make(v, erro, Snackbar.LENGTH_LONG).show();
-                            }
-                        });
+                            });
+
+                }
             }
         });
+        conexaoInternet.addOnMudarEstadoConexao(tipoConexao -> {
+            if (conexaoExiste(tipoConexao)) {
+                btnCadastrarUsuario.setEnabled(true);
+            }
+        });
+    }
+
+    private boolean conexaoExiste(ConexaoInternet.TipoConexao tipoConexao) {
+        if (tipoConexao == ConexaoInternet.TipoConexao.TIPO_MOBILE || tipoConexao == ConexaoInternet.TipoConexao.TIPO_WIFI){
+            return true;
+        } else if (tipoConexao == ConexaoInternet.TipoConexao.TIPO_NAO_CONECTADO) {
+            Snackbar.make(binding.constraintLayoutCadastraUsuario,"Sem conexão!", Snackbar.LENGTH_LONG).show();
+        }
+        return false;
     }
 
     private void vaiParaEntrarActivity() {

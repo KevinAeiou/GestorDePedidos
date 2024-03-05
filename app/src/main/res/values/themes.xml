@@ -2,11 +2,11 @@
     <!-- Base application theme. -->
     <style name="Theme.ToyaPedidos" parent="Theme.Material3.DayNight">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/azul_claro</item>
-        <item name="colorPrimaryVariant">@color/azul_medio</item>
+        <item name="colorPrimary">@color/verde</item>
+        <item name="colorPrimaryVariant">@color/verde_escuro</item>
         <item name="colorOnPrimary">@color/white</item>
         <!-- Secondary brand color. -->
-        <item name="colorSecondary">@color/azul_medio</item>
+        <item name="colorSecondary">@color/azul</item>
         <item name="colorSecondaryVariant">@color/azul_escuro</item>
         <item name="colorOnSecondary">@color/black</item>
         <!-- Status bar color. -->
