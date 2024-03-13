@@ -31,7 +31,6 @@ import java.util.Objects;
 
 public class CadastraUsuarioActivity extends AppCompatActivity {
     private ActivityCadastraUsuarioBinding binding;
-    private MaterialTextView txtNomeEmpresa;
     private TextInputLayout txtNomeUsuario, txtEmailUsuario, txtSenhaUsuario;
     private TextInputEditText edtNomeUsuario, edtEmailUsuario, edtSenhaUsuario;
     private String stringNome, stringEmail, stringSenha;
@@ -41,26 +40,26 @@ public class CadastraUsuarioActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = ActivityCadastraUsuarioBinding.inflate(getLayoutInflater());
-        setContentView(binding.getRoot());
-
         recebeDados();
-        txtNomeEmpresa = binding.txtNomeEmpresa;
-        txtNomeUsuario = binding.txtInputNomeNovoUsuario;
-        txtEmailUsuario = binding.txtInputEmailNovoUsuario;
-        txtSenhaUsuario = binding.txtInputSenhaNovoUsuario;
-        edtNomeUsuario = binding.edtInputNomeNovoUsuario;
-        edtEmailUsuario = binding.edtInputEmailNovoUsuario;
-        edtSenhaUsuario = binding.edtInputSenhaNovoUsuario;
-        btnCadastrarUsuario = binding.btnCadastrarNovoUsuario;
-        
-        txtNomeEmpresa.setText(empresaAtual.getNome());
-        
+        inicializaComponentes();
+        configuraVerificacaoInternet();
+        configuraBotaoCadastroNovoUsuario();
+    }
+    private void configuraVerificacaoInternet() {
         IntentFilter intentFilter = new IntentFilter("android.net.conn.CONNECTIVITY_CHANGE");
         intentFilter.addAction("android.net.wifi.WIFI_STATE_CHANGED");
         conexaoInternet = new ConexaoInternet();
         registerReceiver(conexaoInternet,intentFilter);
+        conexaoInternet.addOnMudarEstadoConexao(tipoConexao -> {
+            if (conexaoExiste(tipoConexao)) {
+                btnCadastrarUsuario.setEnabled(true);
+            } else {
+                btnCadastrarUsuario.setEnabled(false);
+            }
+        });
+    }
 
+    private void configuraBotaoCadastroNovoUsuario() {
         btnCadastrarUsuario.setOnClickListener(v ->{
             stringNome = Objects.requireNonNull(edtNomeUsuario.getText()).toString();
             stringEmail = Objects.requireNonNull(edtEmailUsuario.getText()).toString();
@@ -91,13 +90,20 @@ public class CadastraUsuarioActivity extends AppCompatActivity {
                 }
             }
         });
-        conexaoInternet.addOnMudarEstadoConexao(tipoConexao -> {
-            if (conexaoExiste(tipoConexao)) {
-                btnCadastrarUsuario.setEnabled(true);
-            } else {
-                btnCadastrarUsuario.setEnabled(false);
-            }
-        });
+    }
+
+    private void inicializaComponentes() {
+        binding = ActivityCadastraUsuarioBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
+        MaterialTextView txtNomeEmpresa = binding.txtNomeEmpresa;
+        txtNomeUsuario = binding.txtInputNomeNovoUsuario;
+        txtEmailUsuario = binding.txtInputEmailNovoUsuario;
+        txtSenhaUsuario = binding.txtInputSenhaNovoUsuario;
+        edtNomeUsuario = binding.edtInputNomeNovoUsuario;
+        edtEmailUsuario = binding.edtInputEmailNovoUsuario;
+        edtSenhaUsuario = binding.edtInputSenhaNovoUsuario;
+        btnCadastrarUsuario = binding.btnCadastrarNovoUsuario;
+        txtNomeEmpresa.setText(empresaAtual.getNome());
     }
 
     private void recebeDados() {
