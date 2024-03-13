@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/constraintLayoutCadastraEmpresa"
+    tools:context=".ui.activity.CadastraEmpresaActivity">
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/txtTituloAplicativo"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:padding="8dp"
+        android:text="@string/stringNomeAplicativo"
+        android:gravity="center"
+        android:textSize="50sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/txtInputNomeEmpresa"/>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/txtInputNomeEmpresa"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+        app:layout_constraintStart_toStartOf="@id/txtInputAdminstradorEmpresa"
+        app:layout_constraintEnd_toEndOf="@id/txtInputAdminstradorEmpresa"
+        app:layout_constraintBottom_toTopOf="@id/txtInputAdminstradorEmpresa">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/edtInputNomeEmpresa"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="text"
+            android:textSize="24sp"
+            android:padding="16dp"
+            android:hint="@string/stringEmpresa"/>
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/txtInputAdminstradorEmpresa"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+        app:layout_constraintStart_toStartOf="@id/txtInputEmailAdmistradorEmpresa"
+        app:layout_constraintEnd_toEndOf="@id/txtInputEmailAdmistradorEmpresa"
+        app:layout_constraintBottom_toTopOf="@id/txtInputEmailAdmistradorEmpresa">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/edtInputAdminstradorEmpresa"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="text"
+            android:textSize="24sp"
+            android:padding="16dp"
+            android:hint="@string/stringAdministrador"/>
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/txtInputEmailAdmistradorEmpresa"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+        app:layout_constraintStart_toStartOf="@id/txtInputSenhaEmpresa"
+        app:layout_constraintEnd_toEndOf="@id/txtInputSenhaEmpresa"
+        app:layout_constraintBottom_toTopOf="@id/txtInputSenhaEmpresa">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/edtInputEmailAdminstradorEmpresa"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textEmailAddress"
+            android:textSize="24sp"
+            android:padding="16dp"
+            android:hint="@string/stringEmail"/>
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/txtInputSenhaEmpresa"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        app:passwordToggleEnabled="true"
+        style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+        app:layout_constraintStart_toStartOf="@id/btnCadastrarNovaEmpresa"
+        app:layout_constraintEnd_toEndOf="@id/btnCadastrarNovaEmpresa"
+        app:layout_constraintBottom_toTopOf="@id/btnCadastrarNovaEmpresa">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/edtInputSenhaEmpresa"
+            android:inputType="textPassword"
+            android:hint="@string/stringSenha"
+            android:textSize="24sp"
+            android:padding="16dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnCadastrarNovaEmpresa"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="32dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:textSize="28sp"
+        android:textAllCaps="false"
+        android:text="@string/stringCadastrar"
+        android:padding="8dp"
+        style="@style/Widget.Material3.Button.OutlinedButton"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+</androidx.constraintlayout.widget.ConstraintLayout>
