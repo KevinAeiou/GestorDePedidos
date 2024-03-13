@@ -19,7 +19,7 @@ public class TelaInicialActivity extends AppCompatActivity {
         com.example.toyapedidos.databinding.ActivityTelaInicialBinding binding = ActivityTelaInicialBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         MaterialButton btnEntrarUsuario = binding.btnEntrar;
-        MaterialButton btnCadastrarUsuario = binding.btnCadastrar;
+        MaterialButton btnCadastrarEmpresa = binding.btnCadastrarEmpresa;
 
         btnEntrarUsuario.setOnClickListener(v -> {
             Log.d("telaInicial", "Botão entrar.");
@@ -27,10 +27,10 @@ public class TelaInicialActivity extends AppCompatActivity {
             Intent inicaVaiParaEntraUsuario = new Intent(getApplicationContext(), EntraUsuarioActivity.class);
             startActivity(inicaVaiParaEntraUsuario);
         });
-        btnCadastrarUsuario.setOnClickListener(v -> {
+        btnCadastrarEmpresa.setOnClickListener(v -> {
             Log.d("telaInicial", "Botão cadastrar.");
-            Intent iniciaVaiParaCadastraUsuario = new Intent(getApplicationContext(), CadastraUsuarioActivity.class);
-            startActivity(iniciaVaiParaCadastraUsuario);
+            Intent iniciaVaiParaCadastrarEmpresa = new Intent(getApplicationContext(), CadastraEmpresaActivity.class);
+            startActivity(iniciaVaiParaCadastrarEmpresa);
         });
     }
 

@@ -1,6 +1,9 @@
 package com.example.toyapedidos.ui.fragment;
 
 import static com.example.toyapedidos.ui.Constantes.CHAVE_CADASTRA_PRODUTO;
+import static com.example.toyapedidos.ui.Constantes.CHAVE_EMPRESAS;
+import static com.example.toyapedidos.ui.Constantes.CHAVE_ID_EMPRESA;
+import static com.example.toyapedidos.ui.Constantes.CHAVE_LISTA_PEDIDO;
 import static com.example.toyapedidos.ui.Constantes.CHAVE_LISTA_PRODUTO;
 import static com.example.toyapedidos.ui.Constantes.CHAVE_MODIFICA_PRODUTO;
 import static com.example.toyapedidos.ui.Constantes.CHAVE_PRODUTO;
@@ -38,6 +41,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 public class FragmentoCardapio extends Fragment {
@@ -50,11 +54,18 @@ public class FragmentoCardapio extends Fragment {
     private DatabaseReference minhaReferencia;
     private SwipeRefreshLayout refreshLayout;
     private ProgressBar progresso;
+    private String empresaId;
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         requireActivity().setTitle(CHAVE_TITULO_CARDAPIO);
-
         binding = FragmentoCardapioBinding.inflate(inflater, container, false);
+        Bundle argumento = getArguments();
+        if (argumento != null) {
+            empresaId = String.valueOf(argumento.getBundle(CHAVE_ID_EMPRESA));
+            if (argumento.containsKey(CHAVE_ID_EMPRESA)){
+                empresaId = argumento.getString(CHAVE_ID_EMPRESA);
+            }
+        }
         return binding.getRoot();
     }
 
@@ -66,7 +77,6 @@ public class FragmentoCardapio extends Fragment {
         configuraRefreshLayout();
         configuraDeslizeItem();
         botaoFlutuante.setOnClickListener(v -> vaiParaCadastraProdutoActivity(new Produto(), CHAVE_CADASTRA_PRODUTO));
-
     }
 
     private void configuraDeslizeItem() {
@@ -83,9 +93,7 @@ public class FragmentoCardapio extends Fragment {
                 if (cardapioAdapter != null){
                     Produto produtoRemovido = cardapio.get(itemPosicao);
                     cardapioAdapter.remove(itemPosicao);
-                    Snackbar snackbarDesfazer = Snackbar.make(getActivity().findViewById(R.id.drawerLayoutMain), produtoRemovido.getNome(), Snackbar.LENGTH_LONG);
-                    snackbarDesfazer.setAction(getString(R.string.stringDesfazer), v -> cardapioAdapter.adiciona(itemPosicao, produtoRemovido));
-                    snackbarDesfazer.show();
+                    Snackbar snackbarDesfazer = Snackbar.make(getActivity().findViewById(R.id.drawerLayoutMain), produtoRemovido.getNome()+ " excluido", Snackbar.LENGTH_LONG);
                     snackbarDesfazer.addCallback(new Snackbar.Callback(){
                         @Override
                         public void onDismissed(Snackbar transientBottomBar, int event) {
@@ -95,7 +103,8 @@ public class FragmentoCardapio extends Fragment {
                             }
                         }
                     });
-
+                    snackbarDesfazer.setAction(getString(R.string.stringDesfazer), v -> cardapioAdapter.adiciona(itemPosicao, produtoRemovido));
+                    snackbarDesfazer.show();
                 }
             }
         };
@@ -150,6 +159,7 @@ public class FragmentoCardapio extends Fragment {
                         cardapio.add(produto);
                     }
                 }
+                cardapio.sort(Comparator.comparing(Produto::getCategoria).thenComparing(Produto::getNome));
                 cardapioAdapter.notifyDataSetChanged();
                 refreshLayout.setRefreshing(false);
                 progresso.setVisibility(View.GONE);
@@ -169,12 +179,13 @@ public class FragmentoCardapio extends Fragment {
         refreshLayout = binding.refreshLayoutFragmentoCardapio;
         progresso = binding.progressoCircularCardapio;
         FirebaseDatabase meuBancoDados = FirebaseDatabase.getInstance();
-        minhaReferencia = meuBancoDados.getReference(CHAVE_LISTA_PRODUTO);
+        minhaReferencia = meuBancoDados.getReference(CHAVE_EMPRESAS).child(empresaId).child(CHAVE_LISTA_PRODUTO);
     }
 
     private void vaiParaCadastraProdutoActivity(Produto produto, int chaveRequisicao) {
         Intent iniciaVaiParaCadastraProdutoActivity = new Intent(getActivity(), CadastraProdutoActivity.class);
         iniciaVaiParaCadastraProdutoActivity.putExtra(CHAVE_REQUISICAO,chaveRequisicao);
+        iniciaVaiParaCadastraProdutoActivity.putExtra(CHAVE_ID_EMPRESA,empresaId);
         iniciaVaiParaCadastraProdutoActivity.putExtra(CHAVE_PRODUTO,produto);
         startActivity(iniciaVaiParaCadastraProdutoActivity);
     }

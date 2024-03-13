@@ -41,6 +41,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 public class NovoPedidoActivity extends AppCompatActivity {
@@ -167,12 +168,14 @@ public class NovoPedidoActivity extends AppCompatActivity {
         minhaReferencia.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
+                cardapioNovoPedido.clear();
                 for (DataSnapshot dn : snapshot.getChildren()) {
                     ProdutoPedido produtoPedido = dn.getValue(ProdutoPedido.class);
                     if (produtoPedido != null) {
                         produtoPedido.setQuantidade(0);
                         cardapioNovoPedido.add(produtoPedido);
                     }
+                    cardapioNovoPedido.sort(Comparator.comparing(ProdutoPedido::getCategoria).thenComparing(ProdutoPedido::getNome));
                 }
 
                 configuraChipGrupo();
@@ -300,5 +303,6 @@ public class NovoPedidoActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         unregisterReceiver(conexaoInternet);
+        binding = null;
     }
 }

@@ -1,5 +1,7 @@
 package com.example.toyapedidos.ui.activity;
 
+import static com.example.toyapedidos.ui.Constantes.CHAVE_ID_EMPRESA;
+
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
@@ -87,6 +89,7 @@ public class EntraUsuarioActivity extends AppCompatActivity {
     private void vaiParaMainActivity() {
         Intent iniciaVaiParaMainActivity = new Intent(
                 getApplicationContext(), MainActivity.class);
+        iniciaVaiParaMainActivity.putExtra(CHAVE_ID_EMPRESA, "");
         startActivity(iniciaVaiParaMainActivity);
         finish();
     }
@@ -123,5 +126,6 @@ public class EntraUsuarioActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         unregisterReceiver(conexaoInternet);
+        binding = null;
     }
 }

@@ -1,5 +1,8 @@
 package com.example.toyapedidos.ui.activity;
 
+import static com.example.toyapedidos.ui.Constantes.CHAVE_CARGO_ADMINISTRADOR;
+import static com.example.toyapedidos.ui.Constantes.CHAVE_EMPRESAS;
+import static com.example.toyapedidos.ui.Constantes.CHAVE_ID_EMPRESA;
 import static com.example.toyapedidos.ui.Constantes.CHAVE_USUARIO;
 import static com.example.toyapedidos.ui.Constantes.ID_CANAL;
 
@@ -13,6 +16,8 @@ import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
@@ -32,6 +37,8 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.example.toyapedidos.R;
 import com.example.toyapedidos.databinding.ActivityMainBinding;
+import com.example.toyapedidos.modelo.Empresa;
+import com.example.toyapedidos.modelo.Produto;
 import com.example.toyapedidos.modelo.Usuario;
 import com.example.toyapedidos.ui.fragment.FragmentoCardapio;
 import com.example.toyapedidos.ui.fragment.FragmentoPedidos;
@@ -50,7 +57,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     private ActivityMainBinding binding;
     private DrawerLayout drawer;
-    private String TAG;
+    private String TAG, empresaId;
+    private NavigationView navigationView;
+    private int itemNavegacao;
     private static NotificationManager notificationManager;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,40 +68,20 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         inicializaComponentes();
         setContentView(binding.getRoot());
 
-        int itemNavegacao = R.id.navPedidos;
-        drawer = binding.drawerLayoutMain;
-        NavigationView navigationView = binding.navegacaoView;
-        Toolbar toolbar = binding.toolbar;
-        setSupportActionBar(toolbar);
-        toolbar.setNavigationOnClickListener(view -> drawer.openDrawer(GravityCompat.START));
-        navigationView.bringChildToFront(getCurrentFocus());
-        ActionBarDrawerToggle toogle = new ActionBarDrawerToggle(this, drawer, R.string.stringAbreNavegacao, R.string.stringFechaMenuNavegacao);
-        drawer.addDrawerListener(toogle);
-        toogle.syncState();
-        navigationView.setNavigationItemSelectedListener(this);
-        mostraFragmentoSelecionado(itemNavegacao);
-        navigationView.setCheckedItem(itemNavegacao);
-        View cabecalhoView = navigationView.getHeaderView(0);
-        TextView txtNavNome = cabecalhoView.findViewById(R.id.txtNavCabecalhoNome);
-        TextView txtNavCargo = cabecalhoView.findViewById(R.id.txtNavCabecalhoCargo);
-        FirebaseDatabase meusDados = FirebaseDatabase.getInstance();
-        DatabaseReference minhaReferencia = meusDados.getReference(CHAVE_USUARIO);
-        String usuarioId = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid();
-        minhaReferencia.child(usuarioId).addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                Usuario usuarioAtual = snapshot.getValue(Usuario.class);
-                if (usuarioAtual != null) {
-                    txtNavNome.setText(usuarioAtual.getNome());
-                    txtNavCargo.setText(usuarioAtual.getCargo());
-                }
-            }
+        Menu menu = navigationView.getMenu();
+        // Esconde item menu Novo usuario
+        menu.findItem(R.id.navNovoUsuario).setVisible(false);
+        menu.findItem(R.id.navCardapio).setVisible(false);
+        menu.findItem(R.id.navPedidos).setVisible(false);
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                Snackbar.make(Objects.requireNonNull(getCurrentFocus()), "Erro: "+error, Snackbar.LENGTH_LONG).show();
-            }
-        });
+        configuraToolbar();
+        navigationView.bringChildToFront(getCurrentFocus());
+        configuraToogle();
+        navigationView.setNavigationItemSelectedListener(this);
+        navigationView.setCheckedItem(itemNavegacao);
+
+        configuraCabecalhoNagivationDrawer(menu, navigationView);
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             if (ContextCompat.checkSelfPermission(MainActivity.this,
                     android.Manifest.permission.POST_NOTIFICATIONS) !=
@@ -103,15 +92,83 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
     }
 
-    private void mostraFragmentoSelecionado(int itemNavegacao) {
+    private void configuraToogle() {
+        ActionBarDrawerToggle toogle = new ActionBarDrawerToggle(this, drawer, R.string.stringAbreNavegacao, R.string.stringFechaMenuNavegacao);
+        drawer.addDrawerListener(toogle);
+        toogle.syncState();
+    }
+
+    private void configuraToolbar() {
+        Toolbar toolbar = binding.toolbar;
+        setSupportActionBar(toolbar);
+        toolbar.setNavigationOnClickListener(view -> drawer.openDrawer(GravityCompat.START));
+    }
+
+    private void configuraCabecalhoNagivationDrawer(Menu menu, NavigationView navigationView) {
+        View cabecalhoView = navigationView.getHeaderView(0);
+        TextView txtNavNome = cabecalhoView.findViewById(R.id.txtNavCabecalhoNome);
+        TextView txtNavCargo = cabecalhoView.findViewById(R.id.txtNavCabecalhoCargo);
+        TextView txtNavEmpresa = cabecalhoView.findViewById(R.id.txtNavCabecalhoEmpresa);
+        FirebaseDatabase meusDados = FirebaseDatabase.getInstance();
+        DatabaseReference minhaReferencia = meusDados.getReference(CHAVE_EMPRESAS);
+        minhaReferencia.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot dn:snapshot.getChildren()){
+                    Empresa empresa = dn.getValue(Empresa.class);
+                    if (empresa != null){
+                        Log.d("mainActivity", "ID empresa: "+empresa.getId());
+                        Log.d("mainActivity", "Nome empresa: "+empresa.getNome());
+                        minhaReferencia.child(empresa.getId()).child(CHAVE_USUARIO).addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                for (DataSnapshot dn:snapshot.getChildren()){
+                                    Usuario usuario = dn.getValue(Usuario.class);
+                                    if (usuario != null && usuario.getId().equals(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid())) {
+                                        empresaId = empresa.getId();
+                                        txtNavNome.setText(usuario.getNome());
+                                        txtNavCargo.setText(usuario.getCargo());
+                                        txtNavEmpresa.setText(empresa.getNome());
+                                        menu.findItem(R.id.navPedidos).setVisible(true);
+                                        menu.findItem(R.id.navCardapio).setVisible(true);
+                                        if (usuario.getCargo().equals(CHAVE_CARGO_ADMINISTRADOR)){
+                                            menu.findItem(R.id.navNovoUsuario).setVisible(true);
+                                        }
+                                        mostraFragmentoSelecionado();
+                                    }
+                                }
+                            }
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError error) {
+
+                            }
+                        });
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+
+    private void mostraFragmentoSelecionado() {
         Fragment fragmentoSelecionado = null;
+        Bundle argumento = new Bundle();
+        argumento.putString(CHAVE_ID_EMPRESA, empresaId);
         if (itemNavegacao == R.id.navPedidos){
             fragmentoSelecionado = new FragmentoPedidos();
+            fragmentoSelecionado.setArguments(argumento);
             TAG = "navPedidos";
         } else if (itemNavegacao == R.id.navCardapio){
             fragmentoSelecionado = new FragmentoCardapio();
+            fragmentoSelecionado.setArguments(argumento);
             TAG = "navCardapio";
-        }else if (itemNavegacao == R.id.navSair){
+        } else if (itemNavegacao == R.id.navNovoUsuario){
+            vaiParaCadastraNovoUsuario();
+        } else if (itemNavegacao == R.id.navSair){
             FirebaseAuth.getInstance().signOut();
             vaiParaTelaInicialActivity();
         }
@@ -119,6 +176,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             reposicionaFragmento(fragmentoSelecionado);
         }
         drawer.closeDrawer(GravityCompat.START);
+    }
+
+    private void vaiParaCadastraNovoUsuario() {
+        Intent iniciaVaiParaCadastraUsuarioActivity = new Intent(getApplicationContext(), CadastraUsuarioActivity.class);
+        startActivity(iniciaVaiParaCadastraUsuarioActivity);
     }
 
     private void vaiParaTelaInicialActivity() {
@@ -137,11 +199,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     private void inicializaComponentes() {
         binding = ActivityMainBinding.inflate(getLayoutInflater());
+        drawer = binding.drawerLayoutMain;
+        navigationView = binding.navegacaoView;
+        itemNavegacao = R.id.navPedidos;
+        empresaId = null;
     }
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         item.setChecked(true);
-        mostraFragmentoSelecionado(item.getItemId());
+        itemNavegacao = item.getItemId();
+        mostraFragmentoSelecionado();
         return true;
     }
     public void criaCanalDeNotificacao(NotificationCompat.Builder construtor) {

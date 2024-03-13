@@ -1,5 +1,7 @@
 package com.example.toyapedidos.ui.fragment;
 
+import static com.example.toyapedidos.ui.Constantes.CHAVE_EMPRESAS;
+import static com.example.toyapedidos.ui.Constantes.CHAVE_ID_EMPRESA;
 import static com.example.toyapedidos.ui.Constantes.CHAVE_LISTA_PEDIDO;
 import static com.example.toyapedidos.ui.Constantes.CHAVE_TITULO_PEDIDOS;
 import static com.example.toyapedidos.ui.Constantes.ID_CANAL;
@@ -56,12 +58,19 @@ public class FragmentoPedidos extends Fragment {
     private DatabaseReference minhaReferencia;
     private int estadoSelecionado;
     private ProgressBar progresso;
-    private DrawerLayout drawerLayoutMain;
+    private String empresaId;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         requireActivity().setTitle(CHAVE_TITULO_PEDIDOS);
         binding = FragmentoPedidosBinding.inflate(inflater, container, false);
+        Bundle argumento = getArguments();
+        if (argumento != null) {
+            empresaId = String.valueOf(argumento.getBundle(CHAVE_ID_EMPRESA));
+            if (argumento.containsKey(CHAVE_ID_EMPRESA)){
+                empresaId = argumento.getString(CHAVE_ID_EMPRESA);
+            }
+        }
         Log.d("fragmentoPedidos", "onCreateView criado.");
         return binding.getRoot();
     }
@@ -264,7 +273,7 @@ public class FragmentoPedidos extends Fragment {
         meuRecycler = binding.recyclerViewFragmentoPedido;
         chipGrupo = binding.chipGroupEstadosPedidos;
         FirebaseDatabase meuBancoDados = FirebaseDatabase.getInstance();
-        minhaReferencia = meuBancoDados.getReference(CHAVE_LISTA_PEDIDO);
+        minhaReferencia = meuBancoDados.getReference(CHAVE_EMPRESAS).child(empresaId).child(CHAVE_LISTA_PEDIDO);
         int idChipSelecionado = chipGrupo.getCheckedChipId();
         if (idChipSelecionado == R.id.chipEstadoParaFazerPedidos){
             estadoSelecionado = 0;

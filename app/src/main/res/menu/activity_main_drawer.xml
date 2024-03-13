@@ -17,6 +17,10 @@
         android:id="@+id/navGrupo2"
         android:checkableBehavior="single">
         <item
+            android:id="@+id/navNovoUsuario"
+            android:icon="@drawable/ic_novo_usuario"
+            android:title="Novo funcionario"/>
+        <item
             android:id="@+id/navSair"
             android:icon="@drawable/ic_menu_sair"
             android:title="@string/stringSair" />

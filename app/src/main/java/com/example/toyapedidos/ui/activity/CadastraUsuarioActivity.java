@@ -1,11 +1,12 @@
 package com.example.toyapedidos.ui.activity;
 
 import static com.example.toyapedidos.ui.Constantes.CHAVE_CARGO_COLABORADOR;
+import static com.example.toyapedidos.ui.Constantes.CHAVE_EMPRESAS;
 import static com.example.toyapedidos.ui.Constantes.CHAVE_USUARIO;
 
-import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
+import android.util.Log;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -28,6 +29,7 @@ public class CadastraUsuarioActivity extends AppCompatActivity {
     private ActivityCadastraUsuarioBinding binding;
     private TextInputLayout txtNomeUsuario, txtEmailUsuario, txtSenhaUsuario;
     private TextInputEditText edtNomeUsuario, edtEmailUsuario, edtSenhaUsuario;
+    private String stringNome, stringEmail, stringSenha, usuarioAtualId;
     private MaterialButton btnCadastrarUsuario;
     private ConexaoInternet conexaoInternet;
     @Override
@@ -36,13 +38,14 @@ public class CadastraUsuarioActivity extends AppCompatActivity {
         binding = ActivityCadastraUsuarioBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        txtNomeUsuario = binding.txtNomeCadastraUsuario;
-        txtEmailUsuario = binding.txtEmailCadastraUsuario;
-        txtSenhaUsuario = binding.txtSenhaCadastraUsuario;
-        edtNomeUsuario = binding.edtNomeCadastraUsuario;
-        edtEmailUsuario = binding.edtEmailCadastraUsuario;
-        edtSenhaUsuario = binding.edtSenhaCadastraUsuario;
-        btnCadastrarUsuario = binding.btnCadastrarUsuario;
+        txtNomeUsuario = binding.txtInputNomeNovoUsuario;
+        txtEmailUsuario = binding.txtInputEmailNovoUsuario;
+        txtSenhaUsuario = binding.txtInputSenhaNovoUsuario;
+        edtNomeUsuario = binding.edtInputNomeNovoUsuario;
+        edtEmailUsuario = binding.edtInputEmailNovoUsuario;
+        edtSenhaUsuario = binding.edtInputSenhaNovoUsuario;
+        btnCadastrarUsuario = binding.btnCadastrarNovoUsuario;
+        usuarioAtualId = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid();
 
         IntentFilter intentFilter = new IntentFilter("android.net.conn.CONNECTIVITY_CHANGE");
         intentFilter.addAction("android.net.wifi.WIFI_STATE_CHANGED");
@@ -50,16 +53,19 @@ public class CadastraUsuarioActivity extends AppCompatActivity {
         registerReceiver(conexaoInternet,intentFilter);
 
         btnCadastrarUsuario.setOnClickListener(v ->{
+            stringNome = Objects.requireNonNull(edtNomeUsuario.getText()).toString();
+            stringEmail = Objects.requireNonNull(edtEmailUsuario.getText()).toString();
+            stringSenha = Objects.requireNonNull(edtSenhaUsuario.getText()).toString();
             if (verificaCampos()){
                 btnCadastrarUsuario.setEnabled(false);
                 ConexaoInternet.TipoConexao tipoConexao = conexaoInternet.getTipoConexaoAtual(getApplicationContext());
                 if (conexaoExiste(tipoConexao)){
                     FirebaseAuth.getInstance()
-                            .createUserWithEmailAndPassword(Objects.requireNonNull(edtEmailUsuario.getText()).toString(), Objects.requireNonNull(edtSenhaUsuario.getText()).toString())
+                            .createUserWithEmailAndPassword(stringEmail, stringSenha)
                             .addOnCompleteListener(task -> {
                                 if (task.isSuccessful()){
                                     salvaDadosUsuario();
-                                    vaiParaEntrarActivity();
+                                    voltaParaMainActivity();
                                 } else {
                                     String erro;
                                     try {
@@ -73,13 +79,14 @@ public class CadastraUsuarioActivity extends AppCompatActivity {
                                     Snackbar.make(binding.constraintLayoutCadastraUsuario, erro, Snackbar.LENGTH_LONG).show();
                                 }
                             });
-
                 }
             }
         });
         conexaoInternet.addOnMudarEstadoConexao(tipoConexao -> {
             if (conexaoExiste(tipoConexao)) {
                 btnCadastrarUsuario.setEnabled(true);
+            } else {
+                btnCadastrarUsuario.setEnabled(false);
             }
         });
     }
@@ -93,18 +100,17 @@ public class CadastraUsuarioActivity extends AppCompatActivity {
         return false;
     }
 
-    private void vaiParaEntrarActivity() {
-        Intent iniciaVaiParaEntrarActivity = new Intent(getApplicationContext(), EntraUsuarioActivity.class);
-        startActivity(iniciaVaiParaEntrarActivity);
+    private void voltaParaMainActivity() {
         finish();
     }
 
     private void salvaDadosUsuario() {
         String usuarioId = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid();
-        Usuario usuario = new Usuario(usuarioId, Objects.requireNonNull(edtNomeUsuario.getText()).toString(),CHAVE_CARGO_COLABORADOR);
+        Log.d("cadatraUsuario", usuarioId);
         FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference minhareferencia = database.getReference(CHAVE_USUARIO);
-        minhareferencia.child(usuarioId).setValue(usuario);
+        DatabaseReference minhareferencia = database.getReference(CHAVE_EMPRESAS);
+        Usuario usuario = new Usuario(usuarioId, stringNome, CHAVE_CARGO_COLABORADOR);
+        minhareferencia.child(usuarioAtualId).child(CHAVE_USUARIO).child(usuarioId).setValue(usuario);
     }
 
     private boolean verificaCampos() {
@@ -113,7 +119,7 @@ public class CadastraUsuarioActivity extends AppCompatActivity {
 
     private boolean campoSenhaValida() {
         boolean confirmacao = false;
-        if (Objects.requireNonNull(edtSenhaUsuario.getText()).toString().isEmpty()){
+        if (stringSenha.isEmpty()){
             txtSenhaUsuario.setHelperText(getString(R.string.stringCampoNecessario));
         } else if (verificaSenhaRobusta()) {
             txtSenhaUsuario.setHelperTextEnabled(false);
@@ -124,12 +130,11 @@ public class CadastraUsuarioActivity extends AppCompatActivity {
 
     private boolean campoEmailValido() {
         boolean confirmacao;
-        String email = Objects.requireNonNull(edtEmailUsuario.getText()).toString();
         String emailPadrao = getString(R.string.stringEmailPadrao);
-        if (email.isEmpty()){
+        if (stringEmail.isEmpty()){
             txtEmailUsuario.setHelperText(getString(R.string.stringCampoNecessario));
             confirmacao = false;
-        } else if (email.matches(emailPadrao)) {
+        } else if (stringEmail.matches(emailPadrao)) {
             txtEmailUsuario.setHelperTextEnabled(false);
             confirmacao = true;
         } else {
@@ -141,7 +146,7 @@ public class CadastraUsuarioActivity extends AppCompatActivity {
 
     private boolean campoNomeValido() {
         boolean confirmacao;
-        if (Objects.requireNonNull(edtNomeUsuario.getText()).toString().isEmpty()){
+        if (stringNome.isEmpty()){
             txtNomeUsuario.setHelperText(getString(R.string.stringCampoNecessario));
             confirmacao = false;
         } else {

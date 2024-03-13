@@ -15,6 +15,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent">
+
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/inputEditTextNomeProduto"
             android:layout_width="match_parent"
@@ -24,6 +25,7 @@
             android:padding="16dp"
             android:hint="@string/stringNome"/>
     </com.google.android.material.textfield.TextInputLayout>
+
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/inputLayoutTextDescricaoProduto"
         android:layout_width="match_parent"
@@ -32,6 +34,7 @@
         app:layout_constraintStart_toStartOf="@id/inputLayoutTextNomeProduto"
         app:layout_constraintEnd_toEndOf="@id/inputLayoutTextNomeProduto"
         app:layout_constraintTop_toBottomOf="@id/inputLayoutTextNomeProduto">
+
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/inputEditTextDescricaoProduto"
             android:layout_width="match_parent"
@@ -41,6 +44,7 @@
             android:padding="16dp"
             android:hint="@string/descricao"/>
     </com.google.android.material.textfield.TextInputLayout>
+
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/inputLayoutTextCategoriaProduto"
         android:layout_width="match_parent"
@@ -61,6 +65,7 @@
             android:contentDescription="Menu categoria de produto"
             android:padding="16dp" />
     </com.google.android.material.textfield.TextInputLayout>
+
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/inputLayoutTextValorProduto"
         android:layout_width="match_parent"
@@ -69,6 +74,7 @@
         app:layout_constraintStart_toStartOf="@id/inputLayoutTextCategoriaProduto"
         app:layout_constraintEnd_toEndOf="@id/inputLayoutTextCategoriaProduto"
         app:layout_constraintTop_toBottomOf="@id/inputLayoutTextCategoriaProduto">
+
         <com.example.toyapedidos.editText.CurrencyEditText
             android:id="@+id/inputEditTextValorProduto"
             android:layout_width="match_parent"
@@ -78,5 +84,4 @@
             android:hint="@string/valor"
             android:padding="16dp"/>
     </com.google.android.material.textfield.TextInputLayout>
-
 </androidx.constraintlayout.widget.ConstraintLayout>

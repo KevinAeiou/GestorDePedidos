@@ -1,6 +1,8 @@
 package com.example.toyapedidos.ui.activity;
 
 import static com.example.toyapedidos.ui.Constantes.CHAVE_CADASTRA_PRODUTO;
+import static com.example.toyapedidos.ui.Constantes.CHAVE_EMPRESAS;
+import static com.example.toyapedidos.ui.Constantes.CHAVE_ID_EMPRESA;
 import static com.example.toyapedidos.ui.Constantes.CHAVE_LISTA_PRODUTO;
 import static com.example.toyapedidos.ui.Constantes.CHAVE_MODIFICA_PRODUTO;
 import static com.example.toyapedidos.ui.Constantes.CHAVE_PRODUTO;
@@ -16,7 +18,6 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.content.res.AppCompatResources;
 
@@ -37,7 +38,7 @@ import java.util.Locale;
 import java.util.Objects;
 
 public class CadastraProdutoActivity extends AppCompatActivity {
-    private FirebaseDatabase database;
+    private FirebaseDatabase meuBancoDados;
     private DatabaseReference minhaReferencia;
     private ActivityCadastraProdutoBinding binding;
     private TextInputEditText inputEditNome, inputEditDescricao;
@@ -45,7 +46,7 @@ public class CadastraProdutoActivity extends AppCompatActivity {
     private TextInputLayout inputTextNome;
     private TextInputLayout inputTextDescricao;
     private MaterialAutoCompleteTextView autoCompleteCategorias;
-    private String nome, descricao, categoria,valor;
+    private String nome, descricao, categoria, valor, empresaId;
     private String[] categorias;
     private Produto produtoRecebido, produtoModificado;
     private int codigoRequisicao;
@@ -69,6 +70,7 @@ public class CadastraProdutoActivity extends AppCompatActivity {
         Intent dadosRecebidos = getIntent();
         if (dadosRecebidos.hasExtra(CHAVE_PRODUTO)){
             codigoRequisicao = (int) dadosRecebidos.getSerializableExtra(CHAVE_REQUISICAO);
+            empresaId = (String) dadosRecebidos.getSerializableExtra(CHAVE_ID_EMPRESA);
             if (codigoRequisicao == CHAVE_CADASTRA_PRODUTO) {
                 Log.d("cadastraProduto", "Novo produto.");
                 autoCompleteCategorias.setText(categorias[0]);
@@ -83,7 +85,6 @@ public class CadastraProdutoActivity extends AppCompatActivity {
     private void preencheCampos(Produto produtoRecebido) {
         inputEditNome.setText(produtoRecebido.getNome());
         inputEditDescricao.setText(produtoRecebido.getDescricao());
-        Log.d("cadastraProduto", "Valor: "+produtoRecebido.getValor()+"0");
         inputEditValor.setText(produtoRecebido.getValor()+"0");
         autoCompleteCategorias.setText(produtoRecebido.getCategoria());
     }
@@ -95,8 +96,8 @@ public class CadastraProdutoActivity extends AppCompatActivity {
         autoCompleteCategorias = binding.inputEditTextCategoriaProduto;
         inputTextNome = binding.inputLayoutTextNomeProduto;
         inputTextDescricao = binding.inputLayoutTextDescricaoProduto;
-        database = FirebaseDatabase.getInstance();
-        minhaReferencia = database.getReference();
+        meuBancoDados = FirebaseDatabase.getInstance();
+        minhaReferencia = meuBancoDados.getReference();
         categorias = getResources().getStringArray(R.array.categorias);
     }
 
@@ -136,7 +137,7 @@ public class CadastraProdutoActivity extends AppCompatActivity {
                         finish();
                     })
                     .setPositiveButton("Sim", (dialog, which) -> {
-                        minhaReferencia = database.getReference(CHAVE_LISTA_PRODUTO);
+                        minhaReferencia = meuBancoDados.getReference(CHAVE_EMPRESAS).child(empresaId).child(CHAVE_LISTA_PRODUTO);
                         minhaReferencia.child(produtoModificado.getId()).setValue(produtoModificado);
                         finish();
                     })
@@ -181,7 +182,7 @@ public class CadastraProdutoActivity extends AppCompatActivity {
     }
 
     private void cadastraNovoProduto(double valorDouble) {
-        minhaReferencia = database.getReference(CHAVE_LISTA_PRODUTO);
+        minhaReferencia = meuBancoDados.getReference(CHAVE_EMPRESAS).child(empresaId).child(CHAVE_LISTA_PRODUTO);
         String novoId = Utilitario.geraIdAleatorio();
         Produto produto = new Produto(
                 novoId,

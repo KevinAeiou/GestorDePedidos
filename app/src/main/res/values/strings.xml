@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Toya pedidos</string>
+    <string name="app_name">Gestor de pedidos</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="nav_header_title">Android Studio</string>
@@ -53,6 +53,10 @@
     <string name="stringEstadoPronto">Pronto</string>
     <string name="stringEstadoEntregue">Entregue</string>
     <string name="stringImagemConteudoExpandido">Imagem índice conteudo expandido</string>
+    <string name="stringEmpresa">Empresa</string>
+    <string name="stringAdministrador">Administrador</string>
+    <string name="stringCadastrarEmpresa">Cadastrar empresa</string>
+    <string name="stringNomeAplicativo">Gestor de pedidos</string>
     <string-array name="categorias">
         <item>Sanduíches</item>
         <item>Pizzas</item>
@@ -60,4 +64,6 @@
         <item>Bebidas</item>
         <item>Diversos</item>
     </string-array>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

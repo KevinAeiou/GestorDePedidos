@@ -1,8 +1,11 @@
 package com.example.toyapedidos.ui.activity;
 
+import static com.example.toyapedidos.ui.Constantes.CHAVE_CARGO_ADMINISTRADOR;
+import static com.example.toyapedidos.ui.Constantes.CHAVE_EMPRESAS;
 import static com.example.toyapedidos.ui.Constantes.CHAVE_LISTA_PEDIDO;
 import static com.example.toyapedidos.ui.Constantes.CHAVE_NOVO_PEDIDO;
 import static com.example.toyapedidos.ui.Constantes.CHAVE_TITULO_RESUMO_PEDIDO;
+import static com.example.toyapedidos.ui.Constantes.CHAVE_USUARIO;
 
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -10,15 +13,18 @@ import android.icu.text.NumberFormat;
 import android.os.Bundle;
 import android.util.Log;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.toyapedidos.R;
 import com.example.toyapedidos.databinding.ActivityResumoPedidoBinding;
+import com.example.toyapedidos.modelo.Empresa;
 import com.example.toyapedidos.modelo.Pedido;
 import com.example.toyapedidos.modelo.Produto;
 import com.example.toyapedidos.modelo.ProdutoPedido;
+import com.example.toyapedidos.modelo.Usuario;
 import com.example.toyapedidos.ui.ConexaoInternet;
 import com.example.toyapedidos.ui.Utilitario;
 import com.example.toyapedidos.ui.recyclerview.adapter.NovoPedidoAdapter;
@@ -28,8 +34,12 @@ import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.android.material.textview.MaterialTextView;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -126,9 +136,39 @@ public class ResumoPedidoActivity extends AppCompatActivity {
     }
 
     private void cadastraNovoPedido(Pedido novoPedido) {
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference minhaReferencia = database.getReference(CHAVE_LISTA_PEDIDO);
-        minhaReferencia.child(novoPedido.getId()).setValue(novoPedido);
+        FirebaseDatabase meusDados = FirebaseDatabase.getInstance();
+        DatabaseReference minhaReferencia = meusDados.getReference(CHAVE_EMPRESAS);
+        minhaReferencia.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot dn:snapshot.getChildren()){
+                    Empresa empresa = dn.getValue(Empresa.class);
+                    if (empresa != null){
+                        Log.d("resumoPedido","ID EMPRESA: "+empresa.getId());
+                        minhaReferencia.child(empresa.getId()).child(CHAVE_USUARIO).addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                for (DataSnapshot dn:snapshot.getChildren()){
+                                    Usuario usuario = dn.getValue(Usuario.class);
+                                    Log.d("resumoPedido","ID USUARIO: "+usuario.getId());
+                                    if (usuario != null && usuario.getId().equals(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid())) {
+                                        minhaReferencia.child(empresa.getId()).child(CHAVE_LISTA_PEDIDO).child(novoPedido.getId()).setValue(novoPedido);
+                                    }
+                                }
+                            }
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError error) {
+                            }
+                        });
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
     }
 
     private void configuraRecyclerView() {
@@ -194,5 +234,6 @@ public class ResumoPedidoActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         unregisterReceiver(conexaoInternet);
+        binding = null;
     }
 }
