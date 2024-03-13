@@ -1,7 +1,13 @@
 package com.example.toyapedidos.ui.activity;
 
+import static com.example.toyapedidos.ui.Constantes.CHAVE_CADASTRA_PRODUTO;
+import static com.example.toyapedidos.ui.Constantes.CHAVE_EMPRESAS;
+import static com.example.toyapedidos.ui.Constantes.CHAVE_ID_EMPRESA;
 import static com.example.toyapedidos.ui.Constantes.CHAVE_LISTA_PRODUTO;
+import static com.example.toyapedidos.ui.Constantes.CHAVE_MODIFICA_PRODUTO;
 import static com.example.toyapedidos.ui.Constantes.CHAVE_NOVO_PEDIDO;
+import static com.example.toyapedidos.ui.Constantes.CHAVE_PRODUTO;
+import static com.example.toyapedidos.ui.Constantes.CHAVE_REQUISICAO;
 import static com.example.toyapedidos.ui.Constantes.CHAVE_TITULO_NOVO_PEDIDO;
 import static com.example.toyapedidos.ui.Utilitario.removeAcentos;
 
@@ -55,7 +61,7 @@ public class NovoPedidoActivity extends AppCompatActivity {
     private ChipGroup chipGrupo;
     private HorizontalScrollView scrollView;
     private List<Integer> listaCategoriasSelecionadas;
-
+    private String empresaId;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,6 +69,7 @@ public class NovoPedidoActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
         setTitle(CHAVE_TITULO_NOVO_PEDIDO);
         inicializaComponentes();
+        rebeceDados();
         IntentFilter intentFilter = new IntentFilter("android.net.conn.CONNECTIVITY_CHANGE");
         intentFilter.addAction("android.net.wifi.WIFI_STATE_CHANGED");
         conexaoInternet = new ConexaoInternet();
@@ -78,6 +85,13 @@ public class NovoPedidoActivity extends AppCompatActivity {
                 pegaTodosProdutos();
             }
         });
+    }
+
+    private void rebeceDados() {
+        Intent dadosRecebidos = getIntent();
+        if (dadosRecebidos.hasExtra(CHAVE_ID_EMPRESA)){
+            empresaId = (String) dadosRecebidos.getSerializableExtra(CHAVE_ID_EMPRESA);
+        }
     }
 
     @Override
@@ -164,7 +178,7 @@ public class NovoPedidoActivity extends AppCompatActivity {
     private void pegaTodosProdutos() {
         cardapioNovoPedido = new ArrayList<>();
         FirebaseDatabase meuBancoDados = FirebaseDatabase.getInstance();
-        DatabaseReference minhaReferencia = meuBancoDados.getReference(CHAVE_LISTA_PRODUTO);
+        DatabaseReference minhaReferencia = meuBancoDados.getReference(CHAVE_EMPRESAS).child(empresaId).child(CHAVE_LISTA_PRODUTO);
         minhaReferencia.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {

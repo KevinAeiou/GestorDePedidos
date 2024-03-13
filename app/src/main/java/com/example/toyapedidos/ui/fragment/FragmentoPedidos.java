@@ -264,6 +264,7 @@ public class FragmentoPedidos extends Fragment {
 
     private void vaiParaAdicionaNovoPedido() {
         Intent iniciaVaiParaCadastraNovoPedido = new Intent(getActivity(), NovoPedidoActivity.class);
+        iniciaVaiParaCadastraNovoPedido.putExtra(CHAVE_ID_EMPRESA, empresaId);
         startActivity(iniciaVaiParaCadastraNovoPedido);
     }
 
