@@ -2,8 +2,10 @@ package com.example.toyapedidos.ui.activity;
 
 import static com.example.toyapedidos.ui.Constantes.CHAVE_CARGO_COLABORADOR;
 import static com.example.toyapedidos.ui.Constantes.CHAVE_EMPRESAS;
+import static com.example.toyapedidos.ui.Constantes.CHAVE_ID_EMPRESA;
 import static com.example.toyapedidos.ui.Constantes.CHAVE_USUARIO;
 
+import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 import android.util.Log;
@@ -12,12 +14,14 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.toyapedidos.R;
 import com.example.toyapedidos.databinding.ActivityCadastraUsuarioBinding;
+import com.example.toyapedidos.modelo.Empresa;
 import com.example.toyapedidos.modelo.Usuario;
 import com.example.toyapedidos.ui.ConexaoInternet;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
+import com.google.android.material.textview.MaterialTextView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.database.DatabaseReference;
@@ -27,17 +31,21 @@ import java.util.Objects;
 
 public class CadastraUsuarioActivity extends AppCompatActivity {
     private ActivityCadastraUsuarioBinding binding;
+    private MaterialTextView txtNomeEmpresa;
     private TextInputLayout txtNomeUsuario, txtEmailUsuario, txtSenhaUsuario;
     private TextInputEditText edtNomeUsuario, edtEmailUsuario, edtSenhaUsuario;
-    private String stringNome, stringEmail, stringSenha, usuarioAtualId;
+    private String stringNome, stringEmail, stringSenha;
     private MaterialButton btnCadastrarUsuario;
     private ConexaoInternet conexaoInternet;
+    private Empresa empresaAtual;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivityCadastraUsuarioBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+        recebeDados();
+        txtNomeEmpresa = binding.txtNomeEmpresa;
         txtNomeUsuario = binding.txtInputNomeNovoUsuario;
         txtEmailUsuario = binding.txtInputEmailNovoUsuario;
         txtSenhaUsuario = binding.txtInputSenhaNovoUsuario;
@@ -45,8 +53,9 @@ public class CadastraUsuarioActivity extends AppCompatActivity {
         edtEmailUsuario = binding.edtInputEmailNovoUsuario;
         edtSenhaUsuario = binding.edtInputSenhaNovoUsuario;
         btnCadastrarUsuario = binding.btnCadastrarNovoUsuario;
-        usuarioAtualId = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid();
-
+        
+        txtNomeEmpresa.setText(empresaAtual.getNome());
+        
         IntentFilter intentFilter = new IntentFilter("android.net.conn.CONNECTIVITY_CHANGE");
         intentFilter.addAction("android.net.wifi.WIFI_STATE_CHANGED");
         conexaoInternet = new ConexaoInternet();
@@ -91,6 +100,13 @@ public class CadastraUsuarioActivity extends AppCompatActivity {
         });
     }
 
+    private void recebeDados() {
+        Intent dadosRecebidos = getIntent();
+        if (dadosRecebidos.hasExtra(CHAVE_ID_EMPRESA)){
+            empresaAtual = (Empresa) dadosRecebidos.getSerializableExtra(CHAVE_ID_EMPRESA);
+        }
+    }
+
     private boolean conexaoExiste(ConexaoInternet.TipoConexao tipoConexao) {
         if (tipoConexao == ConexaoInternet.TipoConexao.TIPO_MOBILE || tipoConexao == ConexaoInternet.TipoConexao.TIPO_WIFI){
             return true;
@@ -106,11 +122,10 @@ public class CadastraUsuarioActivity extends AppCompatActivity {
 
     private void salvaDadosUsuario() {
         String usuarioId = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid();
-        Log.d("cadatraUsuario", usuarioId);
         FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference minhareferencia = database.getReference(CHAVE_EMPRESAS);
         Usuario usuario = new Usuario(usuarioId, stringNome, CHAVE_CARGO_COLABORADOR);
-        minhareferencia.child(usuarioAtualId).child(CHAVE_USUARIO).child(usuarioId).setValue(usuario);
+        DatabaseReference minhareferencia = database.getReference(CHAVE_EMPRESAS);
+        minhareferencia.child(empresaAtual.getId()).child(CHAVE_USUARIO).child(usuarioId).setValue(usuario);
     }
 
     private boolean verificaCampos() {

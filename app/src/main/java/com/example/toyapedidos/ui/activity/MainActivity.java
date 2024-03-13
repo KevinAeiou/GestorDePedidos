@@ -51,13 +51,15 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.io.Serializable;
 import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private ActivityMainBinding binding;
     private DrawerLayout drawer;
-    private String TAG, empresaId;
+    private String TAG;
+    private Empresa empresaAtual;
     private NavigationView navigationView;
     private int itemNavegacao;
     private static NotificationManager notificationManager;
@@ -125,7 +127,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                                 for (DataSnapshot dn:snapshot.getChildren()){
                                     Usuario usuario = dn.getValue(Usuario.class);
                                     if (usuario != null && usuario.getId().equals(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid())) {
-                                        empresaId = empresa.getId();
+                                        empresaAtual = empresa;
                                         txtNavNome.setText(usuario.getNome());
                                         txtNavCargo.setText(usuario.getCargo());
                                         txtNavEmpresa.setText(empresa.getNome());
@@ -157,7 +159,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private void mostraFragmentoSelecionado() {
         Fragment fragmentoSelecionado = null;
         Bundle argumento = new Bundle();
-        argumento.putString(CHAVE_ID_EMPRESA, empresaId);
+        argumento.putString(CHAVE_ID_EMPRESA, empresaAtual.getId());
         if (itemNavegacao == R.id.navPedidos){
             fragmentoSelecionado = new FragmentoPedidos();
             fragmentoSelecionado.setArguments(argumento);
@@ -180,6 +182,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     private void vaiParaCadastraNovoUsuario() {
         Intent iniciaVaiParaCadastraUsuarioActivity = new Intent(getApplicationContext(), CadastraUsuarioActivity.class);
+        iniciaVaiParaCadastraUsuarioActivity.putExtra(CHAVE_ID_EMPRESA, (Serializable) empresaAtual);
         startActivity(iniciaVaiParaCadastraUsuarioActivity);
     }
 
@@ -202,7 +205,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         drawer = binding.drawerLayoutMain;
         navigationView = binding.navegacaoView;
         itemNavegacao = R.id.navPedidos;
-        empresaId = null;
+        empresaAtual = null;
     }
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {

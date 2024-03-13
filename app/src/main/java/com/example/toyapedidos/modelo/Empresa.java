@@ -1,6 +1,8 @@
 package com.example.toyapedidos.modelo;
 
-public class Empresa {
+import java.io.Serializable;
+
+public class Empresa implements Serializable {
     private String id;
     private String nome;
 
